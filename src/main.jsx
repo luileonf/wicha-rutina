@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, Image, Maximize2, X } from "lucide-react";
 import "./style.css";
 
-const weekPlan = [
+const weekOnePlan = [
   {
     day: "Lunes",
     title: "Fuerza pierna + intermitentes",
@@ -98,6 +98,109 @@ const weekPlan = [
   }
 ];
 
+const weekTwoPlan = [
+  {
+    day: "Lunes",
+    title: "Pierna fuerza + intermitentes progresivos",
+    focus: "Fuerza base y capacidad anaeróbica",
+    intensity: "Media-alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 25s por lado", "Single leg RDL 12 por pierna", "Monster walks 20 pasos", "Nordic asistido 6 reps", "Pogos 25 reps"] },
+      { name: "Zona media dinámica", items: ["4 vueltas", "40s plancha", "25 mountain climbers", "20 russian twists", "20 toe touches"] },
+      { name: "Fuerza pierna", items: ["5x8 back squat", "4x10 hip thrust pesado", "4x10 Bulgarian split squat", "4x12 RDL", "Farmer carry pesado"] },
+      { name: "Intermitentes", items: ["8 mins", "10s fuerte", "10s suave", "intensidad 85%"] },
+      { name: "Finisher", items: ["3 rounds", "12 burpees", "15 jump squats", "20 lunges", "250m run"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body + conditioning",
+    focus: "Tren superior y gasto calórico",
+    intensity: "Media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["10 mins", "dead bug", "plank shoulder taps", "hollow hold"] },
+      { name: "Fuerza upper", items: ["5x8 push press", "4x10 remo mancuerna", "4x12 push ups", "4x10 pull ups asistidas", "battle ropes"] },
+      { name: "Functional", items: ["20x10", "bike", "KB swings", "dumbbell snatch", "jump box", "ropes", "5 vueltas"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Aeróbico + recovery",
+    focus: "Recuperación y base cardiovascular",
+    intensity: "Baja-media",
+    icon: Footprints,
+    blocks: [
+      { name: "Movilidad", items: ["12 mins", "tobillo", "cadera", "aductores", "espalda baja"] },
+      { name: "Running aeróbico", items: ["40 mins suaves", "ritmo conversacional", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "movilidad", "descarga piernas", "estiramientos"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Potencia + repeated sprint ability",
+    focus: "Explosividad fútbol",
+    intensity: "Alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["3 rondas", "nordic", "pogos", "aductor", "glúteo medio"] },
+      { name: "Potencia", items: ["5 rounds", "squat jumps", "bounds", "sprint 20m", "lateral hops", "sled push opcional"] },
+      { name: "Circuito fútbol", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "swings", "6 rounds"] },
+      { name: "Intermitentes", items: ["8 mins", "intensidad 90%", "10x10"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body strength",
+    focus: "Fuerza funcional completa",
+    intensity: "Media-alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Fuerza", items: ["deadlift", "thrusters", "step ups", "push press", "pull ups", "5x8"] },
+      { name: "Conditioning", items: ["20x10", "bike", "jump lunges", "KB clean", "burpees", "plank taps", "5 vueltas"] },
+      { name: "Core", items: ["V-ups", "russian twists", "plancha", "dead bug"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Running específico fútbol",
+    focus: "Capacidad específica de partido",
+    intensity: "Media-alta",
+    icon: Timer,
+    blocks: [
+      { name: "Activación", items: ["movilidad", "skipping", "técnica carrera"] },
+      { name: "Repeated runs", items: ["3 bloques", "6 reps", "30s fuerte", "30s suave", "descanso 2 mins"] },
+      { name: "Técnica fútbol", items: ["conducción", "cambio dirección", "sprint", "pase largo", "finalización"] },
+      { name: "Final físico", items: ["4 rounds", "300m run", "15 burpees", "20 lunges", "20 sit ups"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["caminar", "movilidad", "hidratación", "dormir bien"] }
+    ]
+  }
+];
+
+const routineWeeks = [
+  {
+    week: 3,
+    label: "El regreso",
+    objective: "Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.",
+    plan: weekOnePlan
+  },
+  {
+    week: 4,
+    label: "Base + adaptación de carga",
+    objective: "Objetivo: subir intensidad, mejorar tolerancia física, aumentar fuerza funcional, seguir bajando % grasa y aumentar capacidad aeróbica específica.",
+    plan: weekTwoPlan
+  }
+];
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
 const months = [
   "Enero",
@@ -115,9 +218,10 @@ const months = [
 ];
 const today = new Date();
 const initialMonth = today.getMonth();
-const initialWeek = Math.min(5, Math.ceil(today.getDate() / 7));
+const currentCalendarWeek = Math.min(5, Math.ceil(today.getDate() / 7));
+const initialWeek = routineWeeks[routineWeeks.length - 1].week;
 const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
-const availableWeeks = [initialWeek];
+const availableWeeks = routineWeeks.map((routine) => routine.week);
 const progressStorageKey = "wicha-fut-progress-v2";
 const previousProgressStorageKey = "wicha-fut-progress-v1";
 const getPeriodKey = (month, week) => `${month}-week-${week}`;
@@ -125,10 +229,20 @@ const getPeriodKey = (month, week) => `${month}-week-${week}`;
 const loadAllProgress = () => {
   try {
     const saved = window.localStorage.getItem(progressStorageKey);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      const oldCalendarKey = getPeriodKey(initialMonth, currentCalendarWeek);
+      const weekThreeKey = getPeriodKey(initialMonth, 3);
+
+      if (parsed[oldCalendarKey] && !parsed[weekThreeKey]) {
+        return { ...parsed, [weekThreeKey]: parsed[oldCalendarKey] };
+      }
+
+      return parsed;
+    }
 
     const previousSaved = window.localStorage.getItem(previousProgressStorageKey);
-    return previousSaved ? { [getPeriodKey(initialMonth, initialWeek)]: JSON.parse(previousSaved) } : {};
+    return previousSaved ? { [getPeriodKey(initialMonth, 3)]: JSON.parse(previousSaved) } : {};
   } catch {
     return {};
   }
@@ -157,12 +271,14 @@ function App() {
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
+  const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
+  const weekPlan = currentRoutine.plan;
   const periodKey = getPeriodKey(selectedMonth, selectedWeek);
   const currentProgress = allProgress[periodKey] ?? {};
   const checked = currentProgress.checked ?? {};
   const roundsDone = currentProgress.roundsDone ?? {};
   const completedBlocks = currentProgress.completedBlocks ?? {};
-  const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
+  const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay) ?? weekPlan[0], [selectedDay, weekPlan]);
 
   useEffect(() => {
     window.localStorage.setItem(progressStorageKey, JSON.stringify(allProgress));
@@ -190,12 +306,17 @@ function App() {
     const text = item.toLowerCase();
     return (
       /^descanso:/.test(text) ||
-      /^intensidad:/.test(text) ||
+      /^descanso\b/.test(text) ||
+      /^intensidad:?/.test(text) ||
       /^ritmo cómodo:/.test(text) ||
+      /^ritmo conversacional/.test(text) ||
+      /^mantener fc/.test(text) ||
       /^\d+\s*(rondas?|rounds?|vueltas?|bloques?)\b/.test(text) ||
-      /^\d+\s*reps?\s+por\s+bloque/.test(text) ||
-      /^\d+(-\d+)?\s*minutos?(\s|$)/.test(text) ||
+      /^\d+\s*reps?(\s+por\s+bloque)?/.test(text) ||
+      /^\d+x\d+$/.test(text) ||
+      /^\d+(-\d+)?\s*(minutos?|mins?)(\s|$)/.test(text) ||
       /^\d+s\s+fuerte\s+\+\s+\d+s\s+suave/.test(text) ||
+      /^\d+s\s+(fuerte|suave)$/.test(text) ||
       /^core dinámico/.test(text) ||
       /^core activo/.test(text)
     );
@@ -209,7 +330,7 @@ function App() {
     if (!instructions.length) return "";
 
     return instructions
-      .map((item) => (/minutos?/i.test(item) ? `Aprox. ${item}` : item))
+      .map((item) => (/(minutos?|mins?)/i.test(item) ? `Aprox. ${item}` : item))
       .join(" | ");
   };
   const exerciseItems = (block) => {
@@ -256,9 +377,9 @@ function App() {
     <main className="app">
       <section className="hero">
         <div className="heroCopy">
-          <div className="eyebrow"><CalendarDays size={18} /> Semana de regreso</div>
+          <div className="eyebrow"><CalendarDays size={18} /> SEMANA {currentRoutine.week}: {currentRoutine.label}</div>
           <h1>Rutina fútbol femenino</h1>
-          <p>Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.</p>
+          <p>{currentRoutine.objective}</p>
           <div className="periodPicker">
             <label>
               <span>Mes</span>
