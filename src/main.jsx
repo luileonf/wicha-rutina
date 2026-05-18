@@ -105,21 +105,37 @@ function App() {
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
 
   const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
-  const isCoreBlock = (block) => block.name.toLowerCase().includes("zona media");
   const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
   const roundTarget = (block) => Number(roundText(block)?.match(/(\d+)/)?.[1] ?? 3);
-  const coreMetaItems = (block) => block.items.filter((item) => /\d+\s*(minutos?|vueltas?)/i.test(item));
+  const isInstructionItem = (item) => {
+    const text = item.toLowerCase();
+    return (
+      /^descanso:/.test(text) ||
+      /^intensidad:/.test(text) ||
+      /^ritmo cómodo:/.test(text) ||
+      /^\d+\s*(rondas?|rounds?|vueltas?|bloques?)\b/.test(text) ||
+      /^\d+\s*reps?\s+por\s+bloque/.test(text) ||
+      /^\d+(-\d+)?\s*minutos?(\s|$)/.test(text) ||
+      /^\d+s\s+fuerte\s+\+\s+\d+s\s+suave/.test(text) ||
+      /^core dinámico/.test(text) ||
+      /^core activo/.test(text)
+    );
+  };
+  const instructionItems = (block) => {
+    if (isPreventiveBlock(block)) return [];
+    return block.items.filter(isInstructionItem);
+  };
   const blockInstructions = (block) => {
-    if (!isCoreBlock(block)) return "";
+    const instructions = instructionItems(block);
+    if (!instructions.length) return "";
 
-    const minutes = coreMetaItems(block).find((item) => /minutos?/i.test(item));
-    const rounds = coreMetaItems(block).find((item) => /vueltas?/i.test(item));
-    return [rounds, minutes && `Aprox. ${minutes}`].filter(Boolean).join(" | ");
+    return instructions
+      .map((item) => (/minutos?/i.test(item) ? `Aprox. ${item}` : item))
+      .join(" | ");
   };
   const exerciseItems = (block) => {
     if (isPreventiveBlock(block)) return block.items.filter((item) => item !== roundText(block));
-    if (isCoreBlock(block)) return block.items.filter((item) => !coreMetaItems(block).includes(item));
-    return block.items;
+    return block.items.filter((item) => !instructionItems(block).includes(item));
   };
   const blockKey = (day, block) => `${day}-${block.name}`;
   const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block);
@@ -131,7 +147,7 @@ function App() {
         return sum + (isPreventiveComplete(day.day, block) ? 1 : 0);
       }
 
-      return sum + block.items.filter((item) => checked[`${day.day}-${block.name}-${item}`]).length;
+      return sum + exerciseItems(block).filter((item) => checked[`${day.day}-${block.name}-${item}`]).length;
     }, 0);
   }, 0);
   const progress = Math.round((completed / total) * 100);
