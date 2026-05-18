@@ -53,28 +53,11 @@ button {
 }
 
 .hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    linear-gradient(120deg, transparent 0 58%, rgba(227, 27, 47, .9) 58% 61%, transparent 61%),
-    linear-gradient(120deg, transparent 0 64%, rgba(31, 111, 235, .78) 64% 67%, transparent 67%);
-  opacity: .5;
+  display: none;
 }
 
 .hero::after {
-  content: "CSD MUNICIPAL";
-  position: absolute;
-  right: -12px;
-  bottom: -8px;
-  z-index: -1;
-  color: rgba(255,255,255,.035);
-  font-size: clamp(54px, 11vw, 132px);
-  font-weight: 950;
-  line-height: .8;
-  white-space: nowrap;
-  pointer-events: none;
+  display: none;
 }
 
 .heroCopy {
@@ -199,7 +182,7 @@ h1 {
   width: 58px;
   height: 58px;
   border-radius: 16px;
-  background: linear-gradient(135deg, var(--red), var(--blue));
+  background: var(--red);
   color: white;
   display: grid;
   place-items: center;
