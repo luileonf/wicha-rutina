@@ -105,13 +105,26 @@ function App() {
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
 
   const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
+  const isCoreBlock = (block) => block.name.toLowerCase().includes("zona media");
   const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
   const roundTarget = (block) => Number(roundText(block)?.match(/(\d+)/)?.[1] ?? 3);
-  const exerciseItems = (block) => isPreventiveBlock(block) ? block.items.filter((item) => item !== roundText(block)) : block.items;
+  const coreMetaItems = (block) => block.items.filter((item) => /\d+\s*(minutos?|vueltas?)/i.test(item));
+  const blockInstructions = (block) => {
+    if (!isCoreBlock(block)) return "";
+
+    const minutes = coreMetaItems(block).find((item) => /minutos?/i.test(item));
+    const rounds = coreMetaItems(block).find((item) => /vueltas?/i.test(item));
+    return [rounds, minutes && `Aprox. ${minutes}`].filter(Boolean).join(" | ");
+  };
+  const exerciseItems = (block) => {
+    if (isPreventiveBlock(block)) return block.items.filter((item) => item !== roundText(block));
+    if (isCoreBlock(block)) return block.items.filter((item) => !coreMetaItems(block).includes(item));
+    return block.items;
+  };
   const blockKey = (day, block) => `${day}-${block.name}`;
   const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block);
 
-  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + (isPreventiveBlock(block) ? 1 : block.items.length), 0), 0);
+  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + (isPreventiveBlock(block) ? 1 : exerciseItems(block).length), 0), 0);
   const completed = weekPlan.reduce((acc, day) => {
     return acc + day.blocks.reduce((sum, block) => {
       if (isPreventiveBlock(block)) {
@@ -175,11 +188,15 @@ function App() {
             const preventive = isPreventiveBlock(block);
             const preventiveDone = preventive && isPreventiveComplete(current.day, block);
             const selectedRounds = roundsDone[blockKey(current.day, block)] ?? "";
+            const instructions = blockInstructions(block);
 
             return (
               <article className={preventiveDone ? "block blockComplete" : "block"} key={block.name}>
                 <div className="blockHeader">
-                  <h3>{index + 1}. {block.name}</h3>
+                  <div>
+                    <h3>{index + 1}. {block.name}</h3>
+                    {instructions && <p className="blockInstructions">{instructions}</p>}
+                  </div>
                   {preventive && (
                     <label className="roundSelector">
                       <span>Rondas hechas</span>
