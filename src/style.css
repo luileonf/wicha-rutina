@@ -101,6 +101,34 @@ h1 {
   line-height: 1.45;
 }
 
+.weekChecks {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.weekChecks button {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-deep);
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.weekChecks button.current {
+  border-color: rgba(201, 34, 49, .72);
+  color: white;
+}
+
+.weekChecks button.complete {
+  background: var(--red);
+  border-color: rgba(255, 255, 255, .12);
+  color: white;
+}
+
 .progress {
   position: relative;
   display: grid;

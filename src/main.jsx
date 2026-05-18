@@ -98,6 +98,8 @@ const weekPlan = [
   }
 ];
 
+const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
+
 function App() {
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [checked, setChecked] = useState({});
@@ -106,7 +108,6 @@ function App() {
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
 
   const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
-  const usesBlockCompletion = (block) => /zona media|core|carrera|cardio|running/i.test(block.name);
   const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
   const roundTarget = (block) => Number(roundText(block)?.match(/(\d+)/)?.[1] ?? 3);
   const isInstructionItem = (item) => {
@@ -139,29 +140,25 @@ function App() {
     if (isPreventiveBlock(block)) return block.items.filter((item) => item !== roundText(block));
     return block.items.filter((item) => !instructionItems(block).includes(item));
   };
+  const usesBlockCompletion = (block) => {
+    const hasRoundStructure = instructionItems(block).some((item) => /\b(rondas?|rounds?|vueltas?|bloques?)\b/i.test(item));
+    const isSingleEffort = exerciseItems(block).length === 0;
+    return hasRoundStructure || isSingleEffort || /zona media|core|carrera|cardio|running|intermitentes/i.test(block.name);
+  };
   const blockKey = (day, block) => `${day}-${block.name}`;
   const areAllItemsChecked = (day, block) => exerciseItems(block).every((item) => checked[`${day}-${block.name}-${item}`]);
   const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block) || areAllItemsChecked(day, block);
   const isBlockComplete = (day, block) => Boolean(completedBlocks[blockKey(day, block)]);
+  const blockTotal = (block) => isPreventiveBlock(block) || usesBlockCompletion(block) ? 1 : exerciseItems(block).length;
+  const blockCompleted = (day, block) => {
+    if (isPreventiveBlock(block)) return isPreventiveComplete(day, block) ? 1 : 0;
+    if (usesBlockCompletion(block)) return isBlockComplete(day, block) ? 1 : 0;
+    return exerciseItems(block).filter((item) => checked[`${day}-${block.name}-${item}`]).length;
+  };
+  const isDayComplete = (day) => day.blocks.every((block) => blockCompleted(day.day, block) >= blockTotal(block));
 
-  const total = weekPlan.reduce((acc, day) => {
-    return acc + day.blocks.reduce((sum, block) => {
-      if (isPreventiveBlock(block) || usesBlockCompletion(block)) return sum + 1;
-      return sum + exerciseItems(block).length;
-    }, 0);
-  }, 0);
-  const completed = weekPlan.reduce((acc, day) => {
-    return acc + day.blocks.reduce((sum, block) => {
-      if (isPreventiveBlock(block)) {
-        return sum + (isPreventiveComplete(day.day, block) ? 1 : 0);
-      }
-      if (usesBlockCompletion(block)) {
-        return sum + (isBlockComplete(day.day, block) ? 1 : 0);
-      }
-
-      return sum + exerciseItems(block).filter((item) => checked[`${day.day}-${block.name}-${item}`]).length;
-    }, 0);
-  }, 0);
+  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + blockTotal(block), 0), 0);
+  const completed = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block), 0), 0);
   const progress = Math.round((completed / total) * 100);
   const Icon = current.icon;
 
@@ -186,6 +183,19 @@ function App() {
           <div className="eyebrow"><CalendarDays size={18} /> Semana de regreso</div>
           <h1>Rutina fútbol femenino</h1>
           <p>Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.</p>
+          <div className="weekChecks" aria-label="Progreso por día">
+            {weekPlan.map((day, index) => (
+              <button
+                key={day.day}
+                className={`${selectedDay === day.day ? "current" : ""} ${isDayComplete(day) ? "complete" : ""}`}
+                onClick={() => setSelectedDay(day.day)}
+                type="button"
+                aria-label={`${day.day}${isDayComplete(day) ? " completo" : ""}`}
+              >
+                {dayLetters[index]}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="progress">
           <span>Progreso</span>
@@ -251,7 +261,7 @@ function App() {
                         type="button"
                       >
                         <CheckCircle2 size={18} />
-                        {blockDone ? "Completado" : "Completar"}
+                        Listo
                       </button>
                     )}
                   </div>
