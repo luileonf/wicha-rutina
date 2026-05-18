@@ -248,6 +248,13 @@ h1 {
   margin-bottom: 18px;
 }
 
+.blockActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
 .block h3 {
   margin: 0;
   font-size: 22px;
@@ -299,6 +306,33 @@ h1 {
 .roundSelector option {
   background: var(--panel-deep);
   color: white;
+}
+
+.completeBlockButton {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--panel-deep);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.completeBlockButton.done {
+  background: var(--red);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.completeBlockButton svg {
+  opacity: .75;
+}
+
+.completeBlockButton.done svg {
+  opacity: 1;
 }
 
 .items {
@@ -369,9 +403,18 @@ footer b {
     align-items: flex-start;
     flex-direction: column;
   }
+  .blockActions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
   .roundSelector {
     width: 100%;
     justify-content: space-between;
+  }
+  .completeBlockButton {
+    justify-content: center;
+    width: 100%;
   }
   .days { grid-template-columns: repeat(2, 1fr); }
   .dayHeader { align-items: flex-start; }

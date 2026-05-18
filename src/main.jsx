@@ -102,9 +102,11 @@ function App() {
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [checked, setChecked] = useState({});
   const [roundsDone, setRoundsDone] = useState({});
+  const [completedBlocks, setCompletedBlocks] = useState({});
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
 
   const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
+  const usesBlockCompletion = (block) => /zona media|core|carrera|cardio|running/i.test(block.name);
   const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
   const roundTarget = (block) => Number(roundText(block)?.match(/(\d+)/)?.[1] ?? 3);
   const isInstructionItem = (item) => {
@@ -138,13 +140,23 @@ function App() {
     return block.items.filter((item) => !instructionItems(block).includes(item));
   };
   const blockKey = (day, block) => `${day}-${block.name}`;
-  const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block);
+  const areAllItemsChecked = (day, block) => exerciseItems(block).every((item) => checked[`${day}-${block.name}-${item}`]);
+  const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block) || areAllItemsChecked(day, block);
+  const isBlockComplete = (day, block) => Boolean(completedBlocks[blockKey(day, block)]);
 
-  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + (isPreventiveBlock(block) ? 1 : exerciseItems(block).length), 0), 0);
+  const total = weekPlan.reduce((acc, day) => {
+    return acc + day.blocks.reduce((sum, block) => {
+      if (isPreventiveBlock(block) || usesBlockCompletion(block)) return sum + 1;
+      return sum + exerciseItems(block).length;
+    }, 0);
+  }, 0);
   const completed = weekPlan.reduce((acc, day) => {
     return acc + day.blocks.reduce((sum, block) => {
       if (isPreventiveBlock(block)) {
         return sum + (isPreventiveComplete(day.day, block) ? 1 : 0);
+      }
+      if (usesBlockCompletion(block)) {
+        return sum + (isBlockComplete(day.day, block) ? 1 : 0);
       }
 
       return sum + exerciseItems(block).filter((item) => checked[`${day.day}-${block.name}-${item}`]).length;
@@ -160,6 +172,11 @@ function App() {
 
   const updateRounds = (day, block, value) => {
     setRoundsDone((prev) => ({ ...prev, [blockKey(day, block)]: value }));
+  };
+
+  const toggleBlock = (day, block) => {
+    const key = blockKey(day, block);
+    setCompletedBlocks((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -203,37 +220,51 @@ function App() {
           {current.blocks.map((block, index) => {
             const preventive = isPreventiveBlock(block);
             const preventiveDone = preventive && isPreventiveComplete(current.day, block);
+            const blockCompletion = usesBlockCompletion(block);
+            const blockDone = blockCompletion && isBlockComplete(current.day, block);
             const selectedRounds = roundsDone[blockKey(current.day, block)] ?? "";
             const instructions = blockInstructions(block);
 
             return (
-              <article className={preventiveDone ? "block blockComplete" : "block"} key={block.name}>
+              <article className={preventiveDone || blockDone ? "block blockComplete" : "block"} key={block.name}>
                 <div className="blockHeader">
                   <div>
                     <h3>{index + 1}. {block.name}</h3>
                     {instructions && <p className="blockInstructions">{instructions}</p>}
                   </div>
-                  {preventive && (
-                    <label className="roundSelector">
-                      <span>Rondas hechas</span>
-                      <select value={selectedRounds} onChange={(event) => updateRounds(current.day, block, event.target.value)}>
-                        <option value="">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                      </select>
-                    </label>
-                  )}
+                  <div className="blockActions">
+                    {preventive && (
+                      <label className="roundSelector">
+                        <span>Rondas hechas</span>
+                        <select value={selectedRounds} onChange={(event) => updateRounds(current.day, block, event.target.value)}>
+                          <option value="">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                        </select>
+                      </label>
+                    )}
+                    {blockCompletion && (
+                      <button
+                        className={blockDone ? "completeBlockButton done" : "completeBlockButton"}
+                        onClick={() => toggleBlock(current.day, block)}
+                        type="button"
+                      >
+                        <CheckCircle2 size={18} />
+                        {blockDone ? "Completado" : "Completar"}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="items">
                   {exerciseItems(block).map((item) => {
                     const key = `${current.day}-${block.name}-${item}`;
-                    const done = preventive ? preventiveDone : checked[key];
+                    const done = preventiveDone || blockDone || checked[key];
                     return (
                       <button
                         key={item}
-                        onClick={() => !preventive && toggleItem(current.day, block.name, item)}
+                        onClick={() => toggleItem(current.day, block.name, item)}
                         className={done ? "item done" : "item"}
                         type="button"
                       >
