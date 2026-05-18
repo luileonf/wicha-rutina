@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
 import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays } from "lucide-react";
@@ -99,6 +99,16 @@ const weekPlan = [
 ];
 
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
+const progressStorageKey = "wicha-fut-progress-v1";
+
+const loadSavedProgress = () => {
+  try {
+    const saved = window.localStorage.getItem(progressStorageKey);
+    return saved ? JSON.parse(saved) : {};
+  } catch {
+    return {};
+  }
+};
 
 function SoccerBallIcon() {
   return (
@@ -113,10 +123,15 @@ function SoccerBallIcon() {
 
 function App() {
   const [selectedDay, setSelectedDay] = useState("Lunes");
-  const [checked, setChecked] = useState({});
-  const [roundsDone, setRoundsDone] = useState({});
-  const [completedBlocks, setCompletedBlocks] = useState({});
+  const [savedProgress] = useState(loadSavedProgress);
+  const [checked, setChecked] = useState(savedProgress.checked ?? {});
+  const [roundsDone, setRoundsDone] = useState(savedProgress.roundsDone ?? {});
+  const [completedBlocks, setCompletedBlocks] = useState(savedProgress.completedBlocks ?? {});
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
+
+  useEffect(() => {
+    window.localStorage.setItem(progressStorageKey, JSON.stringify({ checked, roundsDone, completedBlocks }));
+  }, [checked, roundsDone, completedBlocks]);
 
   const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
   const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
