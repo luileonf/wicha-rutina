@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
-import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays } from "lucide-react";
+import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, Image, Maximize2, X } from "lucide-react";
 import "./style.css";
 
 const weekPlan = [
@@ -145,11 +145,18 @@ function SoccerBallIcon() {
   );
 }
 
+const googleImageSearchUrl = (exercise) => {
+  const cleanExercise = exercise.replace(/^\d+x?(\d+)?\s*/i, "").replace(/\s+—\s+.*/, "");
+  return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${cleanExercise} exercise technique`)}`;
+};
+
 function App() {
   const [allProgress, setAllProgress] = useState(loadAllProgress);
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
   const [selectedWeek, setSelectedWeek] = useState(initialWeek);
   const [selectedDay, setSelectedDay] = useState("Lunes");
+  const [expandedExercise, setExpandedExercise] = useState(null);
+  const [openPicker, setOpenPicker] = useState(null);
   const periodKey = getPeriodKey(selectedMonth, selectedWeek);
   const currentProgress = allProgress[periodKey] ?? {};
   const checked = currentProgress.checked ?? {};
@@ -255,19 +262,53 @@ function App() {
           <div className="periodPicker">
             <label>
               <span>Mes</span>
-              <select value={selectedMonth} onChange={(event) => setSelectedMonth(Number(event.target.value))}>
-                {availableMonths.map((month) => (
-                  <option key={month.name} value={month.index}>{month.name}</option>
-                ))}
-              </select>
+              <div className="customSelect">
+                <button className="selectButton" onClick={() => setOpenPicker(openPicker === "month" ? null : "month")} type="button">
+                  {months[selectedMonth]}
+                </button>
+                {openPicker === "month" && (
+                  <div className="selectMenu">
+                    {availableMonths.map((month) => (
+                      <button
+                        className={selectedMonth === month.index ? "selected" : ""}
+                        key={month.name}
+                        onClick={() => {
+                          setSelectedMonth(month.index);
+                          setOpenPicker(null);
+                        }}
+                        type="button"
+                      >
+                        {month.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </label>
             <label>
               <span>Semana</span>
-              <select value={selectedWeek} onChange={(event) => setSelectedWeek(Number(event.target.value))}>
-                {availableWeeks.map((week) => (
-                  <option key={week} value={week}>Semana {week}</option>
-                ))}
-              </select>
+              <div className="customSelect">
+                <button className="selectButton" onClick={() => setOpenPicker(openPicker === "week" ? null : "week")} type="button">
+                  Semana {selectedWeek}
+                </button>
+                {openPicker === "week" && (
+                  <div className="selectMenu">
+                    {availableWeeks.map((week) => (
+                      <button
+                        className={selectedWeek === week ? "selected" : ""}
+                        key={week}
+                        onClick={() => {
+                          setSelectedWeek(week);
+                          setOpenPicker(null);
+                        }}
+                        type="button"
+                      >
+                        Semana {week}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </label>
           </div>
           <div className="weekChecks" aria-label="Progreso por día">
@@ -365,15 +406,24 @@ function App() {
                     const key = `${current.day}-${block.name}-${item}`;
                     const done = preventiveDone || blockDone || checked[key];
                     return (
-                      <button
-                        key={item}
-                        onClick={() => toggleItem(current.day, block.name, item)}
-                        className={done ? "item done" : "item"}
-                        type="button"
-                      >
-                        <CheckCircle2 size={20} />
-                        <span>{item}</span>
-                      </button>
+                      <div className="exerciseRow" key={item}>
+                        <button
+                          onClick={() => toggleItem(current.day, block.name, item)}
+                          className={done ? "item done" : "item"}
+                          type="button"
+                        >
+                          <CheckCircle2 size={20} />
+                          <span>{item}</span>
+                        </button>
+                        <button
+                          className="expandExercise"
+                          onClick={() => setExpandedExercise({ day: current.day, block: block.name, item })}
+                          type="button"
+                          aria-label={`Ver imagen de ${item}`}
+                        >
+                          <Maximize2 size={18} />
+                        </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -386,6 +436,29 @@ function App() {
       <footer>
         <b>Regla de esta semana:</b> no busques destruirte. Busca consistencia, técnica, intensidad progresiva y buena recuperación.
       </footer>
+
+      {expandedExercise && (
+        <div className="exerciseModal" role="dialog" aria-modal="true" aria-label={`Imagen de ${expandedExercise.item}`}>
+          <div className="modalBackdrop" onClick={() => setExpandedExercise(null)} />
+          <motion.div className="modalPanel" initial={{ opacity: 0, scale: .96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}>
+            <button className="closeModal" onClick={() => setExpandedExercise(null)} type="button" aria-label="Cerrar imagen">
+              <X size={22} />
+            </button>
+            <div className="exerciseImagePlaceholder">
+              <Image size={34} />
+              <span>Referencia visual desde Google Imágenes</span>
+            </div>
+            <div className="modalCopy">
+              <span>{expandedExercise.day} | {expandedExercise.block}</span>
+              <h3>{expandedExercise.item}</h3>
+              <a className="googleImageLink" href={googleImageSearchUrl(expandedExercise.item)} target="_blank" rel="noreferrer">
+                <ExternalLink size={18} />
+                Abrir imágenes en Google
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </main>
   );
 }
