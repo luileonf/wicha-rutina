@@ -1,0 +1,624 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: white;
+  background: #090d12;
+  --bg: #08090d;
+  --panel: #11141b;
+  --panel-soft: #181c25;
+  --panel-deep: #0c1016;
+  --border: #2b313d;
+  --border-soft: #202733;
+  --text-soft: #c7ccd6;
+  --muted: #969daa;
+  --red: #c92231;
+  --red-deep: #8f1422;
+  --blue: #1f6feb;
+  --blue-deep: #0b2f66;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(201, 34, 49, .16) 0, rgba(201, 34, 49, 0) 34%),
+    radial-gradient(circle at top right, rgba(31, 111, 235, .09) 0, rgba(31, 111, 235, 0) 30%),
+    linear-gradient(180deg, #0b0d12 0%, var(--bg) 72%);
+}
+
+button {
+  font-family: inherit;
+}
+
+select {
+  font-family: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 28px;
+  background:
+    linear-gradient(135deg, rgba(201, 34, 49, .16), rgba(17, 20, 27, .98) 44%, rgba(12, 16, 22, .96)),
+    var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.hero::before {
+  display: none;
+}
+
+.hero::after {
+  display: none;
+}
+
+.heroCopy {
+  max-width: 720px;
+}
+
+.eyebrow {
+  width: fit-content;
+  color: white;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: rgba(201, 34, 49, .18);
+  border: 1px solid rgba(201, 34, 49, .42);
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+h1 {
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: .95;
+  margin: 18px 0 14px;
+  max-width: 650px;
+}
+
+.hero p, .dayHeader p, footer {
+  color: var(--text-soft);
+}
+
+.hero p {
+  max-width: 680px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.periodPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.periodPicker label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px 9px 13px;
+  background: var(--panel-deep);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.periodPicker span {
+  color: var(--muted);
+}
+
+.periodPicker select {
+  appearance: none;
+  min-width: 128px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9px;
+  padding: 8px 30px 8px 12px;
+  color: white;
+  background:
+    linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
+    var(--panel-soft);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.periodPicker option {
+  background: var(--panel-deep);
+  color: white;
+}
+
+.weekChecks {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.weekChecks button {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-deep);
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.weekChecks button.current {
+  border-color: rgba(201, 34, 49, .72);
+  color: white;
+}
+
+.weekChecks button.complete {
+  background: #40f06f;
+  border-color: rgba(255, 255, 255, .12);
+  color: #071109;
+  box-shadow: 0 10px 24px rgba(64, 240, 111, .28);
+  animation: completePulse .42s ease-out;
+}
+
+.soccerBallIcon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #071109;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes completePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(64, 240, 111, .6);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(64, 240, 111, 0);
+  }
+}
+
+.progress {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-width: 190px;
+  padding: 22px;
+  text-align: left;
+  background: rgba(8, 9, 13, .72);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.progress span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.progress strong {
+  display: block;
+  color: white;
+  font-size: 54px;
+  line-height: 1;
+  margin: 8px 0 14px;
+  text-shadow: none;
+}
+
+.progressTrack {
+  height: 9px;
+  background: rgba(255,255,255,.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressTrack div {
+  height: 100%;
+  min-width: 8px;
+  background: var(--red);
+  border-radius: inherit;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.days button {
+  border-radius: 12px;
+  padding: 18px 10px;
+  font-weight: 900;
+  color: white;
+  background: var(--panel-soft);
+  border: 1px solid var(--border-soft);
+  cursor: pointer;
+}
+
+.days button.active {
+  background: var(--red);
+  border-color: rgba(255, 255, 255, .12);
+  color: white;
+  box-shadow: 0 10px 24px rgba(201, 34, 49, .24);
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.dayHeader {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 28px;
+  border-bottom: 1px solid #242b36;
+}
+
+.icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: var(--red);
+  color: white;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.dayHeader span {
+  color: #ff6874;
+  font-weight: 900;
+}
+
+.dayHeader h2 {
+  margin: 4px 0;
+  font-size: clamp(26px, 4vw, 42px);
+}
+
+.dayHeader p {
+  margin: 0;
+}
+
+.intensity {
+  margin: 22px 28px 0;
+  display: inline-block;
+  padding: 10px 16px;
+  background: rgba(201, 34, 49, .12);
+  border: 1px solid rgba(201, 34, 49, .3);
+  border-radius: 999px;
+  color: #d6d9df;
+}
+
+.intensity b {
+  color: #ff6874;
+}
+
+.blocks {
+  padding: 22px;
+  display: grid;
+  gap: 16px;
+}
+
+.block {
+  background: var(--panel-soft);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.blockComplete {
+  border-color: rgba(201, 34, 49, .5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 0 0 1px rgba(201, 34, 49, .12);
+}
+
+.blockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.blockActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.block h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.blockInstructions {
+  margin: 8px 0 0;
+  color: var(--text-soft);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.roundSelector {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 8px 14px;
+  background: var(--panel-deep);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-soft);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.roundSelector span {
+  color: white;
+}
+
+.roundSelector select {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  padding: 8px 30px 8px 13px;
+  color: white;
+  background:
+    linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
+    var(--panel-soft);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.roundSelector select:focus {
+  outline: 2px solid rgba(201, 34, 49, .72);
+  outline-offset: 2px;
+}
+
+.roundSelector option {
+  background: var(--panel-deep);
+  color: white;
+}
+
+.completeBlockButton {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--panel-deep);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.completeBlockButton.done {
+  background: var(--red);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.completeBlockButton svg {
+  opacity: .75;
+}
+
+.completeBlockButton.done svg {
+  opacity: 1;
+}
+
+.items {
+  display: grid;
+  gap: 10px;
+}
+
+.exerciseRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 46px;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.item {
+  border: 1px solid transparent;
+  width: 100%;
+  text-align: left;
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--panel-deep);
+  color: #e5e7eb;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.item svg {
+  opacity: .4;
+}
+
+.item.done {
+  background: var(--red-deep);
+  color: white;
+  text-decoration: line-through;
+  border-color: rgba(255, 255, 255, .08);
+}
+
+.item.done svg {
+  opacity: 1;
+}
+
+.expandExercise {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-deep);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.expandExercise:hover {
+  border-color: rgba(201, 34, 49, .58);
+  color: #ff6874;
+}
+
+.exerciseModal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+}
+
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .72);
+  backdrop-filter: blur(6px);
+}
+
+.modalPanel {
+  position: relative;
+  z-index: 1;
+  width: min(680px, 100%);
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 26px 80px rgba(0,0,0,.5);
+}
+
+.closeModal {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: rgba(8, 9, 13, .72);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.exerciseImagePlaceholder {
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  background:
+    linear-gradient(135deg, rgba(201, 34, 49, .16), rgba(31, 111, 235, .08)),
+    var(--panel-deep);
+  color: var(--text-soft);
+  font-weight: 900;
+}
+
+.exerciseImagePlaceholder svg {
+  color: #ff6874;
+}
+
+.modalCopy {
+  padding: 22px;
+}
+
+.modalCopy span {
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.modalCopy h3 {
+  margin: 8px 0 0;
+  font-size: clamp(24px, 4vw, 34px);
+}
+
+footer {
+  margin-top: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+footer b {
+  color: white;
+}
+
+@media (max-width: 760px) {
+  .app { padding: 14px; }
+  .hero {
+    flex-direction: column;
+    padding: 28px;
+  }
+  .hero::after {
+    right: -18px;
+    bottom: 14px;
+    font-size: 62px;
+    white-space: normal;
+    text-align: right;
+  }
+  .progress {
+    min-width: 0;
+    width: 100%;
+  }
+  .periodPicker,
+  .periodPicker label,
+  .periodPicker select {
+    width: 100%;
+  }
+  .periodPicker label {
+    justify-content: space-between;
+  }
+  .blockHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .blockActions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .roundSelector {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .completeBlockButton {
+    justify-content: center;
+    width: 100%;
+  }
+  .exerciseRow {
+    grid-template-columns: minmax(0, 1fr) 42px;
+  }
+  .exerciseImagePlaceholder {
+    min-height: 280px;
+  }
+  .days { grid-template-columns: repeat(2, 1fr); }
+  .dayHeader { align-items: flex-start; }
+}
