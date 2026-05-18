@@ -115,7 +115,7 @@ function App() {
   return (
     <main className="app">
       <section className="hero">
-        <div>
+        <div className="heroCopy">
           <div className="eyebrow"><CalendarDays size={18} /> Semana de regreso</div>
           <h1>Rutina fútbol femenino</h1>
           <p>Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.</p>
@@ -123,6 +123,9 @@ function App() {
         <div className="progress">
           <span>Progreso</span>
           <strong>{progress}%</strong>
+          <div className="progressTrack">
+            <div style={{ width: `${progress}%` }} />
+          </div>
         </div>
       </section>
 
