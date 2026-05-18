@@ -99,12 +99,35 @@ const weekPlan = [
 ];
 
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
-const progressStorageKey = "wicha-fut-progress-v1";
+const months = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre"
+];
+const weekOptions = [1, 2, 3, 4, 5];
+const today = new Date();
+const initialMonth = today.getMonth();
+const initialWeek = Math.min(5, Math.ceil(today.getDate() / 7));
+const progressStorageKey = "wicha-fut-progress-v2";
+const previousProgressStorageKey = "wicha-fut-progress-v1";
+const getPeriodKey = (month, week) => `${month}-week-${week}`;
 
-const loadSavedProgress = () => {
+const loadAllProgress = () => {
   try {
     const saved = window.localStorage.getItem(progressStorageKey);
-    return saved ? JSON.parse(saved) : {};
+    if (saved) return JSON.parse(saved);
+
+    const previousSaved = window.localStorage.getItem(previousProgressStorageKey);
+    return previousSaved ? { [getPeriodKey(initialMonth, initialWeek)]: JSON.parse(previousSaved) } : {};
   } catch {
     return {};
   }
@@ -122,16 +145,35 @@ function SoccerBallIcon() {
 }
 
 function App() {
+  const [allProgress, setAllProgress] = useState(loadAllProgress);
+  const [selectedMonth, setSelectedMonth] = useState(initialMonth);
+  const [selectedWeek, setSelectedWeek] = useState(initialWeek);
   const [selectedDay, setSelectedDay] = useState("Lunes");
-  const [savedProgress] = useState(loadSavedProgress);
-  const [checked, setChecked] = useState(savedProgress.checked ?? {});
-  const [roundsDone, setRoundsDone] = useState(savedProgress.roundsDone ?? {});
-  const [completedBlocks, setCompletedBlocks] = useState(savedProgress.completedBlocks ?? {});
+  const periodKey = getPeriodKey(selectedMonth, selectedWeek);
+  const currentProgress = allProgress[periodKey] ?? {};
+  const checked = currentProgress.checked ?? {};
+  const roundsDone = currentProgress.roundsDone ?? {};
+  const completedBlocks = currentProgress.completedBlocks ?? {};
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
 
   useEffect(() => {
-    window.localStorage.setItem(progressStorageKey, JSON.stringify({ checked, roundsDone, completedBlocks }));
-  }, [checked, roundsDone, completedBlocks]);
+    window.localStorage.setItem(progressStorageKey, JSON.stringify(allProgress));
+  }, [allProgress]);
+
+  const updatePeriodProgress = (updates) => {
+    setAllProgress((prev) => {
+      const periodProgress = prev[periodKey] ?? {};
+      return {
+        ...prev,
+        [periodKey]: {
+          checked: periodProgress.checked ?? {},
+          roundsDone: periodProgress.roundsDone ?? {},
+          completedBlocks: periodProgress.completedBlocks ?? {},
+          ...updates
+        }
+      };
+    });
+  };
 
   const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
   const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
@@ -190,16 +232,16 @@ function App() {
 
   const toggleItem = (day, block, item) => {
     const key = `${day}-${block}-${item}`;
-    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+    updatePeriodProgress({ checked: { ...checked, [key]: !checked[key] } });
   };
 
   const updateRounds = (day, block, value) => {
-    setRoundsDone((prev) => ({ ...prev, [blockKey(day, block)]: value }));
+    updatePeriodProgress({ roundsDone: { ...roundsDone, [blockKey(day, block)]: value } });
   };
 
   const toggleBlock = (day, block) => {
     const key = blockKey(day, block);
-    setCompletedBlocks((prev) => ({ ...prev, [key]: !prev[key] }));
+    updatePeriodProgress({ completedBlocks: { ...completedBlocks, [key]: !completedBlocks[key] } });
   };
 
   return (
@@ -209,6 +251,24 @@ function App() {
           <div className="eyebrow"><CalendarDays size={18} /> Semana de regreso</div>
           <h1>Rutina fútbol femenino</h1>
           <p>Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.</p>
+          <div className="periodPicker">
+            <label>
+              <span>Mes</span>
+              <select value={selectedMonth} onChange={(event) => setSelectedMonth(Number(event.target.value))}>
+                {months.map((month, index) => (
+                  <option key={month} value={index}>{month}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Semana</span>
+              <select value={selectedWeek} onChange={(event) => setSelectedWeek(Number(event.target.value))}>
+                {weekOptions.map((week) => (
+                  <option key={week} value={week}>Semana {week}</option>
+                ))}
+              </select>
+            </label>
+          </div>
           <div className="weekChecks" aria-label="Progreso por día">
             {weekPlan.map((day, index) => {
               const dayComplete = isDayComplete(day);

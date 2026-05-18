@@ -101,6 +101,49 @@ h1 {
   line-height: 1.45;
 }
 
+.periodPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.periodPicker label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px 9px 13px;
+  background: var(--panel-deep);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.periodPicker span {
+  color: var(--muted);
+}
+
+.periodPicker select {
+  appearance: none;
+  min-width: 128px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9px;
+  padding: 8px 30px 8px 12px;
+  color: white;
+  background:
+    linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
+    var(--panel-soft);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.periodPicker option {
+  background: var(--panel-deep);
+  color: white;
+}
+
 .weekChecks {
   display: flex;
   gap: 8px;
@@ -447,6 +490,14 @@ footer b {
   .progress {
     min-width: 0;
     width: 100%;
+  }
+  .periodPicker,
+  .periodPicker label,
+  .periodPicker select {
+    width: 100%;
+  }
+  .periodPicker label {
+    justify-content: space-between;
   }
   .blockHeader {
     align-items: flex-start;
