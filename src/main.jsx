@@ -100,6 +100,17 @@ const weekPlan = [
 
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
 
+function SoccerBallIcon() {
+  return (
+    <svg className="soccerBallIcon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="27" />
+      <path d="M32 17 43 25 39 38H25L21 25 32 17Z" />
+      <path d="M32 17V8M21 25 11 21M43 25 53 21M25 38 18 49M39 38 46 49" />
+      <path d="M18 49A27 27 0 0 0 46 49M11 21A27 27 0 0 1 32 8A27 27 0 0 1 53 21" />
+    </svg>
+  );
+}
+
 function App() {
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [checked, setChecked] = useState({});
@@ -197,7 +208,7 @@ function App() {
                   animate={dayComplete ? { scale: [1, 1.16, 1] } : { scale: 1 }}
                   transition={{ duration: .35 }}
                 >
-                  {dayComplete ? <span className="soccerBall" aria-hidden="true" /> : dayLetters[index]}
+                  {dayComplete ? <SoccerBallIcon /> : dayLetters[index]}
                 </motion.button>
               );
             })}
