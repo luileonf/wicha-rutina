@@ -113,10 +113,11 @@ const months = [
   "Noviembre",
   "Diciembre"
 ];
-const weekOptions = [1, 2, 3, 4, 5];
 const today = new Date();
 const initialMonth = today.getMonth();
 const initialWeek = Math.min(5, Math.ceil(today.getDate() / 7));
+const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
+const availableWeeks = [initialWeek];
 const progressStorageKey = "wicha-fut-progress-v2";
 const previousProgressStorageKey = "wicha-fut-progress-v1";
 const getPeriodKey = (month, week) => `${month}-week-${week}`;
@@ -255,15 +256,15 @@ function App() {
             <label>
               <span>Mes</span>
               <select value={selectedMonth} onChange={(event) => setSelectedMonth(Number(event.target.value))}>
-                {months.map((month, index) => (
-                  <option key={month} value={index}>{month}</option>
+                {availableMonths.map((month) => (
+                  <option key={month.name} value={month.index}>{month.name}</option>
                 ))}
               </select>
             </label>
             <label>
               <span>Semana</span>
               <select value={selectedWeek} onChange={(event) => setSelectedWeek(Number(event.target.value))}>
-                {weekOptions.map((week) => (
+                {availableWeeks.map((week) => (
                   <option key={week} value={week}>Semana {week}</option>
                 ))}
               </select>
