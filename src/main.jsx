@@ -101,15 +101,36 @@ const weekPlan = [
 function App() {
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [checked, setChecked] = useState({});
+  const [roundsDone, setRoundsDone] = useState({});
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay), [selectedDay]);
-  const completed = Object.values(checked).filter(Boolean).length;
-  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + block.items.length, 0), 0);
+
+  const isPreventiveBlock = (block) => block.name.toLowerCase().includes("preventiv");
+  const roundText = (block) => block.items.find((item) => /\d+\s*rondas?/i.test(item));
+  const roundTarget = (block) => Number(roundText(block)?.match(/(\d+)/)?.[1] ?? 3);
+  const exerciseItems = (block) => isPreventiveBlock(block) ? block.items.filter((item) => item !== roundText(block)) : block.items;
+  const blockKey = (day, block) => `${day}-${block.name}`;
+  const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block);
+
+  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + (isPreventiveBlock(block) ? 1 : block.items.length), 0), 0);
+  const completed = weekPlan.reduce((acc, day) => {
+    return acc + day.blocks.reduce((sum, block) => {
+      if (isPreventiveBlock(block)) {
+        return sum + (isPreventiveComplete(day.day, block) ? 1 : 0);
+      }
+
+      return sum + block.items.filter((item) => checked[`${day.day}-${block.name}-${item}`]).length;
+    }, 0);
+  }, 0);
   const progress = Math.round((completed / total) * 100);
   const Icon = current.icon;
 
   const toggleItem = (day, block, item) => {
     const key = `${day}-${block}-${item}`;
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const updateRounds = (day, block, value) => {
+    setRoundsDone((prev) => ({ ...prev, [blockKey(day, block)]: value }));
   };
 
   return (
@@ -150,23 +171,48 @@ function App() {
         <div className="intensity">Intensidad: <b>{current.intensity}</b></div>
 
         <div className="blocks">
-          {current.blocks.map((block, index) => (
-            <article className="block" key={block.name}>
-              <h3>{index + 1}. {block.name}</h3>
-              <div className="items">
-                {block.items.map((item) => {
-                  const key = `${current.day}-${block.name}-${item}`;
-                  const done = checked[key];
-                  return (
-                    <button key={item} onClick={() => toggleItem(current.day, block.name, item)} className={done ? "item done" : "item"}>
-                      <CheckCircle2 size={20} />
-                      <span>{item}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </article>
-          ))}
+          {current.blocks.map((block, index) => {
+            const preventive = isPreventiveBlock(block);
+            const preventiveDone = preventive && isPreventiveComplete(current.day, block);
+            const selectedRounds = roundsDone[blockKey(current.day, block)] ?? "";
+
+            return (
+              <article className={preventiveDone ? "block blockComplete" : "block"} key={block.name}>
+                <div className="blockHeader">
+                  <h3>{index + 1}. {block.name}</h3>
+                  {preventive && (
+                    <label className="roundSelector">
+                      <span>Rondas hechas</span>
+                      <select value={selectedRounds} onChange={(event) => updateRounds(current.day, block, event.target.value)}>
+                        <option value="">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                    </label>
+                  )}
+                </div>
+
+                <div className="items">
+                  {exerciseItems(block).map((item) => {
+                    const key = `${current.day}-${block.name}-${item}`;
+                    const done = preventive ? preventiveDone : checked[key];
+                    return (
+                      <button
+                        key={item}
+                        onClick={() => !preventive && toggleItem(current.day, block.name, item)}
+                        className={done ? "item done" : "item"}
+                        type="button"
+                      >
+                        <CheckCircle2 size={20} />
+                        <span>{item}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </motion.section>
 
