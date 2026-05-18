@@ -184,17 +184,23 @@ function App() {
           <h1>Rutina fútbol femenino</h1>
           <p>Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.</p>
           <div className="weekChecks" aria-label="Progreso por día">
-            {weekPlan.map((day, index) => (
-              <button
-                key={day.day}
-                className={`${selectedDay === day.day ? "current" : ""} ${isDayComplete(day) ? "complete" : ""}`}
-                onClick={() => setSelectedDay(day.day)}
-                type="button"
-                aria-label={`${day.day}${isDayComplete(day) ? " completo" : ""}`}
-              >
-                {dayLetters[index]}
-              </button>
-            ))}
+            {weekPlan.map((day, index) => {
+              const dayComplete = isDayComplete(day);
+
+              return (
+                <motion.button
+                  key={day.day}
+                  className={`${selectedDay === day.day ? "current" : ""} ${dayComplete ? "complete" : ""}`}
+                  onClick={() => setSelectedDay(day.day)}
+                  type="button"
+                  aria-label={`${day.day}${dayComplete ? " completo" : ""}`}
+                  animate={dayComplete ? { scale: [1, 1.16, 1] } : { scale: 1 }}
+                  transition={{ duration: .35 }}
+                >
+                  {dayComplete ? <span className="soccerBall" aria-hidden="true" /> : dayLetters[index]}
+                </motion.button>
+              );
+            })}
           </div>
         </div>
         <div className="progress">
