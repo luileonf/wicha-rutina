@@ -5,11 +5,13 @@
   --bg: #08090d;
   --panel: #11141b;
   --panel-soft: #181c25;
+  --panel-deep: #0c1016;
   --border: #2b313d;
+  --border-soft: #202733;
   --text-soft: #c7ccd6;
   --muted: #969daa;
-  --red: #e31b2f;
-  --red-deep: #a70f21;
+  --red: #c92231;
+  --red-deep: #8f1422;
   --blue: #1f6feb;
   --blue-deep: #0b2f66;
 }
@@ -19,8 +21,8 @@
 body {
   margin: 0;
   background:
-    radial-gradient(circle at top left, rgba(227, 27, 47, .22) 0, rgba(227, 27, 47, 0) 34%),
-    radial-gradient(circle at top right, rgba(31, 111, 235, .18) 0, rgba(31, 111, 235, 0) 32%),
+    radial-gradient(circle at top left, rgba(201, 34, 49, .16) 0, rgba(201, 34, 49, 0) 34%),
+    radial-gradient(circle at top right, rgba(31, 111, 235, .09) 0, rgba(31, 111, 235, 0) 30%),
     linear-gradient(180deg, #0b0d12 0%, var(--bg) 72%);
 }
 
@@ -47,13 +49,13 @@ select {
   align-items: stretch;
   gap: 28px;
   background:
-    linear-gradient(135deg, rgba(227, 27, 47, .24), rgba(31, 111, 235, .12) 48%, rgba(17, 20, 27, .94)),
+    linear-gradient(135deg, rgba(201, 34, 49, .16), rgba(17, 20, 27, .98) 44%, rgba(12, 16, 22, .96)),
     var(--panel);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 30px;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  box-shadow: 0 20px 60px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 .hero::before {
@@ -76,10 +78,10 @@ select {
   align-items: center;
   gap: 8px;
   padding: 9px 12px;
-  background: rgba(227, 27, 47, .18);
-  border: 1px solid rgba(255, 90, 104, .32);
+  background: rgba(201, 34, 49, .18);
+  border: 1px solid rgba(201, 34, 49, .42);
   border-radius: 999px;
-  box-shadow: 0 12px 30px rgba(227, 27, 47, .14);
+  box-shadow: none;
 }
 
 h1 {
@@ -106,8 +108,8 @@ h1 {
   min-width: 190px;
   padding: 22px;
   text-align: left;
-  background: rgba(8, 9, 13, .52);
-  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(8, 9, 13, .72);
+  border: 1px solid var(--border-soft);
   border-radius: 16px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
 }
@@ -125,7 +127,7 @@ h1 {
   font-size: 54px;
   line-height: 1;
   margin: 8px 0 14px;
-  text-shadow: 0 0 28px rgba(31, 111, 235, .55);
+  text-shadow: none;
 }
 
 .progressTrack {
@@ -138,7 +140,7 @@ h1 {
 .progressTrack div {
   height: 100%;
   min-width: 8px;
-  background: linear-gradient(90deg, var(--red), var(--blue));
+  background: var(--red);
   border-radius: inherit;
 }
 
@@ -150,21 +152,20 @@ h1 {
 }
 
 .days button {
-  border: 0;
   border-radius: 12px;
   padding: 18px 10px;
   font-weight: 900;
   color: white;
   background: var(--panel-soft);
-  border: 1px solid transparent;
+  border: 1px solid var(--border-soft);
   cursor: pointer;
 }
 
 .days button.active {
-  background: linear-gradient(135deg, var(--red), var(--red-deep));
-  border-color: rgba(255, 255, 255, .18);
+  background: var(--red);
+  border-color: rgba(255, 255, 255, .12);
   color: white;
-  box-shadow: 0 12px 30px rgba(227, 27, 47, .24);
+  box-shadow: 0 10px 24px rgba(201, 34, 49, .24);
 }
 
 .card {
@@ -194,7 +195,7 @@ h1 {
 }
 
 .dayHeader span {
-  color: #ff5a68;
+  color: #ff6874;
   font-weight: 900;
 }
 
@@ -211,14 +212,14 @@ h1 {
   margin: 22px 28px 0;
   display: inline-block;
   padding: 10px 16px;
-  background: rgba(31, 111, 235, .12);
-  border: 1px solid rgba(31, 111, 235, .28);
+  background: rgba(201, 34, 49, .12);
+  border: 1px solid rgba(201, 34, 49, .3);
   border-radius: 999px;
   color: #d6d9df;
 }
 
 .intensity b {
-  color: #6da4ff;
+  color: #ff6874;
 }
 
 .blocks {
@@ -235,8 +236,8 @@ h1 {
 }
 
 .blockComplete {
-  border-color: rgba(31, 111, 235, .48);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 0 0 1px rgba(31, 111, 235, .12);
+  border-color: rgba(201, 34, 49, .5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 0 0 1px rgba(201, 34, 49, .12);
 }
 
 .blockHeader {
@@ -254,7 +255,7 @@ h1 {
 
 .blockInstructions {
   margin: 8px 0 0;
-  color: var(--muted);
+  color: var(--text-soft);
   font-size: 15px;
   font-weight: 800;
 }
@@ -264,9 +265,9 @@ h1 {
   align-items: center;
   gap: 10px;
   padding: 8px 10px 8px 14px;
-  background: rgba(8, 9, 13, .65);
-  border: 1px solid rgba(31, 111, 235, .28);
-  border-radius: 999px;
+  background: var(--panel-deep);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   color: var(--text-soft);
   font-size: 14px;
   font-weight: 800;
@@ -274,20 +275,30 @@ h1 {
 }
 
 .roundSelector span {
-  color: var(--muted);
+  color: white;
 }
 
 .roundSelector select {
   appearance: none;
-  border: 0;
-  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
   padding: 8px 30px 8px 13px;
   color: white;
   background:
     linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
-    linear-gradient(135deg, var(--red), var(--blue));
+    var(--panel-soft);
   cursor: pointer;
   font-weight: 900;
+}
+
+.roundSelector select:focus {
+  outline: 2px solid rgba(201, 34, 49, .72);
+  outline-offset: 2px;
+}
+
+.roundSelector option {
+  background: var(--panel-deep);
+  color: white;
 }
 
 .items {
@@ -296,12 +307,12 @@ h1 {
 }
 
 .item {
-  border: 0;
+  border: 1px solid transparent;
   width: 100%;
   text-align: left;
   border-radius: 12px;
   padding: 14px;
-  background: #0e131a;
+  background: var(--panel-deep);
   color: #e5e7eb;
   display: flex;
   gap: 12px;
@@ -315,9 +326,10 @@ h1 {
 }
 
 .item.done {
-  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+  background: var(--red-deep);
   color: white;
   text-decoration: line-through;
+  border-color: rgba(255, 255, 255, .08);
 }
 
 .item.done svg {
