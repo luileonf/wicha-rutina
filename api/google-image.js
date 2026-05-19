@@ -3,8 +3,18 @@ export default async function handler(request, response) {
   const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
   const searchEngineId = process.env.GOOGLE_SEARCH_ENGINE_ID;
 
-  if (!query || !apiKey || !searchEngineId) {
-    response.status(200).json({ imageUrl: null });
+  if (!query) {
+    response.status(200).json({ imageUrl: null, reason: "missing_query" });
+    return;
+  }
+
+  if (!apiKey || !searchEngineId) {
+    response.status(200).json({
+      imageUrl: null,
+      reason: "missing_environment_variables",
+      hasApiKey: Boolean(apiKey),
+      hasSearchEngineId: Boolean(searchEngineId)
+    });
     return;
   }
 
@@ -19,22 +29,28 @@ export default async function handler(request, response) {
 
   try {
     const googleResponse = await fetch(`https://www.googleapis.com/customsearch/v1?${params}`);
+    const data = await googleResponse.json();
 
     if (!googleResponse.ok) {
-      response.status(200).json({ imageUrl: null });
+      response.status(200).json({
+        imageUrl: null,
+        reason: "google_api_error",
+        googleStatus: googleResponse.status,
+        googleMessage: data.error?.message ?? "Google did not return an image response"
+      });
       return;
     }
 
-    const data = await googleResponse.json();
     const firstImage = data.items?.[0];
 
     response.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate=604800");
     response.status(200).json({
       imageUrl: firstImage?.link ?? null,
       sourceUrl: firstImage?.image?.contextLink ?? null,
-      title: firstImage?.title ?? null
+      title: firstImage?.title ?? null,
+      reason: firstImage ? "ok" : "no_results"
     });
-  } catch {
-    response.status(200).json({ imageUrl: null });
+  } catch (error) {
+    response.status(200).json({ imageUrl: null, reason: "request_failed", message: error.message });
   }
 }
