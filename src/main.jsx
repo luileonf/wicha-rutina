@@ -270,6 +270,7 @@ function App() {
   const [selectedWeek, setSelectedWeek] = useState(initialWeek);
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [expandedExercise, setExpandedExercise] = useState(null);
+  const [exerciseImage, setExerciseImage] = useState({ status: "idle" });
   const [openPicker, setOpenPicker] = useState(null);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
   const weekPlan = currentRoutine.plan;
@@ -283,6 +284,30 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem(progressStorageKey, JSON.stringify(allProgress));
   }, [allProgress]);
+
+  useEffect(() => {
+    if (!expandedExercise) {
+      setExerciseImage({ status: "idle" });
+      return;
+    }
+
+    const controller = new AbortController();
+    setExerciseImage({ status: "loading" });
+
+    fetch(`/api/google-image?q=${encodeURIComponent(expandedExercise.item)}`, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("No image response");
+        return response.json();
+      })
+      .then((data) => {
+        setExerciseImage(data.imageUrl ? { status: "ready", ...data } : { status: "empty" });
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") setExerciseImage({ status: "empty" });
+      });
+
+    return () => controller.abort();
+  }, [expandedExercise]);
 
   const updatePeriodProgress = (updates) => {
     setAllProgress((prev) => {
@@ -565,10 +590,14 @@ function App() {
             <button className="closeModal" onClick={() => setExpandedExercise(null)} type="button" aria-label="Cerrar imagen">
               <X size={22} />
             </button>
-            <div className="exerciseImagePlaceholder">
-              <Image size={34} />
-              <span>Referencia visual desde Google Imágenes</span>
-            </div>
+            {exerciseImage.status === "ready" ? (
+              <img className="exercisePreviewImage" src={exerciseImage.imageUrl} alt={`Referencia visual de ${expandedExercise.item}`} />
+            ) : (
+              <div className="exerciseImagePlaceholder">
+                <Image size={34} />
+                <span>{exerciseImage.status === "loading" ? "Buscando imagen en Google..." : "Referencia visual desde Google Imágenes"}</span>
+              </div>
+            )}
             <div className="modalCopy">
               <span>{expandedExercise.day} | {expandedExercise.block}</span>
               <h3>{expandedExercise.item}</h3>

@@ -576,6 +576,14 @@ h1 {
   font-weight: 900;
 }
 
+.exercisePreviewImage {
+  width: 100%;
+  height: 420px;
+  display: block;
+  object-fit: contain;
+  background: var(--panel-deep);
+}
+
 .exerciseImagePlaceholder svg {
   color: #ff6874;
 }
@@ -673,6 +681,9 @@ footer b {
   }
   .exerciseImagePlaceholder {
     min-height: 280px;
+  }
+  .exercisePreviewImage {
+    height: 300px;
   }
   .days { grid-template-columns: repeat(2, 1fr); }
   .dayHeader { align-items: flex-start; }
