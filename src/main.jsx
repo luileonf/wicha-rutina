@@ -12,8 +12,8 @@ const weekOnePlan = [
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Preventivos antes de calentar", items: ["3 rondas", "Copenhagen plank — 20s por lado", "Single leg RDL — 10 por pierna", "Monster walks — 15 pasos", "Pogos — 20 reps", "Nordic asistido — 5 reps"] },
-      { name: "Zona media dinámica", items: ["12 minutos", "3 vueltas", "30s plancha", "20 mountain climbers", "15 russian twists", "15 dead bugs", "20 toe touches"] },
+      { name: "Preventivos antes de calentar", items: ["3 rondas", "Copenhagen plank — 20s por lado", "Single leg RDL — 10 por pierna", "Monster walks — 15 pasos", "Pogos — 20 reps", "Hamstring walkouts — 12 reps"] },
+      { name: "Zona media dinámica", items: ["12 minutos", "3 vueltas", "30s plancha", "20 mountain climbers", "15 russian twists", "20 V-ups", "20 toe touches"] },
       { name: "Fuerza pierna", items: ["4x10 back squat", "4x10 hip thrust", "4x10 Bulgarian split squat", "4x10 peso muerto rumano", "Descanso: 60-90s"] },
       { name: "Intermitentes 10x10", items: ["6 minutos total", "10s fuerte + 10s suave", "Intensidad: 80%"] },
       { name: "Finalizador", items: ["3 rounds", "15 jump squats", "12 burpees", "20 walking lunges", "200m run"] }
@@ -28,8 +28,8 @@ const weekOnePlan = [
     blocks: [
       { name: "Preventivos ligeros", items: ["2 rondas suaves", "Control y técnica, sin fatigar pierna"] },
       { name: "Zona media", items: ["10 minutos", "Core dinámico y estabilidad"] },
-      { name: "Fuerza upper", items: ["4x10 push press", "4x10 remo mancuerna", "4x10 push ups", "4x10 jalón o pull ups asistidas", "Shoulder taps"] },
-      { name: "Functional 20x10", items: ["4 vueltas", "Bike", "KB swings", "Battle ropes", "Box jumps", "Dumbbell snatch", "Descanso: 90s entre vueltas"] },
+      { name: "Fuerza upper", items: ["4x10 push press", "4x10 remo mancuerna", "4x10 push ups", "4x10 dumbbell rows", "Shoulder taps"] },
+      { name: "Functional 20x10", items: ["4 vueltas", "Bike", "KB swings", "High knees", "Box jumps", "Dumbbell snatch", "Descanso: 90s entre vueltas"] },
       { name: "Cardio suave final", items: ["10 minutos caminadora inclinada o bicicleta"] }
     ]
   },
@@ -68,9 +68,9 @@ const weekOnePlan = [
     icon: Dumbbell,
     blocks: [
       { name: "Preventivos", items: ["2 rondas", "Activación ligera"] },
-      { name: "Fuerza full body", items: ["4x8-10 deadlift", "4x8-10 thrusters", "4x8-10 pull ups asistidas", "4x8-10 step ups pesados", "4x8-10 push press"] },
+      { name: "Fuerza full body", items: ["4x8-10 deadlift", "4x8-10 thrusters", "4x8-10 bent over rows", "4x8-10 step ups pesados", "4x8-10 push press"] },
       { name: "Conditioning 20x10", items: ["4 vueltas", "Bike", "Jump lunges", "KB clean", "Burpees", "Plank shoulder taps"] },
-      { name: "Core", items: ["3 vueltas", "V-ups", "Russian twists", "Dead bug", "Plancha"] }
+      { name: "Core", items: ["3 vueltas", "V-ups", "Russian twists", "V-ups", "Plancha"] }
     ]
   },
   {
@@ -120,9 +120,9 @@ const weekTwoPlan = [
     intensity: "Media",
     icon: HeartPulse,
     blocks: [
-      { name: "Core", items: ["10 mins", "dead bug", "plank shoulder taps", "hollow hold"] },
-      { name: "Fuerza upper", items: ["5x8 push press", "4x10 remo mancuerna", "4x12 push ups", "4x10 pull ups asistidas", "battle ropes"] },
-      { name: "Functional", items: ["20x10", "bike", "KB swings", "dumbbell snatch", "jump box", "ropes", "5 vueltas"] }
+      { name: "Core", items: ["10 mins", "V-ups", "plank shoulder taps", "hollow hold"] },
+      { name: "Fuerza upper", items: ["5x8 push press", "4x10 remo mancuerna", "4x12 push ups", "4x10 dumbbell rows", "high knees"] },
+      { name: "Functional", items: ["20x10", "bike", "KB swings", "dumbbell snatch", "jump box", "bike sprint", "5 vueltas"] }
     ]
   },
   {
@@ -157,9 +157,9 @@ const weekTwoPlan = [
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Fuerza", items: ["deadlift", "thrusters", "step ups", "push press", "pull ups", "5x8"] },
+      { name: "Fuerza", items: ["deadlift", "thrusters", "step ups", "push press", "bent over rows", "5x8"] },
       { name: "Conditioning", items: ["20x10", "bike", "jump lunges", "KB clean", "burpees", "plank taps", "5 vueltas"] },
-      { name: "Core", items: ["V-ups", "russian twists", "plancha", "dead bug"] }
+      { name: "Core", items: ["V-ups", "russian twists", "plancha", "V-ups"] }
     ]
   },
   {
@@ -187,18 +187,53 @@ const weekTwoPlan = [
   }
 ];
 
+const normalizeExerciseItem = (item, blockName = "") => {
+  const text = item.trim();
+  const lower = text.toLowerCase();
+  const block = blockName.toLowerCase();
+
+  if (lower === "dead bug" || lower === "dead bugs" || /\bdead bugs\b/i.test(text)) {
+    return text.replace(/dead bugs?/i, "V-ups");
+  }
+
+  if (lower === "battle ropes" || lower === "ropes") {
+    if (/functional|conditioning|cardio/i.test(block)) return "bike sprint";
+    return "high knees";
+  }
+
+  if (/\bpull ups asistidas\b/i.test(text)) {
+    return text.replace(/pull ups asistidas/i, "dumbbell rows");
+  }
+
+  if (/\bpull ups\b/i.test(text)) {
+    return text.replace(/pull ups/i, /fuerza|strength|upper/i.test(block) ? "bent over rows" : "renegade rows");
+  }
+
+  return item;
+};
+
+const normalizePlan = (plan) => {
+  return plan.map((day) => ({
+    ...day,
+    blocks: day.blocks.map((block) => ({
+      ...block,
+      items: block.items.map((item) => normalizeExerciseItem(item, block.name))
+    }))
+  }));
+};
+
 const routineWeeks = [
   {
     week: 3,
     label: "El regreso",
     objective: "Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.",
-    plan: weekOnePlan
+    plan: normalizePlan(weekOnePlan)
   },
   {
     week: 4,
     label: "Base + adaptación de carga",
     objective: "Objetivo: subir intensidad, mejorar tolerancia física, aumentar fuerza funcional, seguir bajando % grasa y aumentar capacidad aeróbica específica.",
-    plan: weekTwoPlan
+    plan: normalizePlan(weekTwoPlan)
   }
 ];
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
@@ -270,7 +305,6 @@ function App() {
   const [selectedWeek, setSelectedWeek] = useState(initialWeek);
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [expandedExercise, setExpandedExercise] = useState(null);
-  const [exerciseImage, setExerciseImage] = useState({ status: "idle" });
   const [openPicker, setOpenPicker] = useState(null);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
   const weekPlan = currentRoutine.plan;
@@ -284,30 +318,6 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem(progressStorageKey, JSON.stringify(allProgress));
   }, [allProgress]);
-
-  useEffect(() => {
-    if (!expandedExercise) {
-      setExerciseImage({ status: "idle" });
-      return;
-    }
-
-    const controller = new AbortController();
-    setExerciseImage({ status: "loading" });
-
-    fetch(`/api/google-image?q=${encodeURIComponent(expandedExercise.item)}`, { signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("No image response");
-        return response.json();
-      })
-      .then((data) => {
-        setExerciseImage(data.imageUrl ? { status: "ready", ...data } : { status: "empty" });
-      })
-      .catch((error) => {
-        if (error.name !== "AbortError") setExerciseImage({ status: "empty" });
-      });
-
-    return () => controller.abort();
-  }, [expandedExercise]);
 
   const updatePeriodProgress = (updates) => {
     setAllProgress((prev) => {
@@ -590,14 +600,10 @@ function App() {
             <button className="closeModal" onClick={() => setExpandedExercise(null)} type="button" aria-label="Cerrar imagen">
               <X size={22} />
             </button>
-            {exerciseImage.status === "ready" ? (
-              <img className="exercisePreviewImage" src={exerciseImage.imageUrl} alt={`Referencia visual de ${expandedExercise.item}`} />
-            ) : (
-              <div className="exerciseImagePlaceholder">
-                <Image size={34} />
-                <span>{exerciseImage.status === "loading" ? "Buscando imagen en Google..." : "Referencia visual desde Google Imágenes"}</span>
-              </div>
-            )}
+            <div className="exerciseImagePlaceholder">
+              <Image size={34} />
+              <span>Referencia visual del ejercicio</span>
+            </div>
             <div className="modalCopy">
               <span>{expandedExercise.day} | {expandedExercise.block}</span>
               <h3>{expandedExercise.item}</h3>
