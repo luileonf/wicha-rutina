@@ -4,162 +4,68 @@ import { motion } from "framer-motion";
 import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X } from "lucide-react";
 import "./style.css";
 
-const weekOnePlan = [
+const weekThreeHomePlan = [
   {
     day: "Lunes",
-    title: "Fuerza pierna + intermitentes",
-    focus: "Pierna, fuerza base y resistencia específica",
+    title: "Lower body strength + intermitentes",
+    focus: "Fuerza pierna, estabilidad y capacidad anaeróbica",
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Preventivos antes de calentar", items: ["3 rondas", "Copenhagen plank — 20s por lado", "Single leg RDL — 10 por pierna", "Monster walks — 15 pasos", "Pogos — 20 reps", "Hamstring walkouts — 12 reps"] },
-      { name: "Zona media dinámica", items: ["12 minutos", "3 vueltas", "30s plancha", "20 mountain climbers", "15 russian twists", "20 V-ups", "20 toe touches"] },
-      { name: "Fuerza pierna", items: ["4x10 back squat", "4x10 hip thrust", "4x10 Bulgarian split squat", "4x10 peso muerto rumano", "Descanso: 60-90s"] },
-      { name: "Intermitentes 10x10", items: ["6 minutos total", "10s fuerte + 10s suave", "Intensidad: 80%"] },
-      { name: "Finalizador", items: ["3 rounds", "15 jump squats", "12 burpees", "20 walking lunges", "200m run"] }
-    ]
-  },
-  {
-    day: "Martes",
-    title: "Upper + functional",
-    focus: "Tren superior, core y acondicionamiento",
-    intensity: "Media",
-    icon: HeartPulse,
-    blocks: [
-      { name: "Preventivos ligeros", items: ["2 rondas suaves", "Control y técnica, sin fatigar pierna"] },
-      { name: "Zona media", items: ["10 minutos", "Core dinámico y estabilidad"] },
-      { name: "Fuerza upper", items: ["4x10 push press", "4x10 remo mancuerna", "4x10 push ups", "4x10 dumbbell rows", "Shoulder taps"] },
-      { name: "Functional 20x10", items: ["4 vueltas", "Bike", "KB swings", "High knees", "Box jumps", "Dumbbell snatch", "Descanso: 90s entre vueltas"] },
-      { name: "Cardio suave final", items: ["10 minutos caminadora inclinada o bicicleta"] }
-    ]
-  },
-  {
-    day: "Miércoles",
-    title: "Carrera aeróbica + recovery",
-    focus: "Quemar grasa sin destruir músculo",
-    intensity: "Baja-media",
-    icon: Footprints,
-    blocks: [
-      { name: "Movilidad completa", items: ["10 minutos", "Cadera, tobillo, isquios, espalda baja"] },
-      { name: "Carrera continua", items: ["30-40 minutos suave", "Ritmo cómodo: debes poder hablar"] },
-      { name: "Core ligero", items: ["3 vueltas", "Plancha lateral", "Bird dogs", "Hollow hold", "Glute bridge"] },
-      { name: "Recovery", items: ["Foam roller", "Estiramientos", "Descarga de piernas"] }
-    ]
-  },
-  {
-    day: "Jueves",
-    title: "Potencia + HIIT fútbol",
-    focus: "Explosividad, cambios de dirección y alta intensidad",
-    intensity: "Alta",
-    icon: Flame,
-    blocks: [
-      { name: "Preventivos", items: ["3 rondas", "Rodilla, aductor, glúteo medio y tobillo"] },
-      { name: "Zona media dinámica", items: ["12 minutos", "Core activo antes del bloque fuerte"] },
-      { name: "Potencia", items: ["4 rounds", "8 squat jumps", "8 bounds", "10 saltos laterales", "Sprint 20m"] },
-      { name: "Circuito fútbol", items: ["5 rounds", "Sprint 20m", "Shuffle lateral", "Backpedal", "Sprint 20m", "10 burpees", "10 swings", "Descanso: 1 min"] },
-      { name: "Intermitentes 10x10", items: ["6 minutos", "10s fuerte + 10s suave", "Intensidad: 90%"] }
-    ]
-  },
-  {
-    day: "Viernes",
-    title: "Full body functional",
-    focus: "Fuerza total + gasto calórico",
-    intensity: "Media-alta",
-    icon: Dumbbell,
-    blocks: [
-      { name: "Preventivos", items: ["2 rondas", "Activación ligera"] },
-      { name: "Fuerza full body", items: ["4x8-10 deadlift", "4x8-10 thrusters", "4x8-10 bent over rows", "4x8-10 step ups pesados", "4x8-10 push press"] },
-      { name: "Conditioning 20x10", items: ["4 vueltas", "Bike", "Jump lunges", "KB clean", "Burpees", "Plank shoulder taps"] },
-      { name: "Core", items: ["3 vueltas", "V-ups", "Russian twists", "V-ups", "Plancha"] }
-    ]
-  },
-  {
-    day: "Sábado",
-    title: "Running específico fútbol",
-    focus: "Cambios de ritmo, técnica y resistencia de partido",
-    intensity: "Media-alta",
-    icon: Timer,
-    blocks: [
-      { name: "Activación", items: ["10 minutos", "Skipping", "Movilidad", "Técnica de carrera"] },
-      { name: "Running específico", items: ["2 bloques", "6 reps por bloque", "30s fuerte + 30s suave", "Descanso: 2 mins entre bloques"] },
-      { name: "Técnica con balón", items: ["6 rounds", "Conducción rápida", "Cambio de dirección", "Sprint 15m", "Pase largo o finalización"] },
-      { name: "Final físico", items: ["3 rounds", "300m run", "15 burpees", "20 lunges", "20 sit ups"] }
-    ]
-  },
-  {
-    day: "Domingo",
-    title: "Descanso total",
-    focus: "Recuperación para construir músculo y bajar grasa mejor",
-    intensity: "Baja",
-    icon: CheckCircle2,
-    blocks: [
-      { name: "Recovery", items: ["Caminar suave", "Movilidad si lo necesitas", "Hidratación", "Dormir bien"] }
-    ]
-  }
-];
-
-const weekTwoPlan = [
-  {
-    day: "Lunes",
-    title: "Pierna fuerza + intermitentes progresivos",
-    focus: "Fuerza base y capacidad anaeróbica",
-    intensity: "Media-alta",
-    icon: Dumbbell,
-    blocks: [
-      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 25s por lado", "Single leg RDL 12 por pierna", "Monster walks 20 pasos", "Nordic asistido 6 reps", "Pogos 25 reps"] },
-      { name: "Zona media dinámica", items: ["4 vueltas", "40s plancha", "25 mountain climbers", "20 russian twists", "20 toe touches"] },
-      { name: "Fuerza pierna", items: ["5x8 back squat", "4x10 hip thrust pesado", "4x10 Bulgarian split squat", "4x12 RDL", "Farmer carry pesado"] },
-      { name: "Intermitentes", items: ["8 mins", "10s fuerte", "10s suave", "intensidad 85%"] },
-      { name: "Finisher", items: ["3 rounds", "12 burpees", "15 jump squats", "20 lunges", "250m run"] }
+      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 30s por lado", "Hamstring walkouts 15 reps", "Monster walks 20 pasos", "Single leg glute bridge 15 por lado", "Pogos 30 reps"] },
+      { name: "Zona media dinámica", items: ["4 vueltas", "45s plancha", "25 mountain climbers", "20 V-ups", "20 russian twists"] },
+      { name: "Lower body strength", items: ["Goblet squat tempo 5x10", "Bulgarian split squat 4x12", "Dumbbell RDL 4x12", "Walking lunges pesados", "Farmer carry pesado"] },
+      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 85-90%"] },
+      { name: "Finisher", items: ["4 rounds", "15 burpees", "20 jump squats", "20 lunges", "300m run"] }
     ]
   },
   {
     day: "Martes",
     title: "Upper body + conditioning",
-    focus: "Tren superior y gasto calórico",
+    focus: "Tren superior y acondicionamiento metabólico",
     intensity: "Media",
     icon: HeartPulse,
     blocks: [
-      { name: "Core", items: ["10 mins", "V-ups", "plank shoulder taps", "hollow hold"] },
-      { name: "Fuerza upper", items: ["5x8 push press", "4x10 remo mancuerna", "4x12 push ups", "4x10 dumbbell rows", "high knees"] },
-      { name: "Functional", items: ["20x10", "bike", "KB swings", "dumbbell snatch", "jump box", "bike sprint", "5 vueltas"] }
+      { name: "Core", items: ["V-ups", "plank shoulder taps", "hollow hold", "russian twists"] },
+      { name: "Upper strength", items: ["Push press mancuerna", "Dumbbell rows", "Push ups", "Shoulder press", "Renegade rows"] },
+      { name: "Conditioning", items: ["20x10", "bike sprint", "KB swings", "dumbbell snatch", "skaters", "jump squats", "5 vueltas"] }
     ]
   },
   {
     day: "Miércoles",
     title: "Aeróbico + recovery",
-    focus: "Recuperación y base cardiovascular",
+    focus: "Recuperación activa y capacidad aeróbica",
     intensity: "Baja-media",
     icon: Footprints,
     blocks: [
-      { name: "Movilidad", items: ["12 mins", "tobillo", "cadera", "aductores", "espalda baja"] },
-      { name: "Running aeróbico", items: ["40 mins suaves", "ritmo conversacional", "mantener FC estable"] },
-      { name: "Recovery", items: ["foam roller", "movilidad", "descarga piernas", "estiramientos"] }
+      { name: "Movilidad", items: ["cadera", "tobillo", "aductores", "espalda baja", "movilidad dinámica"] },
+      { name: "Running", items: ["45 mins suaves", "ritmo conversacional", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "movilidad", "descarga piernas", "respiración"] }
     ]
   },
   {
     day: "Jueves",
-    title: "Potencia + repeated sprint ability",
-    focus: "Explosividad fútbol",
+    title: "Power + repeated sprint ability",
+    focus: "Explosividad específica fútbol",
     intensity: "Alta",
     icon: Flame,
     blocks: [
-      { name: "Preventivos", items: ["3 rondas", "nordic", "pogos", "aductor", "glúteo medio"] },
-      { name: "Potencia", items: ["5 rounds", "squat jumps", "bounds", "sprint 20m", "lateral hops", "sled push opcional"] },
-      { name: "Circuito fútbol", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "swings", "6 rounds"] },
-      { name: "Intermitentes", items: ["8 mins", "intensidad 90%", "10x10"] }
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "glute bridge unilateral", "aductor", "lateral hops"] },
+      { name: "Potencia", items: ["squat jumps", "bounds", "lateral jumps", "sprint 20m", "broad jumps"] },
+      { name: "Circuito fútbol", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "KB swings", "6 rounds"] },
+      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 90%"] }
     ]
   },
   {
     day: "Viernes",
     title: "Full body strength",
-    focus: "Fuerza funcional completa",
+    focus: "Fuerza funcional total",
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Fuerza", items: ["deadlift", "thrusters", "step ups", "push press", "bent over rows", "5x8"] },
-      { name: "Conditioning", items: ["20x10", "bike", "jump lunges", "KB clean", "burpees", "plank taps", "5 vueltas"] },
-      { name: "Core", items: ["V-ups", "russian twists", "plancha", "V-ups"] }
+      { name: "Strength", items: ["Dumbbell thrusters", "Bulgarian split squat", "Dumbbell RDL", "Push press", "Renegade rows"] },
+      { name: "Conditioning", items: ["bike sprint", "jump lunges", "KB clean", "burpees", "plank taps", "5 vueltas"] },
+      { name: "Core", items: ["V-ups", "russian twists", "hollow hold", "plank"] }
     ]
   },
   {
@@ -171,8 +77,8 @@ const weekTwoPlan = [
     blocks: [
       { name: "Activación", items: ["movilidad", "skipping", "técnica carrera"] },
       { name: "Repeated runs", items: ["3 bloques", "6 reps", "30s fuerte", "30s suave", "descanso 2 mins"] },
-      { name: "Técnica fútbol", items: ["conducción", "cambio dirección", "sprint", "pase largo", "finalización"] },
-      { name: "Final físico", items: ["4 rounds", "300m run", "15 burpees", "20 lunges", "20 sit ups"] }
+      { name: "Técnica fútbol", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Final físico", items: ["4 rounds", "300m run", "15 burpees", "20 lunges", "20 V-ups"] }
     ]
   },
   {
@@ -183,6 +89,273 @@ const weekTwoPlan = [
     icon: CheckCircle2,
     blocks: [
       { name: "Recovery", items: ["caminar", "movilidad", "hidratación", "dormir bien"] }
+    ]
+  }
+];
+
+const weekThreeGymPlan = [
+  {
+    day: "Lunes",
+    title: "Lower body strength + intermitentes",
+    focus: "Fuerza pierna, estabilidad y capacidad anaeróbica",
+    intensity: "Media-alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 30s por lado", "Hamstring walkouts 15 reps", "Monster walks 20 pasos", "Single leg glute bridge 15 por lado", "Pogos 30 reps"] },
+      { name: "Zona media dinámica", items: ["4 vueltas", "45s plancha", "20 V-ups", "25 mountain climbers", "20 russian twists"] },
+      { name: "Lower body strength", items: ["Back squat 5x6 pesado", "Romanian deadlift barra 5x8", "Bulgarian split squat con mancuerna 4x10", "Barbell hip thrust 5x8", "Heavy farmer carry"] },
+      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 90%"] },
+      { name: "Power finisher", items: ["Box jumps", "KB swings", "sled push opcional", "jump lunges", "sprint 20m"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body + conditioning",
+    focus: "Tren superior y acondicionamiento metabólico",
+    intensity: "Media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["weighted V-ups", "cable rotations", "plank shoulder taps", "hollow hold"] },
+      { name: "Upper strength", items: ["Barbell push press", "Bent over rows", "Bench press", "Landmine press", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "KB clean", "box jumps", "sled push", "battle stance shuffle", "medball slams"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Aeróbico + recovery",
+    focus: "Recuperación activa y capacidad aeróbica",
+    intensity: "Baja-media",
+    icon: Footprints,
+    blocks: [
+      { name: "Recovery cardio", items: ["bike suave", "remo", "caminadora inclinada", "movilidad"] },
+      { name: "Mobility", items: ["hip mobility", "ankle mobility", "aductores", "thoracic rotation"] },
+      { name: "Recovery", items: ["foam roller", "stretching", "breathing work", "descarga piernas"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Power + repeated sprint ability",
+    focus: "Explosividad específica fútbol",
+    intensity: "Alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "aductor", "glúteo medio", "hamstring walkouts"] },
+      { name: "Power", items: ["Box jumps", "trap bar jumps", "KB swings", "broad jumps", "sprint 20m"] },
+      { name: "Repeated sprint circuit", items: ["sled push", "sprint", "shuffle", "backpedal", "KB clean", "jump lunges"] },
+      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 90-95%"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body strength",
+    focus: "Fuerza funcional total",
+    intensity: "Media-alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Strength", items: ["Deadlift barra", "Front squat", "Push press barra", "Step ups pesados", "KB carries"] },
+      { name: "Conditioning", items: ["Assault bike", "KB clean", "box jumps", "medball slams", "sled push"] },
+      { name: "Core", items: ["weighted V-ups", "cable rotation", "plank", "russian twists"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Running específico fútbol",
+    focus: "Capacidad específica de partido",
+    intensity: "Media-alta",
+    icon: Timer,
+    blocks: [
+      { name: "Athletic warmup", items: ["movilidad", "skips", "técnica carrera", "acceleration drills"] },
+      { name: "Repeated sprint ability", items: ["sprint 30m", "sprint 20m", "COD", "shuffle", "6 reps", "3 bloques"] },
+      { name: "Athletic conditioning", items: ["sled push", "box jumps", "KB swings", "medball throws", "sprint finish"] },
+      { name: "Core + recovery", items: ["weighted V-ups", "plank", "stretching", "foam roller"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["bike suave", "movilidad", "stretching", "foam roller", "hidratación"] }
+    ]
+  }
+];
+
+const weekFourHomePlan = [
+  {
+    day: "Lunes",
+    title: "Lower body power + intermitentes elite",
+    focus: "Potencia pierna y explosividad",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen plank 30s", "Hamstring walkouts 15", "Pogos 35 reps", "Monster walks 20 pasos", "Single leg glute bridge"] },
+      { name: "Zona media atlética", items: ["V-ups", "hollow hold", "mountain climbers", "russian twists", "plank shoulder taps"] },
+      { name: "Power lower body", items: ["Goblet squat explosivo", "Bulgarian split squat", "Dumbbell jump squat", "Dumbbell RDL", "Broad jumps"] },
+      { name: "Intermitentes elite", items: ["12 mins", "10x10", "intensidad 90%"] },
+      { name: "Finisher", items: ["sprint 20m", "burpees", "jump lunges", "skaters", "4 rounds"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body athletic conditioning",
+    focus: "Upper body y resistencia metabólica",
+    intensity: "Media-alta",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["V-ups", "plank", "russian twists", "hollow hold"] },
+      { name: "Upper athletic", items: ["Push press mancuerna", "Renegade rows", "Push ups", "Shoulder press", "Bent over rows"] },
+      { name: "Conditioning", items: ["bike sprint", "KB swings", "dumbbell snatch", "mountain climbers", "jump squats", "6 vueltas"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Recovery aerobic day",
+    focus: "Recuperación activa",
+    intensity: "Baja",
+    icon: Footprints,
+    blocks: [
+      { name: "Mobility", items: ["cadera", "tobillo", "espalda baja", "aductores", "movilidad dinámica"] },
+      { name: "Aerobic run", items: ["45 mins suaves", "ritmo conversacional", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "stretching", "respiración", "descarga piernas"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Repeated sprint ability + football power",
+    focus: "Velocidad y capacidad específica fútbol",
+    intensity: "Muy alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "lateral hops", "hamstring walkouts", "monster walks"] },
+      { name: "Power", items: ["squat jumps", "broad jumps", "sprint 20m", "lateral jumps", "bounds"] },
+      { name: "Football conditioning", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "KB swings", "7 rounds"] },
+      { name: "Intermitentes elite", items: ["12 mins", "intensidad 95%", "10x10"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body athletic strength",
+    focus: "Fuerza funcional y potencia",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Strength", items: ["Dumbbell thrusters", "Bulgarian split squat", "Dumbbell RDL", "Push press", "Renegade rows"] },
+      { name: "Conditioning", items: ["bike sprint", "jump lunges", "burpees", "KB swings", "mountain climbers", "6 vueltas"] },
+      { name: "Core", items: ["V-ups", "hollow hold", "russian twists", "plank"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Football running + conditioning",
+    focus: "Capacidad específica de partido",
+    intensity: "Alta",
+    icon: Timer,
+    blocks: [
+      { name: "Athletic warmup", items: ["movilidad", "skipping", "técnica carrera", "aceleraciones"] },
+      { name: "Repeated runs", items: ["4 bloques", "6 reps", "30s fuerte", "30s suave", "descanso 90s"] },
+      { name: "Football conditioning", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Finisher", items: ["400m run", "burpees", "jump squats", "V-ups", "4 rounds"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["caminar", "movilidad", "hidratación", "dormir bien"] }
+    ]
+  }
+];
+
+const weekFourGymPlan = [
+  {
+    day: "Lunes",
+    title: "Lower body power + intermitentes elite",
+    focus: "Potencia pierna y explosividad",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen plank", "Hamstring walkouts", "Pogos", "Glute bridge unilateral", "Adductor work"] },
+      { name: "Zona media atlética", items: ["weighted V-ups", "cable rotations", "hollow hold", "plank shoulder taps"] },
+      { name: "Power lower body", items: ["Back squat pesado 6x4", "Trap bar jumps", "Romanian deadlift barra", "Box jumps", "Heavy hip thrust"] },
+      { name: "Intermitentes elite", items: ["12 mins", "10x10", "intensidad 90-95%"] },
+      { name: "Power finisher", items: ["sled push", "KB swings", "sprint 20m", "jump lunges", "medball throws"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body athletic conditioning",
+    focus: "Upper body y resistencia metabólica",
+    intensity: "Media-alta",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["weighted V-ups", "cable rotation", "hollow hold", "plank taps"] },
+      { name: "Upper athletic", items: ["Barbell push press", "Bench press", "Bent over rows", "Landmine press", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "KB clean", "medball slams", "sled push", "box jumps", "6 rounds"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Recovery aerobic day",
+    focus: "Recuperación activa",
+    intensity: "Baja",
+    icon: Footprints,
+    blocks: [
+      { name: "Bike recovery", items: ["bike suave", "remo", "caminadora inclinada"] },
+      { name: "Mobility", items: ["ankle mobility", "hip mobility", "thoracic rotation", "aductor"] },
+      { name: "Recovery", items: ["foam roller", "stretching", "breathing work", "descarga piernas"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Repeated sprint ability + football power",
+    focus: "Velocidad y capacidad específica fútbol",
+    intensity: "Muy alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "glúteo medio", "hamstring walkouts", "aductor"] },
+      { name: "Football power", items: ["Box jumps", "Trap bar jumps", "KB swings pesados", "Broad jumps", "Sprint 20m"] },
+      { name: "Repeated sprint circuit", items: ["sled push", "sprint", "shuffle", "COD", "KB clean", "jump lunges", "7 rounds"] },
+      { name: "Intermitentes elite", items: ["12 mins", "intensidad 95%", "10x10"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body athletic strength",
+    focus: "Fuerza funcional y potencia",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Strength", items: ["Deadlift barra 5x5", "Front squat 5x5", "Push press barra", "Step ups pesados", "KB carries"] },
+      { name: "Conditioning", items: ["Assault bike", "sled push", "medball slams", "box jumps", "KB clean"] },
+      { name: "Core", items: ["weighted V-ups", "cable rotations", "plank", "hollow hold"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Football running + conditioning",
+    focus: "Capacidad específica partido",
+    intensity: "Alta",
+    icon: Timer,
+    blocks: [
+      { name: "Athletic warmup", items: ["movilidad", "skips", "técnica carrera", "acceleration drills"] },
+      { name: "Repeated sprint ability", items: ["sprint 30m", "sprint 20m", "COD", "shuffle", "4 bloques", "6 reps"] },
+      { name: "Athletic conditioning", items: ["sled push", "box jumps", "medball throws", "KB swings", "sprint finish"] },
+      { name: "Core + recovery", items: ["weighted V-ups", "plank", "stretching", "foam roller"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["bike suave", "movilidad", "stretching", "foam roller", "hidratación"] }
     ]
   }
 ];
@@ -225,15 +398,17 @@ const normalizePlan = (plan) => {
 const routineWeeks = [
   {
     week: 3,
-    label: "El regreso",
-    objective: "Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.",
-    plan: normalizePlan(weekOnePlan)
+    label: "Volumen + fuerza funcional",
+    objective: "Objetivo: aumentar fuerza funcional, volumen tolerable, resistencia específica fútbol, potencia, recomposición corporal y estabilidad unilateral.",
+    homePlan: normalizePlan(weekThreeHomePlan),
+    gymPlan: normalizePlan(weekThreeGymPlan)
   },
   {
     week: 4,
-    label: "Base + adaptación de carga",
-    objective: "Objetivo: subir intensidad, mejorar tolerancia física, aumentar fuerza funcional, seguir bajando % grasa y aumentar capacidad aeróbica específica.",
-    plan: normalizePlan(weekTwoPlan)
+    label: "Power + anaeróbico",
+    objective: "Objetivo: aumentar explosividad, mejorar repeated sprint ability, potencia específica fútbol, tolerancia alta intensidad y recomposición corporal.",
+    homePlan: normalizePlan(weekFourHomePlan),
+    gymPlan: normalizePlan(weekFourGymPlan)
   }
 ];
 const trainingModes = [
@@ -324,7 +499,7 @@ function App() {
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
-  const weekPlan = currentRoutine.plan;
+  const weekPlan = selectedMode === "home" ? currentRoutine.homePlan : currentRoutine.gymPlan;
   const periodKey = getPeriodKey(selectedMonth, selectedWeek, selectedMode);
   const currentProgress = allProgress[periodKey] ?? {};
   const checked = currentProgress.checked ?? {};
