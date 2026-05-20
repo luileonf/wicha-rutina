@@ -613,17 +613,33 @@ function App() {
   };
   const isDayComplete = (day) => trainingModes.some((mode) => isDayCompleteForMode(day.day, mode.id));
   const dayProgress = (dayName) => {
-    const completedMode = trainingModes.find((mode) => isDayCompleteForMode(dayName, mode.id));
-    const mode = completedMode?.id ?? selectedMode;
-    const day = dayForMode(dayName, mode);
-    const dayTotal = day.blocks.reduce((sum, block) => sum + blockTotal(block), 0);
-    const dayCompleted = completedMode ? dayTotal : day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block, mode), 0);
+    const modeProgress = trainingModes
+      .map((mode) => {
+        const day = dayForMode(dayName, mode.id);
+        if (!day) return null;
 
-    return { total: dayTotal, completed: dayCompleted };
+        const dayTotal = day.blocks.reduce((sum, block) => sum + blockTotal(block), 0);
+        const dayCompleted = day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block, mode.id), 0);
+
+        return {
+          mode: mode.id,
+          total: dayTotal,
+          completed: dayCompleted,
+          ratio: dayTotal ? dayCompleted / dayTotal : 0
+        };
+      })
+      .filter(Boolean);
+
+    return modeProgress.reduce((best, currentMode) => {
+      if (!best) return currentMode;
+      if (currentMode.ratio > best.ratio) return currentMode;
+      if (currentMode.ratio === best.ratio && currentMode.mode === selectedMode) return currentMode;
+      return best;
+    }, null);
   };
 
-  const total = weekPlan.reduce((acc, day) => acc + dayProgress(day.day).total, 0);
-  const completed = weekPlan.reduce((acc, day) => acc + dayProgress(day.day).completed, 0);
+  const total = weekPlan.reduce((acc, day) => acc + (dayProgress(day.day)?.total ?? 0), 0);
+  const completed = weekPlan.reduce((acc, day) => acc + (dayProgress(day.day)?.completed ?? 0), 0);
   const progress = Math.round((completed / total) * 100);
   const Icon = current.icon;
 
