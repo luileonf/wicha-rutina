@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
-import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, Image, Maximize2, X } from "lucide-react";
+import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X } from "lucide-react";
 import "./style.css";
 
 const weekOnePlan = [
@@ -236,6 +236,10 @@ const routineWeeks = [
     plan: normalizePlan(weekTwoPlan)
   }
 ];
+const trainingModes = [
+  { id: "home", label: "Casa", icon: House },
+  { id: "gym", label: "Gym", icon: Dumbbell }
+];
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
 const months = [
   "Enero",
@@ -259,25 +263,37 @@ const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
 const availableWeeks = routineWeeks.map((routine) => routine.week);
 const progressStorageKey = "wicha-fut-progress-v2";
 const previousProgressStorageKey = "wicha-fut-progress-v1";
-const getPeriodKey = (month, week) => `${month}-week-${week}`;
+const getPeriodKey = (month, week, mode = "gym") => `${month}-week-${week}-${mode}`;
+const getLegacyPeriodKey = (month, week) => `${month}-week-${week}`;
 
 const loadAllProgress = () => {
   try {
     const saved = window.localStorage.getItem(progressStorageKey);
     if (saved) {
       const parsed = JSON.parse(saved);
-      const oldCalendarKey = getPeriodKey(initialMonth, currentCalendarWeek);
-      const weekThreeKey = getPeriodKey(initialMonth, 3);
+      const oldCalendarKey = getLegacyPeriodKey(initialMonth, currentCalendarWeek);
+      const oldCalendarGymKey = getPeriodKey(initialMonth, currentCalendarWeek, "gym");
+      const legacyWeekThreeKey = getLegacyPeriodKey(initialMonth, 3);
+      const weekThreeKey = getPeriodKey(initialMonth, 3, "gym");
+      let migrated = { ...parsed };
 
-      if (parsed[oldCalendarKey] && !parsed[weekThreeKey]) {
-        return { ...parsed, [weekThreeKey]: parsed[oldCalendarKey] };
+      if (parsed[oldCalendarKey] && !migrated[oldCalendarGymKey]) {
+        migrated[oldCalendarGymKey] = parsed[oldCalendarKey];
       }
 
-      return parsed;
+      if (parsed[legacyWeekThreeKey] && !migrated[weekThreeKey]) {
+        migrated[weekThreeKey] = parsed[legacyWeekThreeKey];
+      }
+
+      if (migrated[oldCalendarGymKey] && !migrated[weekThreeKey]) {
+        migrated[weekThreeKey] = migrated[oldCalendarGymKey];
+      }
+
+      return migrated;
     }
 
     const previousSaved = window.localStorage.getItem(previousProgressStorageKey);
-    return previousSaved ? { [getPeriodKey(initialMonth, 3)]: JSON.parse(previousSaved) } : {};
+    return previousSaved ? { [getPeriodKey(initialMonth, 3, "gym")]: JSON.parse(previousSaved) } : {};
   } catch {
     return {};
   }
@@ -303,12 +319,13 @@ function App() {
   const [allProgress, setAllProgress] = useState(loadAllProgress);
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
   const [selectedWeek, setSelectedWeek] = useState(initialWeek);
+  const [selectedMode, setSelectedMode] = useState("gym");
   const [selectedDay, setSelectedDay] = useState("Lunes");
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
   const weekPlan = currentRoutine.plan;
-  const periodKey = getPeriodKey(selectedMonth, selectedWeek);
+  const periodKey = getPeriodKey(selectedMonth, selectedWeek, selectedMode);
   const currentProgress = allProgress[periodKey] ?? {};
   const checked = currentProgress.checked ?? {};
   const roundsDone = currentProgress.roundsDone ?? {};
@@ -466,6 +483,23 @@ function App() {
                 )}
               </div>
             </label>
+            <div className="modePicker" aria-label="Tipo de rutina">
+              {trainingModes.map((mode) => {
+                const ModeIcon = mode.icon;
+                return (
+                  <button
+                    aria-label={`Rutina de ${mode.label}`}
+                    className={selectedMode === mode.id ? "active" : ""}
+                    key={mode.id}
+                    onClick={() => setSelectedMode(mode.id)}
+                    title={mode.label}
+                    type="button"
+                  >
+                    <ModeIcon size={22} />
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div className="weekChecks" aria-label="Progreso por día">
             {weekPlan.map((day, index) => {
