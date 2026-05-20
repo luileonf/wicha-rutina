@@ -103,9 +103,9 @@ const weekThreeGymPlan = [
     blocks: [
       { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 30s por lado", "Hamstring walkouts 15 reps", "Monster walks 20 pasos", "Single leg glute bridge 15 por lado", "Pogos 30 reps"] },
       { name: "Zona media dinámica", items: ["4 vueltas", "45s plancha", "20 V-ups", "25 mountain climbers", "20 russian twists"] },
-      { name: "Lower body strength", items: ["Back squat 5x6 pesado", "Romanian deadlift barra 5x8", "Bulgarian split squat con mancuerna 4x10", "Barbell hip thrust 5x8", "Heavy farmer carry"] },
-      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 90%"] },
-      { name: "Power finisher", items: ["Box jumps", "KB swings", "sled push opcional", "jump lunges", "sprint 20m"] }
+      { name: "Lower body strength", items: ["Back squat 5x6 pesado", "Bulgarian split squat con mancuerna 4x10", "Romanian deadlift barra 5x8", "Walking lunges con carga", "Heavy farmer carry"] },
+      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 85-90%"] },
+      { name: "Finisher", items: ["4 rounds", "sled push", "box jumps", "jump lunges", "sprint 20m"] }
     ]
   },
   {
@@ -115,9 +115,9 @@ const weekThreeGymPlan = [
     intensity: "Media",
     icon: HeartPulse,
     blocks: [
-      { name: "Core", items: ["weighted V-ups", "cable rotations", "plank shoulder taps", "hollow hold"] },
+      { name: "Core", items: ["weighted V-ups", "plank shoulder taps", "hollow hold", "cable rotations"] },
       { name: "Upper strength", items: ["Barbell push press", "Bent over rows", "Bench press", "Landmine press", "Renegade rows"] },
-      { name: "Conditioning", items: ["Assault bike", "KB clean", "box jumps", "sled push", "battle stance shuffle", "medball slams"] }
+      { name: "Conditioning", items: ["20x10", "Assault bike", "heavy KB swings", "landmine snatch", "battle stance shuffle", "box jumps", "5 vueltas"] }
     ]
   },
   {
@@ -127,8 +127,8 @@ const weekThreeGymPlan = [
     intensity: "Baja-media",
     icon: Footprints,
     blocks: [
-      { name: "Recovery cardio", items: ["bike suave", "remo", "caminadora inclinada", "movilidad"] },
-      { name: "Mobility", items: ["hip mobility", "ankle mobility", "aductores", "thoracic rotation"] },
+      { name: "Movilidad", items: ["hip mobility", "ankle mobility", "aductores", "espalda baja", "movilidad dinámica"] },
+      { name: "Running", items: ["45 mins suaves", "running suave o caminadora inclinada", "mantener FC estable"] },
       { name: "Recovery", items: ["foam roller", "stretching", "breathing work", "descarga piernas"] }
     ]
   },
@@ -140,9 +140,9 @@ const weekThreeGymPlan = [
     icon: Flame,
     blocks: [
       { name: "Preventivos", items: ["Copenhagen", "pogos", "aductor", "glúteo medio", "hamstring walkouts"] },
-      { name: "Power", items: ["Box jumps", "trap bar jumps", "KB swings", "broad jumps", "sprint 20m"] },
-      { name: "Repeated sprint circuit", items: ["sled push", "sprint", "shuffle", "backpedal", "KB clean", "jump lunges"] },
-      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 90-95%"] }
+      { name: "Potencia", items: ["Box jumps", "trap bar jumps", "lateral jumps", "sprint 20m", "broad jumps"] },
+      { name: "Circuito fútbol", items: ["sled push", "shuffle", "backpedal", "sprint", "burpees", "heavy KB swings", "6 rounds"] },
+      { name: "Intermitentes", items: ["10 mins", "10x10", "intensidad 90%"] }
     ]
   },
   {
@@ -152,8 +152,8 @@ const weekThreeGymPlan = [
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Strength", items: ["Deadlift barra", "Front squat", "Push press barra", "Step ups pesados", "KB carries"] },
-      { name: "Conditioning", items: ["Assault bike", "KB clean", "box jumps", "medball slams", "sled push"] },
+      { name: "Strength", items: ["Barbell thrusters", "Bulgarian split squat pesado", "Barbell RDL", "Push press barra", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "jump lunges", "heavy KB clean", "sled push", "plank taps", "5 vueltas"] },
       { name: "Core", items: ["weighted V-ups", "cable rotation", "plank", "russian twists"] }
     ]
   },
@@ -164,10 +164,10 @@ const weekThreeGymPlan = [
     intensity: "Media-alta",
     icon: Timer,
     blocks: [
-      { name: "Athletic warmup", items: ["movilidad", "skips", "técnica carrera", "acceleration drills"] },
-      { name: "Repeated sprint ability", items: ["sprint 30m", "sprint 20m", "COD", "shuffle", "6 reps", "3 bloques"] },
-      { name: "Athletic conditioning", items: ["sled push", "box jumps", "KB swings", "medball throws", "sprint finish"] },
-      { name: "Core + recovery", items: ["weighted V-ups", "plank", "stretching", "foam roller"] }
+      { name: "Activación", items: ["movilidad", "skips", "técnica carrera"] },
+      { name: "Repeated runs", items: ["3 bloques", "6 reps", "30s fuerte", "30s suave", "descanso 2 mins"] },
+      { name: "Técnica fútbol", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Final físico", items: ["4 rounds", "300m run o assault runner", "15 burpees", "20 lunges", "20 weighted V-ups"] }
     ]
   },
   {
@@ -177,7 +177,7 @@ const weekThreeGymPlan = [
     intensity: "Baja",
     icon: CheckCircle2,
     blocks: [
-      { name: "Recovery", items: ["bike suave", "movilidad", "stretching", "foam roller", "hidratación"] }
+      { name: "Recovery", items: ["caminar suave o caminadora inclinada", "movilidad", "hidratación", "dormir bien"] }
     ]
   }
 ];
@@ -281,9 +281,9 @@ const weekFourGymPlan = [
     blocks: [
       { name: "Preventivos", items: ["Copenhagen plank", "Hamstring walkouts", "Pogos", "Glute bridge unilateral", "Adductor work"] },
       { name: "Zona media atlética", items: ["weighted V-ups", "cable rotations", "hollow hold", "plank shoulder taps"] },
-      { name: "Power lower body", items: ["Back squat pesado 6x4", "Trap bar jumps", "Romanian deadlift barra", "Box jumps", "Heavy hip thrust"] },
-      { name: "Intermitentes elite", items: ["12 mins", "10x10", "intensidad 90-95%"] },
-      { name: "Power finisher", items: ["sled push", "KB swings", "sprint 20m", "jump lunges", "medball throws"] }
+      { name: "Power lower body", items: ["Back squat explosivo 6x4", "Bulgarian split squat pesado", "Trap bar jumps", "Barbell RDL", "Broad jumps"] },
+      { name: "Intermitentes elite", items: ["12 mins", "10x10", "intensidad 90%"] },
+      { name: "Finisher", items: ["sprint 20m", "sled push", "jump lunges", "box jumps", "4 rounds"] }
     ]
   },
   {
@@ -293,9 +293,9 @@ const weekFourGymPlan = [
     intensity: "Media-alta",
     icon: HeartPulse,
     blocks: [
-      { name: "Core", items: ["weighted V-ups", "cable rotation", "hollow hold", "plank taps"] },
+      { name: "Core", items: ["weighted V-ups", "plank", "cable rotations", "hollow hold"] },
       { name: "Upper athletic", items: ["Barbell push press", "Bench press", "Bent over rows", "Landmine press", "Renegade rows"] },
-      { name: "Conditioning", items: ["Assault bike", "KB clean", "medball slams", "sled push", "box jumps", "6 rounds"] }
+      { name: "Conditioning", items: ["Assault bike", "heavy KB swings", "landmine snatch", "sled push", "box jumps", "6 vueltas"] }
     ]
   },
   {
@@ -305,8 +305,8 @@ const weekFourGymPlan = [
     intensity: "Baja",
     icon: Footprints,
     blocks: [
-      { name: "Bike recovery", items: ["bike suave", "remo", "caminadora inclinada"] },
-      { name: "Mobility", items: ["ankle mobility", "hip mobility", "thoracic rotation", "aductor"] },
+      { name: "Mobility", items: ["hip mobility", "ankle mobility", "espalda baja", "aductor", "movilidad dinámica"] },
+      { name: "Aerobic run", items: ["45 mins suaves", "running suave o caminadora inclinada", "mantener FC estable"] },
       { name: "Recovery", items: ["foam roller", "stretching", "breathing work", "descarga piernas"] }
     ]
   },
@@ -318,8 +318,8 @@ const weekFourGymPlan = [
     icon: Flame,
     blocks: [
       { name: "Preventivos", items: ["Copenhagen", "pogos", "glúteo medio", "hamstring walkouts", "aductor"] },
-      { name: "Football power", items: ["Box jumps", "Trap bar jumps", "KB swings pesados", "Broad jumps", "Sprint 20m"] },
-      { name: "Repeated sprint circuit", items: ["sled push", "sprint", "shuffle", "COD", "KB clean", "jump lunges", "7 rounds"] },
+      { name: "Power", items: ["Box jumps", "Broad jumps", "Sprint 20m", "lateral jumps", "Trap bar jumps"] },
+      { name: "Football conditioning", items: ["sled push", "shuffle", "backpedal", "sprint", "burpees", "heavy KB swings", "7 rounds"] },
       { name: "Intermitentes elite", items: ["12 mins", "intensidad 95%", "10x10"] }
     ]
   },
@@ -330,8 +330,8 @@ const weekFourGymPlan = [
     intensity: "Alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Strength", items: ["Deadlift barra 5x5", "Front squat 5x5", "Push press barra", "Step ups pesados", "KB carries"] },
-      { name: "Conditioning", items: ["Assault bike", "sled push", "medball slams", "box jumps", "KB clean"] },
+      { name: "Strength", items: ["Barbell thrusters", "Bulgarian split squat pesado", "Barbell RDL", "Push press barra", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "jump lunges", "sled push", "heavy KB swings", "mountain climbers", "6 vueltas"] },
       { name: "Core", items: ["weighted V-ups", "cable rotations", "plank", "hollow hold"] }
     ]
   },
@@ -343,9 +343,9 @@ const weekFourGymPlan = [
     icon: Timer,
     blocks: [
       { name: "Athletic warmup", items: ["movilidad", "skips", "técnica carrera", "acceleration drills"] },
-      { name: "Repeated sprint ability", items: ["sprint 30m", "sprint 20m", "COD", "shuffle", "4 bloques", "6 reps"] },
-      { name: "Athletic conditioning", items: ["sled push", "box jumps", "medball throws", "KB swings", "sprint finish"] },
-      { name: "Core + recovery", items: ["weighted V-ups", "plank", "stretching", "foam roller"] }
+      { name: "Repeated runs", items: ["4 bloques", "6 reps", "30s fuerte", "30s suave", "descanso 90s"] },
+      { name: "Football conditioning", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Finisher", items: ["400m run o assault runner", "burpees", "box jumps", "weighted V-ups", "4 rounds"] }
     ]
   },
   {
@@ -355,7 +355,7 @@ const weekFourGymPlan = [
     intensity: "Baja",
     icon: CheckCircle2,
     blocks: [
-      { name: "Recovery", items: ["bike suave", "movilidad", "stretching", "foam roller", "hidratación"] }
+      { name: "Recovery", items: ["caminar suave o caminadora inclinada", "movilidad", "stretching", "foam roller", "hidratación"] }
     ]
   }
 ];
@@ -438,8 +438,26 @@ const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
 const availableWeeks = routineWeeks.map((routine) => routine.week);
 const progressStorageKey = "wicha-fut-progress-v2";
 const previousProgressStorageKey = "wicha-fut-progress-v1";
-const getPeriodKey = (month, week, mode = "gym") => `${month}-week-${week}-${mode}`;
+const getPeriodKey = (month, week) => `${month}-week-${week}`;
+const getModePeriodKey = (month, week, mode) => `${month}-week-${week}-${mode}`;
 const getLegacyPeriodKey = (month, week) => `${month}-week-${week}`;
+
+const mergePeriodProgress = (...progressItems) => {
+  return progressItems.reduce((merged, progress) => {
+    if (!progress) return merged;
+    return {
+      checked: { ...(merged.checked ?? {}), ...(progress.checked ?? {}) },
+      roundsDone: { ...(merged.roundsDone ?? {}), ...(progress.roundsDone ?? {}) },
+      completedBlocks: { ...(merged.completedBlocks ?? {}), ...(progress.completedBlocks ?? {}) }
+    };
+  }, {});
+};
+
+const hasProgress = (progress) => Boolean(
+  Object.keys(progress.checked ?? {}).length ||
+  Object.keys(progress.roundsDone ?? {}).length ||
+  Object.keys(progress.completedBlocks ?? {}).length
+);
 
 const loadAllProgress = () => {
   try {
@@ -447,28 +465,31 @@ const loadAllProgress = () => {
     if (saved) {
       const parsed = JSON.parse(saved);
       const oldCalendarKey = getLegacyPeriodKey(initialMonth, currentCalendarWeek);
-      const oldCalendarGymKey = getPeriodKey(initialMonth, currentCalendarWeek, "gym");
-      const legacyWeekThreeKey = getLegacyPeriodKey(initialMonth, 3);
-      const weekThreeKey = getPeriodKey(initialMonth, 3, "gym");
+      const oldCalendarGymKey = getModePeriodKey(initialMonth, currentCalendarWeek, "gym");
+      const oldCalendarHomeKey = getModePeriodKey(initialMonth, currentCalendarWeek, "home");
       let migrated = { ...parsed };
 
-      if (parsed[oldCalendarKey] && !migrated[oldCalendarGymKey]) {
-        migrated[oldCalendarGymKey] = parsed[oldCalendarKey];
-      }
+      routineWeeks.forEach((routine) => {
+        const baseKey = getPeriodKey(initialMonth, routine.week);
+        const merged = mergePeriodProgress(
+          parsed[baseKey],
+          parsed[getModePeriodKey(initialMonth, routine.week, "home")],
+          parsed[getModePeriodKey(initialMonth, routine.week, "gym")],
+          routine.week === 3 ? parsed[oldCalendarKey] : null,
+          routine.week === 3 ? parsed[oldCalendarHomeKey] : null,
+          routine.week === 3 ? parsed[oldCalendarGymKey] : null
+        );
 
-      if (parsed[legacyWeekThreeKey] && !migrated[weekThreeKey]) {
-        migrated[weekThreeKey] = parsed[legacyWeekThreeKey];
-      }
-
-      if (migrated[oldCalendarGymKey] && !migrated[weekThreeKey]) {
-        migrated[weekThreeKey] = migrated[oldCalendarGymKey];
-      }
+        if (hasProgress(merged)) {
+          migrated[baseKey] = merged;
+        }
+      });
 
       return migrated;
     }
 
     const previousSaved = window.localStorage.getItem(previousProgressStorageKey);
-    return previousSaved ? { [getPeriodKey(initialMonth, 3, "gym")]: JSON.parse(previousSaved) } : {};
+    return previousSaved ? { [getPeriodKey(initialMonth, 3)]: JSON.parse(previousSaved) } : {};
   } catch {
     return {};
   }
@@ -499,8 +520,9 @@ function App() {
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
-  const weekPlan = selectedMode === "home" ? currentRoutine.homePlan : currentRoutine.gymPlan;
-  const periodKey = getPeriodKey(selectedMonth, selectedWeek, selectedMode);
+  const planForMode = (mode) => mode === "home" ? currentRoutine.homePlan : currentRoutine.gymPlan;
+  const weekPlan = planForMode(selectedMode);
+  const periodKey = getPeriodKey(selectedMonth, selectedWeek);
   const currentProgress = allProgress[periodKey] ?? {};
   const checked = currentProgress.checked ?? {};
   const roundsDone = currentProgress.roundsDone ?? {};
@@ -569,25 +591,44 @@ function App() {
     const isSingleEffort = exerciseItems(block).length === 0;
     return hasRoundStructure || isSingleEffort || /zona media|core|carrera|cardio|running|intermitentes/i.test(block.name);
   };
-  const blockKey = (day, block) => `${day}-${block.name}`;
-  const areAllItemsChecked = (day, block) => exerciseItems(block).every((item) => checked[`${day}-${block.name}-${item}`]);
-  const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block) || areAllItemsChecked(day, block);
-  const isBlockComplete = (day, block) => Boolean(completedBlocks[blockKey(day, block)]);
+  const dayForMode = (dayName, mode) => planForMode(mode).find((day) => day.day === dayName);
+  const blockKey = (day, block, mode = selectedMode) => `${mode}-${day}-${block.name}`;
+  const legacyBlockKey = (day, block) => `${day}-${block.name}`;
+  const itemKey = (day, block, item, mode = selectedMode) => `${mode}-${day}-${block}-${item}`;
+  const legacyItemKey = (day, block, item) => `${day}-${block}-${item}`;
+  const itemDone = (day, block, item, mode = selectedMode) => Boolean(checked[itemKey(day, block, item, mode)] || checked[legacyItemKey(day, block, item)]);
+  const areAllItemsChecked = (day, block, mode = selectedMode) => exerciseItems(block).every((item) => itemDone(day, block.name, item, mode));
+  const roundsValue = (day, block, mode = selectedMode) => roundsDone[blockKey(day, block, mode)] ?? roundsDone[legacyBlockKey(day, block)] ?? 0;
+  const isPreventiveComplete = (day, block, mode = selectedMode) => Number(roundsValue(day, block, mode)) >= roundTarget(block) || areAllItemsChecked(day, block, mode);
+  const isBlockComplete = (day, block, mode = selectedMode) => Boolean(completedBlocks[blockKey(day, block, mode)] || completedBlocks[legacyBlockKey(day, block)]);
   const blockTotal = (block) => isPreventiveBlock(block) || usesBlockCompletion(block) ? 1 : exerciseItems(block).length;
-  const blockCompleted = (day, block) => {
-    if (isPreventiveBlock(block)) return isPreventiveComplete(day, block) ? 1 : 0;
-    if (usesBlockCompletion(block)) return isBlockComplete(day, block) ? 1 : 0;
-    return exerciseItems(block).filter((item) => checked[`${day}-${block.name}-${item}`]).length;
+  const blockCompleted = (day, block, mode = selectedMode) => {
+    if (isPreventiveBlock(block)) return isPreventiveComplete(day, block, mode) ? 1 : 0;
+    if (usesBlockCompletion(block)) return isBlockComplete(day, block, mode) ? 1 : 0;
+    return exerciseItems(block).filter((item) => itemDone(day, block.name, item, mode)).length;
   };
-  const isDayComplete = (day) => day.blocks.every((block) => blockCompleted(day.day, block) >= blockTotal(block));
+  const isDayCompleteForMode = (dayName, mode) => {
+    const day = dayForMode(dayName, mode);
+    return day ? day.blocks.every((block) => blockCompleted(day.day, block, mode) >= blockTotal(block)) : false;
+  };
+  const isDayComplete = (day) => trainingModes.some((mode) => isDayCompleteForMode(day.day, mode.id));
+  const dayProgress = (dayName) => {
+    const completedMode = trainingModes.find((mode) => isDayCompleteForMode(dayName, mode.id));
+    const mode = completedMode?.id ?? selectedMode;
+    const day = dayForMode(dayName, mode);
+    const dayTotal = day.blocks.reduce((sum, block) => sum + blockTotal(block), 0);
+    const dayCompleted = completedMode ? dayTotal : day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block, mode), 0);
 
-  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + blockTotal(block), 0), 0);
-  const completed = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block), 0), 0);
+    return { total: dayTotal, completed: dayCompleted };
+  };
+
+  const total = weekPlan.reduce((acc, day) => acc + dayProgress(day.day).total, 0);
+  const completed = weekPlan.reduce((acc, day) => acc + dayProgress(day.day).completed, 0);
   const progress = Math.round((completed / total) * 100);
   const Icon = current.icon;
 
   const toggleItem = (day, block, item) => {
-    const key = `${day}-${block}-${item}`;
+    const key = itemKey(day, block, item);
     updatePeriodProgress({ checked: { ...checked, [key]: !checked[key] } });
   };
 
@@ -731,7 +772,7 @@ function App() {
             const preventiveDone = preventive && isPreventiveComplete(current.day, block);
             const blockCompletion = usesBlockCompletion(block);
             const blockDone = blockCompletion && isBlockComplete(current.day, block);
-            const selectedRounds = roundsDone[blockKey(current.day, block)] ?? "";
+            const selectedRounds = roundsValue(current.day, block) || "";
             const instructions = blockInstructions(block);
 
             return (
@@ -768,8 +809,7 @@ function App() {
 
                 <div className="items">
                   {exerciseItems(block).map((item) => {
-                    const key = `${current.day}-${block.name}-${item}`;
-                    const done = preventiveDone || blockDone || checked[key];
+                    const done = preventiveDone || blockDone || itemDone(current.day, block.name, item);
                     return (
                       <div className="exerciseRow" key={item}>
                         <button
