@@ -364,22 +364,131 @@ const normalizeExerciseItem = (item, blockName = "") => {
   const text = item.trim();
   const lower = text.toLowerCase();
   const block = blockName.toLowerCase();
+  const itemDetails = {
+    "walking lunges pesados": "Walking lunges pesados 20 pasos",
+    "farmer carry pesado": "Farmer carry pesado 30m",
+    "v-ups": "20 V-ups",
+    "weighted v-ups": "20 weighted V-ups",
+    "plank shoulder taps": "20 plank shoulder taps",
+    "plank taps": "20 plank taps",
+    "plank": "plancha 45s",
+    "hollow hold": "hollow hold 30s",
+    "russian twists": "20 russian twists",
+    "push press mancuerna": "Push press mancuerna 4x10",
+    "dumbbell rows": "Dumbbell rows 4x10",
+    "push ups": "Push ups 4x12",
+    "shoulder press": "Shoulder press 4x10",
+    "renegade rows": "Renegade rows 4x10",
+    "bike sprint": "bike sprint 20s",
+    "kb swings": "15 KB swings",
+    "dumbbell snatch": "Dumbbell snatch 10 por lado",
+    "skaters": "20 skaters",
+    "jump squats": "15 jump squats",
+    "cadera": "movilidad de cadera 10 mins",
+    "tobillo": "movilidad de tobillo 8 mins",
+    "aductores": "movilidad de aductores 8 mins",
+    "aductor": "adductor side plank 25s por lado",
+    "espalda baja": "movilidad espalda baja 8 mins",
+    "movilidad dinámica": "movilidad dinámica 10 mins",
+    "foam roller": "foam roller 8 mins",
+    "movilidad": "movilidad 10 mins",
+    "descarga piernas": "descarga piernas 8 mins",
+    "respiración": "respiración 5 mins",
+    "copenhagen": "Copenhagen plank 30s por lado",
+    "copenhagen plank": "Copenhagen plank 30s por lado",
+    "pogos": "Pogos 30 reps",
+    "glute bridge unilateral": "Glute bridge unilateral 15 por lado",
+    "lateral hops": "Lateral hops 20 reps",
+    "squat jumps": "10 squat jumps",
+    "bounds": "Bounds 20m",
+    "lateral jumps": "Lateral jumps 20 reps",
+    "broad jumps": "Broad jumps 8 reps",
+    "sprint": "sprint 20m",
+    "shuffle": "shuffle lateral 20m",
+    "backpedal": "backpedal 20m",
+    "burpees": "12 burpees",
+    "walking lunges con carga": "Walking lunges con carga 20 pasos",
+    "dumbbell thrusters": "Dumbbell thrusters 4x10",
+    "bulgarian split squat": "Bulgarian split squat 4x10 por pierna",
+    "dumbbell rdl": "Dumbbell RDL 4x10",
+    "push press": "Push press 4x10",
+    "jump lunges": "20 jump lunges",
+    "kb clean": "KB clean 10 por lado",
+    "skipping": "skipping 3 mins",
+    "técnica carrera": "técnica carrera 6 mins",
+    "conducción": "conducción 5 mins",
+    "cambio dirección": "cambio dirección 6 reps por lado",
+    "finalización": "finalización 10 tiros",
+    "pase largo": "pase largo 12 reps",
+    "caminar": "caminar 30 mins",
+    "hidratación": "hidratación 2-3 litros",
+    "dormir bien": "dormir 8 horas",
+    "heavy farmer carry": "Heavy farmer carry 30m",
+    "sled push": "sled push 20m",
+    "box jumps": "8 box jumps",
+    "weighted v-ups": "20 weighted V-ups",
+    "cable rotations": "Cable rotations 12 por lado",
+    "cable rotation": "Cable rotation 12 por lado",
+    "barbell push press": "Barbell push press 4x8",
+    "bent over rows": "Bent over rows 4x10",
+    "bench press": "Bench press 4x8",
+    "landmine press": "Landmine press 4x10 por lado",
+    "assault bike": "Assault bike sprint 20s",
+    "heavy kb swings": "15 heavy KB swings",
+    "landmine snatch": "Landmine snatch 10 por lado",
+    "battle stance shuffle": "battle stance shuffle 20m",
+    "hip mobility": "hip mobility 10 mins",
+    "ankle mobility": "ankle mobility 8 mins",
+    "thoracic rotation": "thoracic rotation 10 por lado",
+    "stretching": "stretching 10 mins",
+    "breathing work": "breathing work 5 mins",
+    "glúteo medio": "glúteo medio con banda 15 por lado",
+    "hamstring walkouts": "Hamstring walkouts 15 reps",
+    "trap bar jumps": "Trap bar jumps 5x5",
+    "heavy kb clean": "Heavy KB clean 10 por lado",
+    "skips": "skips 3 mins",
+    "monster walks": "Monster walks 20 pasos",
+    "caminar suave o caminadora inclinada": "caminar suave o caminadora inclinada 30 mins",
+    "single leg glute bridge": "Single leg glute bridge 15 por lado",
+    "goblet squat explosivo": "Goblet squat explosivo 4x8",
+    "dumbbell jump squat": "Dumbbell jump squat 4x8",
+    "mountain climbers": "25 mountain climbers",
+    "aceleraciones": "aceleraciones 6x20m",
+    "acceleration drills": "acceleration drills 6x20m",
+    "barbell thrusters": "Barbell thrusters 4x8",
+    "bulgarian split squat pesado": "Bulgarian split squat pesado 4x8 por pierna",
+    "barbell rdl": "Barbell RDL 4x8",
+    "push press barra": "Push press barra 4x8",
+    "medball throws": "Medball throws 10 reps",
+    "adductor work": "adductor side plank 25s por lado",
+    "glute bridge unilateral": "Glute bridge unilateral 15 por lado"
+  };
+
+  const hasExerciseDetails = /\d|mins?|minutos?|reps?|rounds?|rondas?|vueltas?|bloques?|por lado|por pierna|pasos|pesad|suave|intensidad|descanso|ritmo|fc|tempo|estable|horas|litros/i.test(text);
 
   if (lower === "dead bug" || lower === "dead bugs" || /\bdead bugs\b/i.test(text)) {
-    return text.replace(/dead bugs?/i, "V-ups");
+    return text.replace(/dead bugs?/i, "20 V-ups");
   }
 
   if (lower === "battle ropes" || lower === "ropes") {
-    if (/functional|conditioning|cardio/i.test(block)) return "bike sprint";
-    return "high knees";
+    if (/functional|conditioning|cardio/i.test(block)) return "bike sprint 20s";
+    return "high knees 30s";
   }
 
   if (/\bpull ups asistidas\b/i.test(text)) {
-    return text.replace(/pull ups asistidas/i, "dumbbell rows");
+    return text.replace(/pull ups asistidas/i, "Dumbbell rows 4x10");
   }
 
   if (/\bpull ups\b/i.test(text)) {
-    return text.replace(/pull ups/i, /fuerza|strength|upper/i.test(block) ? "bent over rows" : "renegade rows");
+    return text.replace(/pull ups/i, /fuerza|strength|upper/i.test(block) ? "Bent over rows 4x10" : "Renegade rows 4x10");
+  }
+
+  if (!hasExerciseDetails && itemDetails[lower]) {
+    return itemDetails[lower];
+  }
+
+  if (!hasExerciseDetails && /mobility|movilidad/i.test(text)) {
+    return `${text} 10 mins`;
   }
 
   return item;
