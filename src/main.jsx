@@ -800,15 +800,22 @@ function App() {
                   </div>
                   <div className="blockActions">
                     {preventive && (
-                      <label className="roundSelector">
-                        <span>Rondas hechas</span>
-                        <select value={selectedRounds} onChange={(event) => updateRounds(current.day, block, event.target.value)}>
-                          <option value="">0</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                        </select>
-                      </label>
+                      <div className="roundSelector" aria-label="Rondas">
+                        <span>Rondas</span>
+                        <div className="roundBoxes">
+                          {[1, 2, 3].map((round) => (
+                            <button
+                              className={Number(selectedRounds) >= round ? "active" : ""}
+                              key={round}
+                              onClick={() => updateRounds(current.day, block, Number(selectedRounds) === round ? "" : String(round))}
+                              type="button"
+                              aria-label={`${round} ronda${round > 1 ? "s" : ""}`}
+                            >
+                              {round}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     )}
                     {blockCompletion && (
                       <button

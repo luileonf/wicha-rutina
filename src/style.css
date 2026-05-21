@@ -431,7 +431,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px 8px 14px;
+  padding: 8px 9px 8px 14px;
   background: var(--panel-deep);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -445,27 +445,38 @@ h1 {
   color: white;
 }
 
-.roundSelector select {
-  appearance: none;
+.roundBoxes {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.roundBoxes button {
+  width: 34px;
+  height: 34px;
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 10px;
-  padding: 8px 30px 8px 13px;
+  border-radius: 9px;
   color: white;
-  background:
-    linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
-    var(--panel-soft);
+  background: var(--panel-soft);
   cursor: pointer;
   font-weight: 900;
+  display: grid;
+  place-items: center;
 }
 
-.roundSelector select:focus {
+.roundBoxes button:hover {
+  border-color: rgba(255,255,255,.18);
+}
+
+.roundBoxes button.active {
+  background: var(--red);
+  border-color: rgba(255,255,255,.16);
+  color: white;
+  box-shadow: 0 8px 18px rgba(201, 34, 49, .22);
+}
+
+.roundBoxes button:focus {
   outline: 2px solid rgba(201, 34, 49, .72);
   outline-offset: 2px;
-}
-
-.roundSelector option {
-  background: var(--panel-deep);
-  color: white;
 }
 
 .completeBlockButton {
@@ -701,6 +712,10 @@ footer b {
   .roundSelector {
     width: 100%;
     justify-content: space-between;
+  }
+  .roundBoxes {
+    flex: 1;
+    justify-content: flex-end;
   }
   .completeBlockButton {
     justify-content: center;
