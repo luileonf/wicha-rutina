@@ -524,6 +524,7 @@ const trainingModes = [
   { id: "home", label: "Casa", icon: House },
   { id: "gym", label: "Gym", icon: Dumbbell }
 ];
+const weekDayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
 const months = [
   "Enero",
@@ -542,6 +543,7 @@ const months = [
 const today = new Date();
 const initialMonth = today.getMonth();
 const currentCalendarWeek = Math.min(5, Math.ceil(today.getDate() / 7));
+const initialDay = weekDayNames[today.getDay()];
 const initialWeek = routineWeeks[routineWeeks.length - 1].week;
 const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
 const availableWeeks = routineWeeks.map((routine) => routine.week);
@@ -625,7 +627,7 @@ function App() {
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
   const [selectedWeek, setSelectedWeek] = useState(initialWeek);
   const [selectedMode, setSelectedMode] = useState("gym");
-  const [selectedDay, setSelectedDay] = useState("Lunes");
+  const [selectedDay, setSelectedDay] = useState(initialDay);
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
