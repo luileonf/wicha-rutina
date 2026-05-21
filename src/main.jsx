@@ -752,6 +752,7 @@ function App() {
   const total = weekPlan.reduce((acc, day) => acc + (dayProgress(day.day)?.total ?? 0), 0);
   const completed = weekPlan.reduce((acc, day) => acc + (dayProgress(day.day)?.completed ?? 0), 0);
   const progress = Math.round((completed / total) * 100);
+  const completedDays = weekPlan.filter((day) => isDayComplete(day)).length;
   const Icon = current.icon;
 
   const toggleItem = (day, block, item) => {
@@ -865,8 +866,14 @@ function App() {
           </div>
         </div>
         <div className="progress">
-          <span>Progreso</span>
-          <strong>{progress}%</strong>
+          <span>Progreso semanal</span>
+          <div className="progressRing" style={{ "--progress": `${progress * 3.6}deg` }}>
+            <div>
+              <strong>{progress}%</strong>
+              <small>Completado</small>
+            </div>
+          </div>
+          <p>{completedDays} / {weekPlan.length} días completados</p>
           <div className="progressTrack">
             <div style={{ width: `${progress}%` }} />
           </div>
@@ -892,6 +899,12 @@ function App() {
         </header>
 
         <div className="intensity">Intensidad: <b>{current.intensity}</b></div>
+        <div className="dayStats" aria-label="Resumen del entrenamiento">
+          <div><Timer size={22} /><span>Duración</span><b>60-75 min</b></div>
+          <div><Flame size={22} /><span>Intensidad</span><b>{current.intensity}</b></div>
+          <div><Footprints size={22} /><span>Enfoque</span><b>{current.focus.split(" y ")[0]}</b></div>
+          <div><Dumbbell size={22} /><span>Modalidad</span><b>{selectedMode === "home" ? "Casa" : "Gym"}</b></div>
+        </div>
 
         <div className="blocks">
           {current.blocks.map((block, index) => {
