@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
-import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X } from "lucide-react";
+import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X, Star } from "lucide-react";
 import "./style.css";
 
 const weekThreeHomePlan = [
@@ -591,7 +591,8 @@ const mergePeriodProgress = (...progressItems) => {
     return {
       checked: { ...(merged.checked ?? {}), ...(progress.checked ?? {}) },
       roundsDone: { ...(merged.roundsDone ?? {}), ...(progress.roundsDone ?? {}) },
-      completedBlocks: { ...(merged.completedBlocks ?? {}), ...(progress.completedBlocks ?? {}) }
+      completedBlocks: { ...(merged.completedBlocks ?? {}), ...(progress.completedBlocks ?? {}) },
+      workoutTimes: { ...(merged.workoutTimes ?? {}), ...(progress.workoutTimes ?? {}) }
     };
   }, {});
 };
@@ -599,7 +600,8 @@ const mergePeriodProgress = (...progressItems) => {
 const hasProgress = (progress) => Boolean(
   Object.keys(progress.checked ?? {}).length ||
   Object.keys(progress.roundsDone ?? {}).length ||
-  Object.keys(progress.completedBlocks ?? {}).length
+  Object.keys(progress.completedBlocks ?? {}).length ||
+  Object.keys(progress.workoutTimes ?? {}).length
 );
 
 const loadAllProgress = () => {
@@ -638,20 +640,15 @@ const loadAllProgress = () => {
   }
 };
 
-function SoccerBallIcon() {
-  return (
-    <svg className="soccerBallIcon" viewBox="0 0 64 64" aria-hidden="true">
-      <circle cx="32" cy="32" r="27" />
-      <path d="M32 17 43 25 39 38H25L21 25 32 17Z" />
-      <path d="M32 17V8M21 25 11 21M43 25 53 21M25 38 18 49M39 38 46 49" />
-      <path d="M18 49A27 27 0 0 0 46 49M11 21A27 27 0 0 1 32 8A27 27 0 0 1 53 21" />
-    </svg>
-  );
-}
-
 const googleImageSearchUrl = (exercise) => {
   const cleanExercise = exercise.replace(/^\d+x?(\d+)?\s*/i, "").replace(/\s+—\s+.*/, "");
   return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${cleanExercise} exercise technique`)}`;
+};
+
+const formatDuration = (totalSeconds = 0) => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
 };
 
 function App() {
@@ -662,6 +659,8 @@ function App() {
   const [selectedDay, setSelectedDay] = useState(initialDay);
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerSeconds, setTimerSeconds] = useState(0);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
   const planForMode = (mode) => mode === "home" ? currentRoutine.homePlan : currentRoutine.gymPlan;
   const weekPlan = planForMode(selectedMode);
@@ -670,11 +669,29 @@ function App() {
   const checked = currentProgress.checked ?? {};
   const roundsDone = currentProgress.roundsDone ?? {};
   const completedBlocks = currentProgress.completedBlocks ?? {};
+  const workoutTimes = currentProgress.workoutTimes ?? {};
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay) ?? weekPlan[0], [selectedDay, weekPlan]);
+  const workoutTimeKey = `${selectedMode}-${current.day}`;
+  const savedWorkoutTime = workoutTimes[workoutTimeKey];
 
   useEffect(() => {
     window.localStorage.setItem(progressStorageKey, JSON.stringify(allProgress));
   }, [allProgress]);
+
+  useEffect(() => {
+    if (!timerRunning) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setTimerSeconds((seconds) => seconds + 1);
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [timerRunning]);
+
+  useEffect(() => {
+    setTimerRunning(false);
+    setTimerSeconds(0);
+  }, [periodKey, selectedMode, selectedDay]);
 
   const updatePeriodProgress = (updates) => {
     setAllProgress((prev) => {
@@ -685,6 +702,7 @@ function App() {
           checked: periodProgress.checked ?? {},
           roundsDone: periodProgress.roundsDone ?? {},
           completedBlocks: periodProgress.completedBlocks ?? {},
+          workoutTimes: periodProgress.workoutTimes ?? {},
           ...updates
         }
       };
@@ -803,6 +821,21 @@ function App() {
     updatePeriodProgress({ completedBlocks: { ...completedBlocks, [key]: !completedBlocks[key] } });
   };
 
+  const finishWorkoutTimer = () => {
+    if (!timerSeconds) return;
+
+    setTimerRunning(false);
+    updatePeriodProgress({
+      workoutTimes: {
+        ...workoutTimes,
+        [workoutTimeKey]: {
+          seconds: timerSeconds,
+          finishedAt: new Date().toISOString()
+        }
+      }
+    });
+  };
+
   return (
     <main className="app">
       <section className="hero">
@@ -897,8 +930,9 @@ function App() {
                   transition={{ duration: .35 }}
                 >
                   <span className="weekDayLabel">{dayShortNames[index] ?? dayLetters[index]}</span>
-                  <span className="weekDayStatus">{dayComplete ? <SoccerBallIcon /> : "-"}</span>
-                  {dayComplete && <span className="weekDayDone">✓</span>}
+                  <span className={dayComplete ? "weekDayStatus completeStatus" : "weekDayStatus"}>
+                    {dayComplete ? <Star className="weekStarIcon" size={30} /> : "-"}
+                  </span>
                 </motion.button>
               );
             })}
@@ -949,6 +983,30 @@ function App() {
           <div><Flame size={22} /><span>Intensidad</span><b>{current.intensity}</b></div>
           <div><Footprints size={22} /><span>Enfoque</span><b>{current.focus.split(" y ")[0]}</b></div>
           <div><Dumbbell size={22} /><span>Modalidad</span><b>{selectedMode === "home" ? "Casa" : "Gym"}</b></div>
+        </div>
+
+        <div className="workoutTimer" aria-label="Cronómetro del entrenamiento">
+          <div>
+            <span>Cronómetro</span>
+            <strong>{formatDuration(timerSeconds)}</strong>
+            <small>
+              {savedWorkoutTime ? `Último registro: ${formatDuration(savedWorkoutTime.seconds)}` : "Sin registro todavía"}
+            </small>
+          </div>
+          <div className="timerActions">
+            <button className="timerPrimary" onClick={() => setTimerRunning((running) => !running)} type="button">
+              {timerRunning ? "Pausar" : timerSeconds ? "Continuar" : "Iniciar"}
+            </button>
+            <button onClick={finishWorkoutTimer} type="button" disabled={!timerSeconds}>
+              Finalizar
+            </button>
+            <button onClick={() => {
+              setTimerRunning(false);
+              setTimerSeconds(0);
+            }} type="button" disabled={!timerSeconds}>
+              Reiniciar
+            </button>
+          </div>
         </div>
 
         <div className="blocksHeading">
