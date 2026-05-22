@@ -284,15 +284,7 @@ h1 {
 }
 
 .weekChecks button.current::after {
-  content: "";
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--red);
-  transform: translateX(-50%);
+  display: none;
 }
 
 .weekDayLabel {
@@ -459,30 +451,6 @@ h1 {
   border-radius: inherit;
 }
 
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
-  margin: 24px 0 18px;
-}
-
-.days button {
-  border-radius: 16px;
-  padding: 20px 10px;
-  font-weight: 900;
-  color: white;
-  background: var(--panel-soft);
-  border: 1px solid var(--border-soft);
-  cursor: pointer;
-}
-
-.days button.active {
-  background: linear-gradient(180deg, rgba(255, 51, 70, .25), rgba(255, 51, 70, .08));
-  border-color: rgba(255, 255, 255, .12);
-  color: white;
-  box-shadow: 0 10px 24px rgba(201, 34, 49, .24), inset 0 1px 0 rgba(255,255,255,.08);
-}
-
 .card {
   background:
     linear-gradient(180deg, rgba(18, 24, 34, .82), rgba(12, 16, 24, .88)),
@@ -492,6 +460,7 @@ h1 {
   overflow: hidden;
   box-shadow: 0 24px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.05);
   backdrop-filter: blur(16px);
+  margin-top: 24px;
 }
 
 .dayHeader {
@@ -1024,9 +993,6 @@ footer b {
   }
   .weekChecks button {
     min-height: 74px;
-  }
-  .days {
-    grid-template-columns: repeat(2, 1fr);
   }
   .dayHeader {
     align-items: flex-start;

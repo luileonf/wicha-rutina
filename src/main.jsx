@@ -4,6 +4,170 @@ import { motion } from "framer-motion";
 import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X, Star, Lock } from "lucide-react";
 import "./style.css";
 
+const weekOneHomePlan = [
+  {
+    day: "Lunes",
+    title: "Pierna técnica + base aeróbica",
+    focus: "Activación, estabilidad y resistencia suave",
+    intensity: "Baja-media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Calentamiento", items: ["Movilidad de cadera 2 min", "Activación de glúteos 2 x 15", "Sentadillas sin peso 2 x 12", "Caminata lateral con banda 2 x 12 por lado"] },
+      { name: "Fuerza base", items: ["Sentadilla controlada 3 x 12", "Puente de glúteo 3 x 15", "Zancadas atrás 3 x 10 por pierna", "Peso muerto a una pierna sin peso 3 x 10 por pierna"] },
+      { name: "Cardio base", items: ["Trote suave o caminata rápida 18-20 min", "Ritmo cómodo, sin exigirse al máximo"] },
+      { name: "Core", items: ["Plancha frontal 3 x 25 seg", "V-ups 3 x 10 por lado", "Crunch controlado 3 x 12"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body + core",
+    focus: "Tren superior, postura y estabilidad",
+    intensity: "Baja-media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Calentamiento", items: ["Movilidad de hombros 2 min", "Círculos de brazos 2 x 15", "Plancha alta con toque de hombros 2 x 10"] },
+      { name: "Tren superior", items: ["Push ups inclinadas o normales 3 x 8-10", "Remo con banda o mochila 3 x 12", "Fondos en silla 3 x 10", "Shoulder taps 3 x 16"] },
+      { name: "Core", items: ["V-ups 3 x 12", "Hollow hold 3 x 20 seg", "Russian twists 3 x 20", "Plancha lateral 2 x 20 seg por lado"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Cardio suave + movilidad",
+    focus: "Recuperación activa y capacidad aeróbica",
+    intensity: "Baja",
+    icon: Footprints,
+    blocks: [
+      { name: "Cardio", items: ["Caminata rápida o trote suave 25-30 min"] },
+      { name: "Movilidad", items: ["Cadera 3 min", "Isquios 3 min", "Cuádriceps 3 min", "Tobillos 2 min", "Espalda baja 2 min"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Pierna unilateral + estabilidad",
+    focus: "Control corporal y prevención de lesiones",
+    intensity: "Media",
+    icon: Flame,
+    blocks: [
+      { name: "Activación", items: ["Monster walks 2 x 12", "Puente de glúteo 2 x 15", "Sentadilla pausada 2 x 10"] },
+      { name: "Fuerza unilateral", items: ["Bulgarian split squat 3 x 8 por pierna", "Step ups 3 x 10 por pierna", "Peso muerto a una pierna 3 x 10", "Wall sit 3 x 30 seg"] },
+      { name: "Core + estabilidad", items: ["Plancha frontal 3 x 30 seg", "Bird dog 3 x 10 por lado", "Balance a una pierna 3 x 25 seg por pierna"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body funcional",
+    focus: "Fuerza general y coordinación",
+    intensity: "Media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Circuito funcional", items: ["3 rondas", "Sentadilla 12 reps", "Push ups 8-10 reps", "Zancadas alternas 10 por pierna", "Mountain climbers 30 seg", "Plancha 30 seg"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Técnica de carrera + fútbol",
+    focus: "Coordinación, ritmo y toque de balón",
+    intensity: "Baja-media",
+    icon: Timer,
+    blocks: [
+      { name: "Técnica de carrera", items: ["Skipping bajo 3 x 20 seg", "Talones al glúteo 3 x 20 seg", "Desplazamientos laterales 3 x 20 seg", "Cambios de dirección suaves 4 x 10 m"] },
+      { name: "Balón", items: ["Conducción libre 8 min", "Pases contra pared 4 x 1 min", "Control orientado 4 x 1 min", "Finalizaciones suaves o golpeo técnico 10 min"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Descanso activo",
+    focus: "Recuperación, movilidad y bienestar",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recuperación", items: ["Caminata suave 15-20 min", "Movilidad general 10 min", "Respiración / estiramiento suave 5 min"] }
+    ]
+  }
+];
+
+const weekOneGymPlan = [
+  {
+    day: "Lunes",
+    title: "Pierna técnica + base aeróbica",
+    focus: "Activación, estabilidad y resistencia suave",
+    intensity: "Baja-media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Calentamiento", items: ["Movilidad de cadera 2 min", "Activación de glúteos 2 x 15", "Sentadillas sin peso 2 x 12", "Caminata lateral con banda 2 x 12 por lado"] },
+      { name: "Fuerza base", items: ["Sentadilla goblet 3 x 12", "Hip thrust ligero 3 x 12", "Prensa ligera 3 x 12", "Peso muerto rumano ligero 3 x 10"] },
+      { name: "Cardio base", items: ["Trote suave o caminata rápida 18-20 min", "Ritmo cómodo, sin exigirse al máximo"] },
+      { name: "Core", items: ["Plancha frontal 3 x 25 seg", "V-ups 3 x 10 por lado", "Crunch controlado 3 x 12"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body + core",
+    focus: "Tren superior, postura y estabilidad",
+    intensity: "Baja-media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Calentamiento", items: ["Movilidad de hombros 2 min", "Círculos de brazos 2 x 15", "Plancha alta con toque de hombros 2 x 10"] },
+      { name: "Tren superior", items: ["Press pecho con mancuernas 3 x 10", "Jalón al pecho 3 x 12", "Remo sentado 3 x 12", "Press hombro con mancuernas 3 x 10"] },
+      { name: "Core", items: ["V-ups 3 x 12", "Hollow hold 3 x 20 seg", "Russian twists 3 x 20", "Plancha lateral 2 x 20 seg por lado"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Cardio suave + movilidad",
+    focus: "Recuperación activa y capacidad aeróbica",
+    intensity: "Baja",
+    icon: Footprints,
+    blocks: [
+      { name: "Cardio", items: ["Caminadora, bicicleta o elíptica 25-30 min"] },
+      { name: "Movilidad", items: ["Cadera 3 min", "Isquios 3 min", "Cuádriceps 3 min", "Tobillos 2 min", "Espalda baja 2 min"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Pierna unilateral + estabilidad",
+    focus: "Control corporal y prevención de lesiones",
+    intensity: "Media",
+    icon: Flame,
+    blocks: [
+      { name: "Activación", items: ["Monster walks 2 x 12", "Puente de glúteo 2 x 15", "Sentadilla pausada 2 x 10"] },
+      { name: "Fuerza unilateral", items: ["Bulgarian split squat con mancuernas 3 x 8 por pierna", "Step ups con mancuernas 3 x 10 por pierna", "Curl femoral 3 x 12", "Extensión de cuádriceps 3 x 12"] },
+      { name: "Core + estabilidad", items: ["Plancha frontal 3 x 30 seg", "Bird dog 3 x 10 por lado", "Balance a una pierna 3 x 25 seg por pierna"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body funcional",
+    focus: "Fuerza general y coordinación",
+    intensity: "Media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Circuito funcional", items: ["3 rondas", "Goblet squat 12 reps", "Press pecho 10 reps", "Remo con mancuerna 10 por lado", "Peso muerto rumano 10 reps", "Plancha 30 seg"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Técnica de carrera + fútbol",
+    focus: "Coordinación, ritmo y toque de balón",
+    intensity: "Baja-media",
+    icon: Timer,
+    blocks: [
+      { name: "Técnica de carrera", items: ["Skipping bajo 3 x 20 seg", "Talones al glúteo 3 x 20 seg", "Desplazamientos laterales 3 x 20 seg", "Cambios de dirección suaves 4 x 10 m"] },
+      { name: "Balón", items: ["Conducción libre 8 min", "Pases contra pared 4 x 1 min", "Control orientado 4 x 1 min", "Finalizaciones suaves o golpeo técnico 10 min"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Descanso activo",
+    focus: "Recuperación, movilidad y bienestar",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recuperación", items: ["Caminata suave 15-20 min", "Movilidad general 10 min", "Respiración / estiramiento suave 5 min"] }
+    ]
+  }
+];
+
 const weekTwoHomePlan = [
   {
     day: "Lunes",
@@ -705,6 +869,13 @@ const normalizePlan = (plan) => {
 
 const routineWeeks = [
   {
+    week: 1,
+    label: "Adaptación + técnica base",
+    objective: "Objetivo: activar el cuerpo, mejorar técnica de movimiento, preparar articulaciones y crear base cardiovascular sin cargar demasiado.",
+    homePlan: normalizePlan(weekOneHomePlan),
+    gymPlan: normalizePlan(weekOneGymPlan)
+  },
+  {
     week: 2,
     label: "Base de fuerza + acondicionamiento",
     objective: "Objetivo: aumentar ligeramente la carga, mejorar fuerza funcional, trabajar estabilidad y empezar con intermitentes suaves en formato controlado.",
@@ -749,7 +920,16 @@ const months = [
 ];
 const today = new Date();
 const initialMonth = today.getMonth();
-const currentCalendarWeek = Math.min(5, Math.ceil(today.getDate() / 7));
+const currentTrainingWeekOfMonth = (date) => {
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  const firstMondayOffset = (8 - firstDay.getDay()) % 7;
+  const firstMondayDate = 1 + firstMondayOffset;
+  const dayOfMonth = date.getDate();
+
+  if (dayOfMonth < firstMondayDate) return 1;
+  return Math.min(5, Math.floor((dayOfMonth - firstMondayDate) / 7) + 1);
+};
+const currentCalendarWeek = currentTrainingWeekOfMonth(today);
 const initialDay = weekDayNames[today.getDay()];
 const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
 const availableWeeks = routineWeeks.map((routine) => routine.week);
@@ -1143,14 +1323,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      <nav className="days">
-        {weekPlan.map((day) => (
-          <button key={day.day} onClick={() => setSelectedDay(day.day)} className={selectedDay === day.day ? "active" : ""}>
-            {day.day}
-          </button>
-        ))}
-      </nav>
 
       <motion.section key={current.day} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card">
         <header className="dayHeader">
