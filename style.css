@@ -1,19 +1,20 @@
 :root {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: white;
-  background: #090d12;
-  --bg: #08090d;
-  --panel: #11141b;
-  --panel-soft: #181c25;
-  --panel-deep: #0c1016;
-  --border: #2b313d;
-  --border-soft: #202733;
+  background: #04070c;
+  --bg: #05070d;
+  --panel: rgba(17, 22, 32, .78);
+  --panel-soft: rgba(23, 29, 41, .78);
+  --panel-deep: rgba(7, 11, 17, .86);
+  --border: rgba(120, 137, 165, .18);
+  --border-soft: rgba(120, 137, 165, .12);
   --text-soft: #c7ccd6;
   --muted: #969daa;
-  --red: #c92231;
-  --red-deep: #8f1422;
-  --blue: #1f6feb;
+  --red: #ff3346;
+  --red-deep: #b7192c;
+  --blue: #3d98ff;
   --blue-deep: #0b2f66;
+  --green: #32e078;
 }
 
 * { box-sizing: border-box; }
@@ -21,9 +22,10 @@
 body {
   margin: 0;
   background:
-    radial-gradient(circle at top left, rgba(201, 34, 49, .16) 0, rgba(201, 34, 49, 0) 34%),
-    radial-gradient(circle at top right, rgba(31, 111, 235, .09) 0, rgba(31, 111, 235, 0) 30%),
-    linear-gradient(180deg, #0b0d12 0%, var(--bg) 72%);
+    radial-gradient(circle at 8% 10%, rgba(255, 51, 70, .18) 0, rgba(255, 51, 70, 0) 28%),
+    radial-gradient(circle at 94% 88%, rgba(255, 51, 70, .12) 0, rgba(255, 51, 70, 0) 26%),
+    linear-gradient(180deg, #050912 0%, var(--bg) 72%);
+  background-attachment: fixed;
 }
 
 button {
@@ -36,8 +38,8 @@ select {
 
 .app {
   min-height: 100vh;
-  padding: 24px;
-  max-width: 1100px;
+  padding: 34px 24px 28px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -47,15 +49,17 @@ select {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: 28px;
+  gap: 34px;
   background:
-    linear-gradient(135deg, rgba(201, 34, 49, .16), rgba(17, 20, 27, .98) 44%, rgba(12, 16, 22, .96)),
+    radial-gradient(circle at 0 0, rgba(255, 51, 70, .16), transparent 34%),
+    linear-gradient(130deg, rgba(12, 16, 25, .94), rgba(7, 10, 17, .96)),
     var(--panel);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 28px;
+  padding: 34px 36px 36px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.05);
+  box-shadow: 0 28px 90px rgba(0,0,0,.46), inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter: blur(18px);
 }
 
 .hero::before {
@@ -73,22 +77,46 @@ select {
 .eyebrow {
   width: fit-content;
   color: white;
-  font-weight: 800;
+  font-weight: 950;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  background: rgba(201, 34, 49, .18);
-  border: 1px solid rgba(201, 34, 49, .42);
+  gap: 0;
+  padding: 0;
+  background: rgba(5, 9, 14, .72);
+  border: 1px solid rgba(255, 255, 255, .14);
   border-radius: 999px;
-  box-shadow: none;
+  box-shadow: 0 0 34px rgba(255, 51, 70, .14);
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.eyebrowWeek,
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+.eyebrowWeek {
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 51, 70, .17);
+  border-right: 1px solid rgba(255, 255, 255, .1);
+}
+
+.eyebrowLabel {
+  padding: 10px 18px;
+  color: var(--text-soft);
+  font-size: 13px;
+  letter-spacing: .02em;
 }
 
 h1 {
-  font-size: clamp(34px, 6vw, 58px);
+  font-size: clamp(40px, 6vw, 66px);
   line-height: .95;
-  margin: 18px 0 14px;
-  max-width: 650px;
+  margin: 26px 0 18px;
+  max-width: 700px;
+  letter-spacing: -1px;
 }
 
 .hero p, .dayHeader p, footer {
@@ -97,15 +125,15 @@ h1 {
 
 .hero p {
   max-width: 680px;
-  font-size: 18px;
-  line-height: 1.45;
+  font-size: 20px;
+  line-height: 1.55;
 }
 
 .periodPicker {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 14px;
+  margin-top: 28px;
 }
 
 .periodPicker label {
@@ -113,13 +141,14 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 10px 9px 13px;
+  padding: 10px 12px 10px 16px;
   background: var(--panel-deep);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 .periodPicker span {
@@ -131,10 +160,10 @@ h1 {
 }
 
 .selectButton {
-  min-width: 128px;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 9px;
-  padding: 10px 36px 10px 14px;
+  min-width: 136px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: 12px 40px 12px 16px;
   color: white;
   background:
     linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
@@ -180,44 +209,192 @@ h1 {
   color: white;
 }
 
+.modePicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modePicker button {
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-deep);
+  color: var(--muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.modePicker button:hover {
+  color: white;
+  border-color: rgba(255,255,255,.18);
+  transform: translateY(-1px);
+}
+
+.modePicker button.active {
+  background: linear-gradient(135deg, #ff4a57, #c9182d);
+  border-color: rgba(255,255,255,.16);
+  color: white;
+  box-shadow: 0 12px 30px rgba(201, 34, 49, .22);
+}
+
 .weekChecks {
-  display: flex;
-  gap: 8px;
-  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(76px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  max-width: 720px;
 }
 
 .weekChecks button {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  position: relative;
+  min-height: 86px;
+  width: 100%;
+  border-radius: 14px;
   border: 1px solid var(--border);
   background: var(--panel-deep);
   color: var(--muted);
   cursor: pointer;
   font-weight: 950;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.weekChecks button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, .18);
 }
 
 .weekChecks button.current {
-  border-color: rgba(201, 34, 49, .72);
+  border-color: rgba(255, 51, 70, .85);
+  color: white;
+  background: linear-gradient(180deg, rgba(255, 51, 70, .2), rgba(7, 11, 17, .9));
+  box-shadow: 0 12px 28px rgba(255, 51, 70, .12);
+}
+
+.weekChecks button.current::after {
+  content: "";
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--red);
+  transform: translateX(-50%);
+}
+
+.weekDayLabel {
+  color: var(--muted);
+  font-size: 17px;
+  letter-spacing: .02em;
+  font-weight: 950;
+}
+
+.weekDayStatus {
+  color: var(--text-soft);
+  font-size: 24px;
+  line-height: 1;
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.weekCheckMark {
+  color: var(--green);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.completeStatus {
+  min-width: 58px;
+}
+
+.weekChecks button.current .weekDayLabel {
   color: white;
 }
 
 .weekChecks button.complete {
-  background: #40f06f;
-  border-color: rgba(255, 255, 255, .12);
-  color: #071109;
-  box-shadow: 0 10px 24px rgba(64, 240, 111, .28);
+  background: linear-gradient(180deg, rgba(50, 224, 120, .18), rgba(50, 224, 120, .07));
+  border-color: rgba(50, 224, 120, .52);
+  color: var(--green);
+  box-shadow: 0 10px 24px rgba(50, 224, 120, .18);
   animation: completePulse .42s ease-out;
 }
 
+.weekChecks button.complete::after {
+  display: none;
+}
+
+.weekChecks button.complete .weekDayLabel {
+  color: rgba(50, 224, 120, .9);
+}
+
 .soccerBallIcon {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   fill: none;
-  stroke: #071109;
+  stroke: var(--green);
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.weekLegend {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 22px;
+  row-gap: 10px;
+  margin-top: 14px;
+  color: var(--text-soft);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.weekLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.legendDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.completeDot {
+  background: var(--green);
+}
+
+.trainingDot {
+  background: var(--blue);
+}
+
+.pendingDot {
+  background: var(--muted);
+  opacity: .55;
+}
+
+.restIcon {
+  width: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text-soft);
+  display: inline-block;
 }
 
 @keyframes completePulse {
@@ -232,34 +409,77 @@ h1 {
 .progress {
   position: relative;
   display: grid;
+  justify-items: center;
   align-content: center;
-  min-width: 190px;
-  padding: 22px;
-  text-align: left;
-  background: rgba(8, 9, 13, .72);
-  border: 1px solid var(--border-soft);
-  border-radius: 16px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  min-width: 270px;
+  padding: 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(255, 51, 70, .12), transparent 34%),
+    rgba(12, 16, 25, .84);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 20px 56px rgba(0,0,0,.3);
 }
 
 .progress span {
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   text-transform: uppercase;
+  justify-self: start;
 }
 
 .progress strong {
   display: block;
   color: white;
-  font-size: 54px;
+  font-size: 48px;
   line-height: 1;
-  margin: 8px 0 14px;
+  margin: 0 0 6px;
   text-shadow: none;
+}
+
+.progress small,
+.progress p {
+  color: var(--text-soft);
+}
+
+.progress p {
+  margin: 16px 0 0;
+  font-weight: 800;
+}
+
+.progressRing {
+  width: 158px;
+  height: 158px;
+  margin: 22px auto 10px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--red) var(--progress), rgba(255,255,255,.1) 0);
+  box-shadow: 0 0 34px rgba(255, 51, 70, .16);
+}
+
+.progressRing::before {
+  content: "";
+  position: absolute;
+}
+
+.progressRing > div {
+  width: 122px;
+  height: 122px;
+  border-radius: 50%;
+  background: #090d14;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  box-shadow: inset 0 0 24px rgba(0,0,0,.42);
 }
 
 .progressTrack {
   height: 9px;
+  width: 100%;
+  margin-top: 14px;
   background: rgba(255,255,255,.12);
   border-radius: 999px;
   overflow: hidden;
@@ -268,20 +488,20 @@ h1 {
 .progressTrack div {
   height: 100%;
   min-width: 8px;
-  background: var(--red);
+  background: linear-gradient(90deg, var(--red), #ff6672);
   border-radius: inherit;
 }
 
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  margin: 20px 0;
+  gap: 12px;
+  margin: 24px 0 18px;
 }
 
 .days button {
-  border-radius: 12px;
-  padding: 18px 10px;
+  border-radius: 16px;
+  padding: 20px 10px;
   font-weight: 900;
   color: white;
   background: var(--panel-soft);
@@ -290,32 +510,36 @@ h1 {
 }
 
 .days button.active {
-  background: var(--red);
+  background: linear-gradient(180deg, rgba(255, 51, 70, .25), rgba(255, 51, 70, .08));
   border-color: rgba(255, 255, 255, .12);
   color: white;
-  box-shadow: 0 10px 24px rgba(201, 34, 49, .24);
+  box-shadow: 0 10px 24px rgba(201, 34, 49, .24), inset 0 1px 0 rgba(255,255,255,.08);
 }
 
 .card {
-  background: var(--panel);
+  background:
+    linear-gradient(180deg, rgba(18, 24, 34, .82), rgba(12, 16, 24, .88)),
+    var(--panel);
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 24px;
   overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter: blur(16px);
 }
 
 .dayHeader {
   display: flex;
   gap: 18px;
   align-items: center;
-  padding: 28px;
-  border-bottom: 1px solid #242b36;
+  padding: 32px;
+  border-bottom: 1px solid rgba(120, 137, 165, .1);
 }
 
 .icon {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: var(--red);
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ff4858, #c9182d);
   color: white;
   display: grid;
   place-items: center;
@@ -329,7 +553,7 @@ h1 {
 
 .dayHeader h2 {
   margin: 4px 0;
-  font-size: clamp(26px, 4vw, 42px);
+  font-size: clamp(30px, 4vw, 46px);
 }
 
 .dayHeader p {
@@ -337,11 +561,11 @@ h1 {
 }
 
 .intensity {
-  margin: 22px 28px 0;
+  margin: 26px 32px 0;
   display: inline-block;
   padding: 10px 16px;
-  background: rgba(201, 34, 49, .12);
-  border: 1px solid rgba(201, 34, 49, .3);
+  background: rgba(255, 51, 70, .09);
+  border: 1px solid rgba(255, 51, 70, .34);
   border-radius: 999px;
   color: #d6d9df;
 }
@@ -350,17 +574,142 @@ h1 {
   color: #ff6874;
 }
 
-.blocks {
-  padding: 22px;
+.dayStats {
   display: grid;
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 22px 32px 0;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(12, 17, 26, .8), rgba(7, 11, 17, .62));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.dayStats div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: center;
+  padding: 0 16px;
+  border-right: 1px solid rgba(120, 137, 165, .12);
+}
+
+.dayStats div:last-child {
+  border-right: 0;
+}
+
+.dayStats svg {
+  grid-row: span 2;
+  color: var(--red);
+}
+
+.dayStats span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dayStats b {
+  color: white;
+  font-size: 15px;
+}
+
+.workoutTimer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 22px 32px 0;
+  padding: 18px;
+  border: 1px solid rgba(255, 51, 70, .28);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 51, 70, .18), transparent 34%),
+    linear-gradient(180deg, rgba(12, 17, 26, .88), rgba(7, 11, 17, .72));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.workoutTimer span {
+  color: var(--muted);
+  display: block;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.workoutTimer strong {
+  display: block;
+  margin-top: 4px;
+  color: white;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1;
+}
+
+.workoutTimer small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-soft);
+  font-weight: 800;
+}
+
+.timerActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.timerActions button {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--panel-deep);
+  color: white;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.timerActions button:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, .18);
+}
+
+.timerActions button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
+
+.timerActions .timerPrimary {
+  background: linear-gradient(135deg, #ff4a57, #c9182d);
+  border-color: rgba(255,255,255,.14);
+  box-shadow: 0 10px 24px rgba(201, 34, 49, .2);
+}
+
+.blocksHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 26px 32px 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.blocks {
+  padding: 14px 32px 32px;
+  display: grid;
+  gap: 18px;
 }
 
 .block {
-  background: var(--panel-soft);
+  background: rgba(8, 12, 19, .66);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: inset 3px 0 0 rgba(255, 51, 70, .62);
 }
 
 .blockComplete {
@@ -385,7 +734,7 @@ h1 {
 
 .block h3 {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .blockInstructions {
@@ -399,7 +748,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px 8px 14px;
+  padding: 8px 9px 8px 14px;
   background: var(--panel-deep);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -413,27 +762,38 @@ h1 {
   color: white;
 }
 
-.roundSelector select {
-  appearance: none;
+.roundBoxes {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.roundBoxes button {
+  width: 34px;
+  height: 34px;
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 10px;
-  padding: 8px 30px 8px 13px;
+  border-radius: 9px;
   color: white;
-  background:
-    linear-gradient(45deg, transparent 50%, white 50%) right 12px center / 6px 6px no-repeat,
-    var(--panel-soft);
+  background: var(--panel-soft);
   cursor: pointer;
   font-weight: 900;
+  display: grid;
+  place-items: center;
 }
 
-.roundSelector select:focus {
+.roundBoxes button:hover {
+  border-color: rgba(255,255,255,.18);
+}
+
+.roundBoxes button.active {
+  background: var(--red);
+  border-color: rgba(255,255,255,.16);
+  color: white;
+  box-shadow: 0 8px 18px rgba(201, 34, 49, .22);
+}
+
+.roundBoxes button:focus {
   outline: 2px solid rgba(201, 34, 49, .72);
   outline-offset: 2px;
-}
-
-.roundSelector option {
-  background: var(--panel-deep);
-  color: white;
 }
 
 .completeBlockButton {
@@ -479,9 +839,9 @@ h1 {
   border: 1px solid transparent;
   width: 100%;
   text-align: left;
-  border-radius: 12px;
-  padding: 14px;
-  background: var(--panel-deep);
+  border-radius: 14px;
+  padding: 16px;
+  background: rgba(5, 9, 14, .88);
   color: #e5e7eb;
   display: flex;
   gap: 12px;
@@ -495,10 +855,10 @@ h1 {
 }
 
 .item.done {
-  background: var(--red-deep);
+  background: rgba(50, 224, 120, .12);
   color: white;
   text-decoration: line-through;
-  border-color: rgba(255, 255, 255, .08);
+  border-color: rgba(50, 224, 120, .28);
 }
 
 .item.done svg {
@@ -629,7 +989,8 @@ footer b {
   .app { padding: 14px; }
   .hero {
     flex-direction: column;
-    padding: 28px;
+    padding: 24px;
+    border-radius: 22px;
   }
   .hero::after {
     right: -18px;
@@ -642,14 +1003,70 @@ footer b {
     min-width: 0;
     width: 100%;
   }
+  h1 {
+    font-size: clamp(38px, 13vw, 56px);
+    letter-spacing: -0.5px;
+  }
+  .hero p {
+    font-size: 17px;
+  }
   .periodPicker,
   .periodPicker label,
+  .modePicker,
+  .modePicker button,
   .customSelect,
   .selectButton {
     width: 100%;
   }
   .periodPicker label {
     justify-content: space-between;
+  }
+  .modePicker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .weekChecks {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .weekChecks button {
+    min-height: 74px;
+  }
+  .days {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dayHeader {
+    align-items: flex-start;
+    padding: 24px;
+  }
+  .dayStats {
+    grid-template-columns: 1fr;
+    margin: 18px 22px 0;
+    padding: 0;
+  }
+  .dayStats div {
+    padding: 14px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(120, 137, 165, .12);
+  }
+  .dayStats div:last-child {
+    border-bottom: 0;
+  }
+  .workoutTimer {
+    align-items: stretch;
+    flex-direction: column;
+    margin: 18px 22px 0;
+  }
+  .timerActions {
+    justify-content: stretch;
+  }
+  .timerActions button {
+    flex: 1 1 100px;
+  }
+  .blocksHeading {
+    margin: 22px 20px 0;
+  }
+  .blocks {
+    padding: 20px;
   }
   .blockHeader {
     align-items: flex-start;
@@ -664,6 +1081,10 @@ footer b {
     width: 100%;
     justify-content: space-between;
   }
+  .roundBoxes {
+    flex: 1;
+    justify-content: flex-end;
+  }
   .completeBlockButton {
     justify-content: center;
     width: 100%;
@@ -674,6 +1095,4 @@ footer b {
   .exerciseImagePlaceholder {
     min-height: 280px;
   }
-  .days { grid-template-columns: repeat(2, 1fr); }
-  .dayHeader { align-items: flex-start; }
 }

@@ -1,165 +1,71 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
-import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, Image, Maximize2, X } from "lucide-react";
+import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X } from "lucide-react";
 import "./style.css";
 
-const weekOnePlan = [
+const weekThreeHomePlan = [
   {
     day: "Lunes",
-    title: "Fuerza pierna + intermitentes",
-    focus: "Pierna, fuerza base y resistencia específica",
+    title: "Lower body strength + intermitentes",
+    focus: "Fuerza pierna, estabilidad y capacidad anaeróbica",
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Preventivos antes de calentar", items: ["3 rondas", "Copenhagen plank — 20s por lado", "Single leg RDL — 10 por pierna", "Monster walks — 15 pasos", "Pogos — 20 reps", "Nordic asistido — 5 reps"] },
-      { name: "Zona media dinámica", items: ["12 minutos", "3 vueltas", "30s plancha", "20 mountain climbers", "15 russian twists", "15 dead bugs", "20 toe touches"] },
-      { name: "Fuerza pierna", items: ["4x10 back squat", "4x10 hip thrust", "4x10 Bulgarian split squat", "4x10 peso muerto rumano", "Descanso: 60-90s"] },
-      { name: "Intermitentes 10x10", items: ["6 minutos total", "10s fuerte + 10s suave", "Intensidad: 80%"] },
-      { name: "Finalizador", items: ["3 rounds", "15 jump squats", "12 burpees", "20 walking lunges", "200m run"] }
-    ]
-  },
-  {
-    day: "Martes",
-    title: "Upper + functional",
-    focus: "Tren superior, core y acondicionamiento",
-    intensity: "Media",
-    icon: HeartPulse,
-    blocks: [
-      { name: "Preventivos ligeros", items: ["2 rondas suaves", "Control y técnica, sin fatigar pierna"] },
-      { name: "Zona media", items: ["10 minutos", "Core dinámico y estabilidad"] },
-      { name: "Fuerza upper", items: ["4x10 push press", "4x10 remo mancuerna", "4x10 push ups", "4x10 jalón o pull ups asistidas", "Shoulder taps"] },
-      { name: "Functional 20x10", items: ["4 vueltas", "Bike", "KB swings", "Battle ropes", "Box jumps", "Dumbbell snatch", "Descanso: 90s entre vueltas"] },
-      { name: "Cardio suave final", items: ["10 minutos caminadora inclinada o bicicleta"] }
-    ]
-  },
-  {
-    day: "Miércoles",
-    title: "Carrera aeróbica + recovery",
-    focus: "Quemar grasa sin destruir músculo",
-    intensity: "Baja-media",
-    icon: Footprints,
-    blocks: [
-      { name: "Movilidad completa", items: ["10 minutos", "Cadera, tobillo, isquios, espalda baja"] },
-      { name: "Carrera continua", items: ["30-40 minutos suave", "Ritmo cómodo: debes poder hablar"] },
-      { name: "Core ligero", items: ["3 vueltas", "Plancha lateral", "Bird dogs", "Hollow hold", "Glute bridge"] },
-      { name: "Recovery", items: ["Foam roller", "Estiramientos", "Descarga de piernas"] }
-    ]
-  },
-  {
-    day: "Jueves",
-    title: "Potencia + HIIT fútbol",
-    focus: "Explosividad, cambios de dirección y alta intensidad",
-    intensity: "Alta",
-    icon: Flame,
-    blocks: [
-      { name: "Preventivos", items: ["3 rondas", "Rodilla, aductor, glúteo medio y tobillo"] },
-      { name: "Zona media dinámica", items: ["12 minutos", "Core activo antes del bloque fuerte"] },
-      { name: "Potencia", items: ["4 rounds", "8 squat jumps", "8 bounds", "10 saltos laterales", "Sprint 20m"] },
-      { name: "Circuito fútbol", items: ["5 rounds", "Sprint 20m", "Shuffle lateral", "Backpedal", "Sprint 20m", "10 burpees", "10 swings", "Descanso: 1 min"] },
-      { name: "Intermitentes 10x10", items: ["6 minutos", "10s fuerte + 10s suave", "Intensidad: 90%"] }
-    ]
-  },
-  {
-    day: "Viernes",
-    title: "Full body functional",
-    focus: "Fuerza total + gasto calórico",
-    intensity: "Media-alta",
-    icon: Dumbbell,
-    blocks: [
-      { name: "Preventivos", items: ["2 rondas", "Activación ligera"] },
-      { name: "Fuerza full body", items: ["4x8-10 deadlift", "4x8-10 thrusters", "4x8-10 pull ups asistidas", "4x8-10 step ups pesados", "4x8-10 push press"] },
-      { name: "Conditioning 20x10", items: ["4 vueltas", "Bike", "Jump lunges", "KB clean", "Burpees", "Plank shoulder taps"] },
-      { name: "Core", items: ["3 vueltas", "V-ups", "Russian twists", "Dead bug", "Plancha"] }
-    ]
-  },
-  {
-    day: "Sábado",
-    title: "Running específico fútbol",
-    focus: "Cambios de ritmo, técnica y resistencia de partido",
-    intensity: "Media-alta",
-    icon: Timer,
-    blocks: [
-      { name: "Activación", items: ["10 minutos", "Skipping", "Movilidad", "Técnica de carrera"] },
-      { name: "Running específico", items: ["2 bloques", "6 reps por bloque", "30s fuerte + 30s suave", "Descanso: 2 mins entre bloques"] },
-      { name: "Técnica con balón", items: ["6 rounds", "Conducción rápida", "Cambio de dirección", "Sprint 15m", "Pase largo o finalización"] },
-      { name: "Final físico", items: ["3 rounds", "300m run", "15 burpees", "20 lunges", "20 sit ups"] }
-    ]
-  },
-  {
-    day: "Domingo",
-    title: "Descanso total",
-    focus: "Recuperación para construir músculo y bajar grasa mejor",
-    intensity: "Baja",
-    icon: CheckCircle2,
-    blocks: [
-      { name: "Recovery", items: ["Caminar suave", "Movilidad si lo necesitas", "Hidratación", "Dormir bien"] }
-    ]
-  }
-];
-
-const weekTwoPlan = [
-  {
-    day: "Lunes",
-    title: "Pierna fuerza + intermitentes progresivos",
-    focus: "Fuerza base y capacidad anaeróbica",
-    intensity: "Media-alta",
-    icon: Dumbbell,
-    blocks: [
-      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 25s por lado", "Single leg RDL 12 por pierna", "Monster walks 20 pasos", "Nordic asistido 6 reps", "Pogos 25 reps"] },
-      { name: "Zona media dinámica", items: ["4 vueltas", "40s plancha", "25 mountain climbers", "20 russian twists", "20 toe touches"] },
-      { name: "Fuerza pierna", items: ["5x8 back squat", "4x10 hip thrust pesado", "4x10 Bulgarian split squat", "4x12 RDL", "Farmer carry pesado"] },
-      { name: "Intermitentes", items: ["8 mins", "10s fuerte", "10s suave", "intensidad 85%"] },
-      { name: "Finisher", items: ["3 rounds", "12 burpees", "15 jump squats", "20 lunges", "250m run"] }
+      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 30s por lado", "Hamstring walkouts 15 reps", "Monster walks 20 pasos", "Single leg glute bridge 15 por lado", "Pogos 30 reps"] },
+      { name: "Zona media dinámica", items: ["4 vueltas", "45s plancha", "25 mountain climbers", "20 V-ups", "20 russian twists"] },
+      { name: "Lower body strength", items: ["Goblet squat tempo 5x10", "Bulgarian split squat 4x12", "Dumbbell RDL 4x12", "Walking lunges pesados", "Farmer carry pesado"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Finisher", items: ["4 rounds", "15 burpees", "20 jump squats", "20 lunges", "300m run"] }
     ]
   },
   {
     day: "Martes",
     title: "Upper body + conditioning",
-    focus: "Tren superior y gasto calórico",
+    focus: "Tren superior y acondicionamiento metabólico",
     intensity: "Media",
     icon: HeartPulse,
     blocks: [
-      { name: "Core", items: ["10 mins", "dead bug", "plank shoulder taps", "hollow hold"] },
-      { name: "Fuerza upper", items: ["5x8 push press", "4x10 remo mancuerna", "4x12 push ups", "4x10 pull ups asistidas", "battle ropes"] },
-      { name: "Functional", items: ["20x10", "bike", "KB swings", "dumbbell snatch", "jump box", "ropes", "5 vueltas"] }
+      { name: "Core", items: ["V-ups", "plank shoulder taps", "hollow hold", "russian twists"] },
+      { name: "Upper strength", items: ["Push press mancuerna", "Dumbbell rows", "Push ups", "Shoulder press", "Renegade rows"] },
+      { name: "Conditioning", items: ["20x10", "bike sprint", "KB swings", "dumbbell snatch", "skaters", "jump squats", "5 vueltas"] }
     ]
   },
   {
     day: "Miércoles",
     title: "Aeróbico + recovery",
-    focus: "Recuperación y base cardiovascular",
+    focus: "Recuperación activa y capacidad aeróbica",
     intensity: "Baja-media",
     icon: Footprints,
     blocks: [
-      { name: "Movilidad", items: ["12 mins", "tobillo", "cadera", "aductores", "espalda baja"] },
-      { name: "Running aeróbico", items: ["40 mins suaves", "ritmo conversacional", "mantener FC estable"] },
-      { name: "Recovery", items: ["foam roller", "movilidad", "descarga piernas", "estiramientos"] }
+      { name: "Movilidad", items: ["cadera", "tobillo", "aductores", "espalda baja", "movilidad dinámica"] },
+      { name: "Running", items: ["45 mins suaves", "ritmo conversacional", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "movilidad", "descarga piernas", "respiración"] }
     ]
   },
   {
     day: "Jueves",
-    title: "Potencia + repeated sprint ability",
-    focus: "Explosividad fútbol",
+    title: "Power + repeated sprint ability",
+    focus: "Explosividad específica fútbol",
     intensity: "Alta",
     icon: Flame,
     blocks: [
-      { name: "Preventivos", items: ["3 rondas", "nordic", "pogos", "aductor", "glúteo medio"] },
-      { name: "Potencia", items: ["5 rounds", "squat jumps", "bounds", "sprint 20m", "lateral hops", "sled push opcional"] },
-      { name: "Circuito fútbol", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "swings", "6 rounds"] },
-      { name: "Intermitentes", items: ["8 mins", "intensidad 90%", "10x10"] }
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "glute bridge unilateral", "aductor", "lateral hops"] },
+      { name: "Potencia", items: ["squat jumps", "bounds", "lateral jumps", "sprint 20m", "broad jumps"] },
+      { name: "Circuito fútbol", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "KB swings", "6 rounds"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] }
     ]
   },
   {
     day: "Viernes",
     title: "Full body strength",
-    focus: "Fuerza funcional completa",
+    focus: "Fuerza funcional total",
     intensity: "Media-alta",
     icon: Dumbbell,
     blocks: [
-      { name: "Fuerza", items: ["deadlift", "thrusters", "step ups", "push press", "pull ups", "5x8"] },
-      { name: "Conditioning", items: ["20x10", "bike", "jump lunges", "KB clean", "burpees", "plank taps", "5 vueltas"] },
-      { name: "Core", items: ["V-ups", "russian twists", "plancha", "dead bug"] }
+      { name: "Strength", items: ["Dumbbell thrusters", "Bulgarian split squat", "Dumbbell RDL", "Push press", "Renegade rows"] },
+      { name: "Conditioning", items: ["bike sprint", "jump lunges", "KB clean", "burpees", "plank taps", "5 vueltas"] },
+      { name: "Core", items: ["V-ups", "russian twists", "hollow hold", "plank"] }
     ]
   },
   {
@@ -170,9 +76,9 @@ const weekTwoPlan = [
     icon: Timer,
     blocks: [
       { name: "Activación", items: ["movilidad", "skipping", "técnica carrera"] },
-      { name: "Repeated runs", items: ["3 bloques", "6 reps", "30s fuerte", "30s suave", "descanso 2 mins"] },
-      { name: "Técnica fútbol", items: ["conducción", "cambio dirección", "sprint", "pase largo", "finalización"] },
-      { name: "Final físico", items: ["4 rounds", "300m run", "15 burpees", "20 lunges", "20 sit ups"] }
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Técnica fútbol", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Final físico", items: ["4 rounds", "300m run", "15 burpees", "20 lunges", "20 V-ups"] }
     ]
   },
   {
@@ -187,21 +93,471 @@ const weekTwoPlan = [
   }
 ];
 
-const routineWeeks = [
+const weekThreeGymPlan = [
   {
-    week: 1,
-    label: "El regreso",
-    objective: "Objetivo: bajar % de grasa, aumentar músculo funcional, recuperar condición y llegar fuerte a pretemporada.",
-    plan: weekOnePlan
+    day: "Lunes",
+    title: "Lower body strength + intermitentes",
+    focus: "Fuerza pierna, estabilidad y capacidad anaeróbica",
+    intensity: "Media-alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["3 rondas", "Copenhagen plank 30s por lado", "Hamstring walkouts 15 reps", "Monster walks 20 pasos", "Single leg glute bridge 15 por lado", "Pogos 30 reps"] },
+      { name: "Zona media dinámica", items: ["4 vueltas", "45s plancha", "20 V-ups", "25 mountain climbers", "20 russian twists"] },
+      { name: "Lower body strength", items: ["Back squat 5x6 pesado", "Bulgarian split squat con mancuerna 4x10", "Romanian deadlift barra 5x8", "Walking lunges con carga", "Heavy farmer carry"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Finisher", items: ["4 rounds", "sled push", "box jumps", "jump lunges", "sprint 20m"] }
+    ]
   },
   {
-    week: 2,
-    label: "Base + adaptación de carga",
-    objective: "Objetivo: subir intensidad, mejorar tolerancia física, aumentar fuerza funcional, seguir bajando % grasa y aumentar capacidad aeróbica específica.",
-    plan: weekTwoPlan
+    day: "Martes",
+    title: "Upper body + conditioning",
+    focus: "Tren superior y acondicionamiento metabólico",
+    intensity: "Media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["weighted V-ups", "plank shoulder taps", "hollow hold", "cable rotations"] },
+      { name: "Upper strength", items: ["Barbell push press", "Bent over rows", "Bench press", "Landmine press", "Renegade rows"] },
+      { name: "Conditioning", items: ["20x10", "Assault bike", "heavy KB swings", "landmine snatch", "battle stance shuffle", "box jumps", "5 vueltas"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Aeróbico + recovery",
+    focus: "Recuperación activa y capacidad aeróbica",
+    intensity: "Baja-media",
+    icon: Footprints,
+    blocks: [
+      { name: "Movilidad", items: ["hip mobility", "ankle mobility", "aductores", "espalda baja", "movilidad dinámica"] },
+      { name: "Running", items: ["45 mins suaves", "running suave o caminadora inclinada", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "stretching", "breathing work", "descarga piernas"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Power + repeated sprint ability",
+    focus: "Explosividad específica fútbol",
+    intensity: "Alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "aductor", "glúteo medio", "hamstring walkouts"] },
+      { name: "Potencia", items: ["Box jumps", "trap bar jumps", "lateral jumps", "sprint 20m", "broad jumps"] },
+      { name: "Circuito fútbol", items: ["sled push", "shuffle", "backpedal", "sprint", "burpees", "heavy KB swings", "6 rounds"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body strength",
+    focus: "Fuerza funcional total",
+    intensity: "Media-alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Strength", items: ["Barbell thrusters", "Bulgarian split squat pesado", "Barbell RDL", "Push press barra", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "jump lunges", "heavy KB clean", "sled push", "plank taps", "5 vueltas"] },
+      { name: "Core", items: ["weighted V-ups", "cable rotation", "plank", "russian twists"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Running específico fútbol",
+    focus: "Capacidad específica de partido",
+    intensity: "Media-alta",
+    icon: Timer,
+    blocks: [
+      { name: "Activación", items: ["movilidad", "skips", "técnica carrera"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Técnica fútbol", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Final físico", items: ["4 rounds", "300m run o assault runner", "15 burpees", "20 lunges", "20 weighted V-ups"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["caminar suave o caminadora inclinada", "movilidad", "hidratación", "dormir bien"] }
+    ]
   }
 ];
+
+const weekFourHomePlan = [
+  {
+    day: "Lunes",
+    title: "Lower body power + intermitentes elite",
+    focus: "Potencia pierna y explosividad",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen plank 30s", "Hamstring walkouts 15", "Pogos 35 reps", "Monster walks 20 pasos", "Single leg glute bridge"] },
+      { name: "Zona media atlética", items: ["V-ups", "hollow hold", "mountain climbers", "russian twists", "plank shoulder taps"] },
+      { name: "Power lower body", items: ["Goblet squat explosivo", "Bulgarian split squat", "Dumbbell jump squat", "Dumbbell RDL", "Broad jumps"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Finisher", items: ["sprint 20m", "burpees", "jump lunges", "skaters", "4 rounds"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body athletic conditioning",
+    focus: "Upper body y resistencia metabólica",
+    intensity: "Media-alta",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["V-ups", "plank", "russian twists", "hollow hold"] },
+      { name: "Upper athletic", items: ["Push press mancuerna", "Renegade rows", "Push ups", "Shoulder press", "Bent over rows"] },
+      { name: "Conditioning", items: ["bike sprint", "KB swings", "dumbbell snatch", "mountain climbers", "jump squats", "6 vueltas"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Recovery aerobic day",
+    focus: "Recuperación activa",
+    intensity: "Baja",
+    icon: Footprints,
+    blocks: [
+      { name: "Mobility", items: ["cadera", "tobillo", "espalda baja", "aductores", "movilidad dinámica"] },
+      { name: "Aerobic run", items: ["45 mins suaves", "ritmo conversacional", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "stretching", "respiración", "descarga piernas"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Repeated sprint ability + football power",
+    focus: "Velocidad y capacidad específica fútbol",
+    intensity: "Muy alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "lateral hops", "hamstring walkouts", "monster walks"] },
+      { name: "Power", items: ["squat jumps", "broad jumps", "sprint 20m", "lateral jumps", "bounds"] },
+      { name: "Football conditioning", items: ["sprint", "shuffle", "backpedal", "sprint", "burpees", "KB swings", "7 rounds"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body athletic strength",
+    focus: "Fuerza funcional y potencia",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Strength", items: ["Dumbbell thrusters", "Bulgarian split squat", "Dumbbell RDL", "Push press", "Renegade rows"] },
+      { name: "Conditioning", items: ["bike sprint", "jump lunges", "burpees", "KB swings", "mountain climbers", "6 vueltas"] },
+      { name: "Core", items: ["V-ups", "hollow hold", "russian twists", "plank"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Football running + conditioning",
+    focus: "Capacidad específica de partido",
+    intensity: "Alta",
+    icon: Timer,
+    blocks: [
+      { name: "Athletic warmup", items: ["movilidad", "skipping", "técnica carrera", "aceleraciones"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Football conditioning", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Finisher", items: ["400m run", "burpees", "jump squats", "V-ups", "4 rounds"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["caminar", "movilidad", "hidratación", "dormir bien"] }
+    ]
+  }
+];
+
+const weekFourGymPlan = [
+  {
+    day: "Lunes",
+    title: "Lower body power + intermitentes elite",
+    focus: "Potencia pierna y explosividad",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen plank", "Hamstring walkouts", "Pogos", "Glute bridge unilateral", "Adductor work"] },
+      { name: "Zona media atlética", items: ["weighted V-ups", "cable rotations", "hollow hold", "plank shoulder taps"] },
+      { name: "Power lower body", items: ["Back squat explosivo 6x4", "Bulgarian split squat pesado", "Trap bar jumps", "Barbell RDL", "Broad jumps"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Finisher", items: ["sprint 20m", "sled push", "jump lunges", "box jumps", "4 rounds"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body athletic conditioning",
+    focus: "Upper body y resistencia metabólica",
+    intensity: "Media-alta",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["weighted V-ups", "plank", "cable rotations", "hollow hold"] },
+      { name: "Upper athletic", items: ["Barbell push press", "Bench press", "Bent over rows", "Landmine press", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "heavy KB swings", "landmine snatch", "sled push", "box jumps", "6 vueltas"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Recovery aerobic day",
+    focus: "Recuperación activa",
+    intensity: "Baja",
+    icon: Footprints,
+    blocks: [
+      { name: "Mobility", items: ["hip mobility", "ankle mobility", "espalda baja", "aductor", "movilidad dinámica"] },
+      { name: "Aerobic run", items: ["45 mins suaves", "running suave o caminadora inclinada", "mantener FC estable"] },
+      { name: "Recovery", items: ["foam roller", "stretching", "breathing work", "descarga piernas"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Repeated sprint ability + football power",
+    focus: "Velocidad y capacidad específica fútbol",
+    intensity: "Muy alta",
+    icon: Flame,
+    blocks: [
+      { name: "Preventivos", items: ["Copenhagen", "pogos", "glúteo medio", "hamstring walkouts", "aductor"] },
+      { name: "Power", items: ["Box jumps", "Broad jumps", "Sprint 20m", "lateral jumps", "Trap bar jumps"] },
+      { name: "Football conditioning", items: ["sled push", "shuffle", "backpedal", "sprint", "burpees", "heavy KB swings", "7 rounds"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body athletic strength",
+    focus: "Fuerza funcional y potencia",
+    intensity: "Alta",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Strength", items: ["Barbell thrusters", "Bulgarian split squat pesado", "Barbell RDL", "Push press barra", "Renegade rows"] },
+      { name: "Conditioning", items: ["Assault bike", "jump lunges", "sled push", "heavy KB swings", "mountain climbers", "6 vueltas"] },
+      { name: "Core", items: ["weighted V-ups", "cable rotations", "plank", "hollow hold"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Football running + conditioning",
+    focus: "Capacidad específica partido",
+    intensity: "Alta",
+    icon: Timer,
+    blocks: [
+      { name: "Athletic warmup", items: ["movilidad", "skips", "técnica carrera", "acceleration drills"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Football conditioning", items: ["conducción", "sprint", "cambio dirección", "finalización", "pase largo"] },
+      { name: "Finisher", items: ["400m run o assault runner", "burpees", "box jumps", "weighted V-ups", "4 rounds"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Recovery",
+    focus: "Recuperación total",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recovery", items: ["caminar suave o caminadora inclinada", "movilidad", "stretching", "foam roller", "hidratación"] }
+    ]
+  }
+];
+
+const normalizeExerciseItem = (item, blockName = "") => {
+  const text = item.trim();
+  const lower = text.toLowerCase();
+  const block = blockName.toLowerCase();
+  const itemDetails = {
+    "walking lunges pesados": "Walking lunges pesados 20 pasos",
+    "farmer carry pesado": "Farmer carry pesado 30m",
+    "v-ups": "20 V-ups",
+    "weighted v-ups": "20 weighted V-ups",
+    "plank shoulder taps": "20 plank shoulder taps",
+    "plank taps": "20 plank taps",
+    "plank": "plancha 45s",
+    "hollow hold": "hollow hold 30s",
+    "russian twists": "20 russian twists",
+    "push press mancuerna": "Push press mancuerna 4x10",
+    "dumbbell rows": "Dumbbell rows 4x10",
+    "push ups": "Push ups 4x12",
+    "shoulder press": "Shoulder press 4x10",
+    "renegade rows": "Renegade rows 4x10",
+    "bike sprint": "bike sprint 20s",
+    "kb swings": "15 KB swings",
+    "dumbbell snatch": "Dumbbell snatch 10 por lado",
+    "skaters": "20 skaters",
+    "jump squats": "15 jump squats",
+    "cadera": "movilidad de cadera 10 mins",
+    "tobillo": "movilidad de tobillo 8 mins",
+    "aductores": "movilidad de aductores 8 mins",
+    "aductor": "adductor side plank 25s por lado",
+    "espalda baja": "movilidad espalda baja 8 mins",
+    "movilidad dinámica": "movilidad dinámica 10 mins",
+    "foam roller": "foam roller 8 mins",
+    "movilidad": "movilidad 10 mins",
+    "descarga piernas": "descarga piernas 8 mins",
+    "respiración": "respiración 5 mins",
+    "copenhagen": "Copenhagen plank 30s por lado",
+    "copenhagen plank": "Copenhagen plank 30s por lado",
+    "pogos": "Pogos 30 reps",
+    "glute bridge unilateral": "Glute bridge unilateral 15 por lado",
+    "lateral hops": "Lateral hops 20 reps",
+    "squat jumps": "10 squat jumps",
+    "bounds": "Bounds 20m",
+    "lateral jumps": "Lateral jumps 20 reps",
+    "broad jumps": "Broad jumps 8 reps",
+    "sprint": "sprint 20m",
+    "shuffle": "shuffle lateral 20m",
+    "backpedal": "backpedal 20m",
+    "burpees": "12 burpees",
+    "walking lunges con carga": "Walking lunges con carga 20 pasos",
+    "dumbbell thrusters": "Dumbbell thrusters 4x10",
+    "bulgarian split squat": "Bulgarian split squat 4x10 por pierna",
+    "dumbbell rdl": "Dumbbell RDL 4x10",
+    "push press": "Push press 4x10",
+    "jump lunges": "20 jump lunges",
+    "kb clean": "KB clean 10 por lado",
+    "skipping": "skipping 3 mins",
+    "técnica carrera": "técnica carrera 6 mins",
+    "conducción": "conducción 5 mins",
+    "cambio dirección": "cambio dirección 6 reps por lado",
+    "finalización": "finalización 10 tiros",
+    "pase largo": "pase largo 12 reps",
+    "caminar": "caminar 30 mins",
+    "hidratación": "hidratación 2-3 litros",
+    "dormir bien": "dormir 8 horas",
+    "heavy farmer carry": "Heavy farmer carry 30m",
+    "sled push": "sled push 20m",
+    "box jumps": "8 box jumps",
+    "weighted v-ups": "20 weighted V-ups",
+    "cable rotations": "Cable rotations 12 por lado",
+    "cable rotation": "Cable rotation 12 por lado",
+    "barbell push press": "Barbell push press 4x8",
+    "bent over rows": "Bent over rows 4x10",
+    "bench press": "Bench press 4x8",
+    "landmine press": "Landmine press 4x10 por lado",
+    "assault bike": "Assault bike sprint 20s",
+    "heavy kb swings": "15 heavy KB swings",
+    "landmine snatch": "Landmine snatch 10 por lado",
+    "battle stance shuffle": "battle stance shuffle 20m",
+    "hip mobility": "hip mobility 10 mins",
+    "ankle mobility": "ankle mobility 8 mins",
+    "thoracic rotation": "thoracic rotation 10 por lado",
+    "stretching": "stretching 10 mins",
+    "breathing work": "breathing work 5 mins",
+    "glúteo medio": "glúteo medio con banda 15 por lado",
+    "hamstring walkouts": "Hamstring walkouts 15 reps",
+    "trap bar jumps": "Trap bar jumps 5x5",
+    "heavy kb clean": "Heavy KB clean 10 por lado",
+    "skips": "skips 3 mins",
+    "monster walks": "Monster walks 20 pasos",
+    "caminar suave o caminadora inclinada": "caminar suave o caminadora inclinada 30 mins",
+    "single leg glute bridge": "Single leg glute bridge 15 por lado",
+    "goblet squat explosivo": "Goblet squat explosivo 4x8",
+    "dumbbell jump squat": "Dumbbell jump squat 4x8",
+    "mountain climbers": "25 mountain climbers",
+    "aceleraciones": "aceleraciones 6x20m",
+    "acceleration drills": "acceleration drills 6x20m",
+    "barbell thrusters": "Barbell thrusters 4x8",
+    "bulgarian split squat pesado": "Bulgarian split squat pesado 4x8 por pierna",
+    "barbell rdl": "Barbell RDL 4x8",
+    "push press barra": "Push press barra 4x8",
+    "medball throws": "Medball throws 10 reps",
+    "adductor work": "adductor side plank 25s por lado",
+    "glute bridge unilateral": "Glute bridge unilateral 15 por lado"
+  };
+
+  const hasExerciseDetails = /\d|mins?|minutos?|reps?|rounds?|rondas?|vueltas?|bloques?|por lado|por pierna|pasos|pesad|suave|intensidad|descanso|ritmo|fc|tempo|estable|horas|litros/i.test(text);
+
+  if (lower === "dead bug" || lower === "dead bugs" || /\bdead bugs\b/i.test(text)) {
+    return text.replace(/dead bugs?/i, "20 V-ups");
+  }
+
+  if (lower === "battle ropes" || lower === "ropes") {
+    if (/functional|conditioning|cardio/i.test(block)) return "bike sprint 20s";
+    return "high knees 30s";
+  }
+
+  if (/\bpull ups asistidas\b/i.test(text)) {
+    return text.replace(/pull ups asistidas/i, "Dumbbell rows 4x10");
+  }
+
+  if (/\bpull ups\b/i.test(text)) {
+    return text.replace(/pull ups/i, /fuerza|strength|upper/i.test(block) ? "Bent over rows 4x10" : "Renegade rows 4x10");
+  }
+
+  if (!hasExerciseDetails && itemDetails[lower]) {
+    return itemDetails[lower];
+  }
+
+  if (!hasExerciseDetails && /mobility|movilidad/i.test(text)) {
+    return `${text} 10 mins`;
+  }
+
+  return item;
+};
+
+const runningIntervalItems = [
+  "2 series x 6 min",
+  "10” rápido / 10” suave",
+  "descanso 2 min caminando o trote suave entre series"
+];
+
+const isRunningIntervalBlock = (block) => {
+  const name = block.name.toLowerCase();
+  const content = `${block.name} ${block.items.join(" ")}`.toLowerCase();
+
+  if (/intermitentes|carrera intermitente|hiit|repeated runs|progresivos/.test(name)) return true;
+  return (
+    /10x10|10 minutos|10 min|10 mins/.test(content) &&
+    /intermitentes|correr|carrera|running|hiit|rápido|fuerte/.test(content)
+  );
+};
+
+const normalizeRunningIntervalBlock = (block) => {
+  if (!isRunningIntervalBlock(block)) return block;
+
+  return {
+    ...block,
+    name: "Intermitentes de correr",
+    items: runningIntervalItems
+  };
+};
+
+const normalizePlan = (plan) => {
+  return plan.map((day) => ({
+    ...day,
+    blocks: day.blocks.map((block) => {
+      const normalizedBlock = normalizeRunningIntervalBlock(block);
+
+      return {
+        ...normalizedBlock,
+        items: normalizedBlock.items.map((item) => normalizeExerciseItem(item, normalizedBlock.name))
+      };
+    })
+  }));
+};
+
+const routineWeeks = [
+  {
+    week: 3,
+    label: "Volumen + fuerza funcional",
+    objective: "Objetivo: aumentar fuerza funcional, volumen tolerable, resistencia específica fútbol, potencia, recomposición corporal y estabilidad unilateral.",
+    homePlan: normalizePlan(weekThreeHomePlan),
+    gymPlan: normalizePlan(weekThreeGymPlan)
+  },
+  {
+    week: 4,
+    label: "Power + anaeróbico",
+    objective: "Objetivo: aumentar explosividad, mejorar repeated sprint ability, potencia específica fútbol, tolerancia alta intensidad y recomposición corporal.",
+    homePlan: normalizePlan(weekFourHomePlan),
+    gymPlan: normalizePlan(weekFourGymPlan)
+  }
+];
+const trainingModes = [
+  { id: "home", label: "Casa", icon: House },
+  { id: "gym", label: "Gym", icon: Dumbbell }
+];
+const weekDayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const dayLetters = ["L", "M", "M", "J", "V", "S", "D"];
+const dayShortNames = ["LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM"];
 const months = [
   "Enero",
   "Febrero",
@@ -219,30 +575,66 @@ const months = [
 const today = new Date();
 const initialMonth = today.getMonth();
 const currentCalendarWeek = Math.min(5, Math.ceil(today.getDate() / 7));
-const initialWeek = routineWeeks[routineWeeks.length - 1].week;
+const initialDay = weekDayNames[today.getDay()];
 const availableMonths = [{ index: initialMonth, name: months[initialMonth] }];
 const availableWeeks = routineWeeks.map((routine) => routine.week);
+const initialWeek = availableWeeks.includes(currentCalendarWeek) ? currentCalendarWeek : routineWeeks[routineWeeks.length - 1].week;
 const progressStorageKey = "wicha-fut-progress-v2";
 const previousProgressStorageKey = "wicha-fut-progress-v1";
 const getPeriodKey = (month, week) => `${month}-week-${week}`;
+const getModePeriodKey = (month, week, mode) => `${month}-week-${week}-${mode}`;
+const getLegacyPeriodKey = (month, week) => `${month}-week-${week}`;
+
+const mergePeriodProgress = (...progressItems) => {
+  return progressItems.reduce((merged, progress) => {
+    if (!progress) return merged;
+    return {
+      checked: { ...(merged.checked ?? {}), ...(progress.checked ?? {}) },
+      roundsDone: { ...(merged.roundsDone ?? {}), ...(progress.roundsDone ?? {}) },
+      completedBlocks: { ...(merged.completedBlocks ?? {}), ...(progress.completedBlocks ?? {}) },
+      workoutTimes: { ...(merged.workoutTimes ?? {}), ...(progress.workoutTimes ?? {}) }
+    };
+  }, {});
+};
+
+const hasProgress = (progress) => Boolean(
+  Object.keys(progress.checked ?? {}).length ||
+  Object.keys(progress.roundsDone ?? {}).length ||
+  Object.keys(progress.completedBlocks ?? {}).length ||
+  Object.keys(progress.workoutTimes ?? {}).length
+);
 
 const loadAllProgress = () => {
   try {
     const saved = window.localStorage.getItem(progressStorageKey);
     if (saved) {
       const parsed = JSON.parse(saved);
-      const oldCalendarKey = getPeriodKey(initialMonth, currentCalendarWeek);
-      const weekOneKey = getPeriodKey(initialMonth, 1);
+      const oldCalendarKey = getLegacyPeriodKey(initialMonth, currentCalendarWeek);
+      const oldCalendarGymKey = getModePeriodKey(initialMonth, currentCalendarWeek, "gym");
+      const oldCalendarHomeKey = getModePeriodKey(initialMonth, currentCalendarWeek, "home");
+      let migrated = { ...parsed };
 
-      if (parsed[oldCalendarKey] && !parsed[weekOneKey]) {
-        return { ...parsed, [weekOneKey]: parsed[oldCalendarKey] };
-      }
+      routineWeeks.forEach((routine) => {
+        const baseKey = getPeriodKey(initialMonth, routine.week);
+        const merged = mergePeriodProgress(
+          parsed[baseKey],
+          parsed[getModePeriodKey(initialMonth, routine.week, "home")],
+          parsed[getModePeriodKey(initialMonth, routine.week, "gym")],
+          routine.week === 3 ? parsed[oldCalendarKey] : null,
+          routine.week === 3 ? parsed[oldCalendarHomeKey] : null,
+          routine.week === 3 ? parsed[oldCalendarGymKey] : null
+        );
 
-      return parsed;
+        if (hasProgress(merged)) {
+          migrated[baseKey] = merged;
+        }
+      });
+
+      return migrated;
     }
 
     const previousSaved = window.localStorage.getItem(previousProgressStorageKey);
-    return previousSaved ? { [getPeriodKey(initialMonth, 1)]: JSON.parse(previousSaved) } : {};
+    return previousSaved ? { [getPeriodKey(initialMonth, 3)]: JSON.parse(previousSaved) } : {};
   } catch {
     return {};
   }
@@ -264,25 +656,53 @@ const googleImageSearchUrl = (exercise) => {
   return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${cleanExercise} exercise technique`)}`;
 };
 
+const formatDuration = (totalSeconds = 0) => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+};
+
 function App() {
   const [allProgress, setAllProgress] = useState(loadAllProgress);
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
   const [selectedWeek, setSelectedWeek] = useState(initialWeek);
-  const [selectedDay, setSelectedDay] = useState("Lunes");
+  const [selectedMode, setSelectedMode] = useState("gym");
+  const [selectedDay, setSelectedDay] = useState(initialDay);
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerSeconds, setTimerSeconds] = useState(0);
   const currentRoutine = useMemo(() => routineWeeks.find((routine) => routine.week === selectedWeek) ?? routineWeeks[0], [selectedWeek]);
-  const weekPlan = currentRoutine.plan;
+  const planForMode = (mode) => mode === "home" ? currentRoutine.homePlan : currentRoutine.gymPlan;
+  const weekPlan = planForMode(selectedMode);
   const periodKey = getPeriodKey(selectedMonth, selectedWeek);
   const currentProgress = allProgress[periodKey] ?? {};
   const checked = currentProgress.checked ?? {};
   const roundsDone = currentProgress.roundsDone ?? {};
   const completedBlocks = currentProgress.completedBlocks ?? {};
+  const workoutTimes = currentProgress.workoutTimes ?? {};
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay) ?? weekPlan[0], [selectedDay, weekPlan]);
+  const workoutTimeKey = `${selectedMode}-${current.day}`;
+  const savedWorkoutTime = workoutTimes[workoutTimeKey];
 
   useEffect(() => {
     window.localStorage.setItem(progressStorageKey, JSON.stringify(allProgress));
   }, [allProgress]);
+
+  useEffect(() => {
+    if (!timerRunning) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setTimerSeconds((seconds) => seconds + 1);
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [timerRunning]);
+
+  useEffect(() => {
+    setTimerRunning(false);
+    setTimerSeconds(0);
+  }, [periodKey, selectedMode, selectedDay]);
 
   const updatePeriodProgress = (updates) => {
     setAllProgress((prev) => {
@@ -293,6 +713,7 @@ function App() {
           checked: periodProgress.checked ?? {},
           roundsDone: periodProgress.roundsDone ?? {},
           completedBlocks: periodProgress.completedBlocks ?? {},
+          workoutTimes: periodProgress.workoutTimes ?? {},
           ...updates
         }
       };
@@ -315,6 +736,8 @@ function App() {
       /^\d+\s*reps?(\s+por\s+bloque)?/.test(text) ||
       /^\d+x\d+$/.test(text) ||
       /^\d+(-\d+)?\s*(minutos?|mins?)(\s|$)/.test(text) ||
+      /^2\s*series\s*x\s*6\s*min/.test(text) ||
+      /^10["”]\s*rápido\s*\/\s*10["”]\s*suave/.test(text) ||
       /^\d+s\s+fuerte\s+\+\s+\d+s\s+suave/.test(text) ||
       /^\d+s\s+(fuerte|suave)$/.test(text) ||
       /^core dinámico/.test(text) ||
@@ -330,7 +753,7 @@ function App() {
     if (!instructions.length) return "";
 
     return instructions
-      .map((item) => (/(minutos?|mins?)/i.test(item) ? `Aprox. ${item}` : item))
+      .map((item) => (/^\d+(-\d+)?\s*(minutos?|mins?)/i.test(item) ? `Aprox. ${item}` : item))
       .join(" | ");
   };
   const exerciseItems = (block) => {
@@ -342,25 +765,61 @@ function App() {
     const isSingleEffort = exerciseItems(block).length === 0;
     return hasRoundStructure || isSingleEffort || /zona media|core|carrera|cardio|running|intermitentes/i.test(block.name);
   };
-  const blockKey = (day, block) => `${day}-${block.name}`;
-  const areAllItemsChecked = (day, block) => exerciseItems(block).every((item) => checked[`${day}-${block.name}-${item}`]);
-  const isPreventiveComplete = (day, block) => Number(roundsDone[blockKey(day, block)] ?? 0) >= roundTarget(block) || areAllItemsChecked(day, block);
-  const isBlockComplete = (day, block) => Boolean(completedBlocks[blockKey(day, block)]);
+  const dayForMode = (dayName, mode) => planForMode(mode).find((day) => day.day === dayName);
+  const blockKey = (day, block, mode = selectedMode) => `${mode}-${day}-${block.name}`;
+  const legacyBlockKey = (day, block) => `${day}-${block.name}`;
+  const itemKey = (day, block, item, mode = selectedMode) => `${mode}-${day}-${block}-${item}`;
+  const legacyItemKey = (day, block, item) => `${day}-${block}-${item}`;
+  const itemDone = (day, block, item, mode = selectedMode) => Boolean(checked[itemKey(day, block, item, mode)] || checked[legacyItemKey(day, block, item)]);
+  const areAllItemsChecked = (day, block, mode = selectedMode) => exerciseItems(block).every((item) => itemDone(day, block.name, item, mode));
+  const roundsValue = (day, block, mode = selectedMode) => roundsDone[blockKey(day, block, mode)] ?? roundsDone[legacyBlockKey(day, block)] ?? 0;
+  const isPreventiveComplete = (day, block, mode = selectedMode) => Number(roundsValue(day, block, mode)) >= roundTarget(block) || areAllItemsChecked(day, block, mode);
+  const isBlockComplete = (day, block, mode = selectedMode) => Boolean(completedBlocks[blockKey(day, block, mode)] || completedBlocks[legacyBlockKey(day, block)]);
   const blockTotal = (block) => isPreventiveBlock(block) || usesBlockCompletion(block) ? 1 : exerciseItems(block).length;
-  const blockCompleted = (day, block) => {
-    if (isPreventiveBlock(block)) return isPreventiveComplete(day, block) ? 1 : 0;
-    if (usesBlockCompletion(block)) return isBlockComplete(day, block) ? 1 : 0;
-    return exerciseItems(block).filter((item) => checked[`${day}-${block.name}-${item}`]).length;
+  const blockCompleted = (day, block, mode = selectedMode) => {
+    if (isPreventiveBlock(block)) return isPreventiveComplete(day, block, mode) ? 1 : 0;
+    if (usesBlockCompletion(block)) return isBlockComplete(day, block, mode) ? 1 : 0;
+    return exerciseItems(block).filter((item) => itemDone(day, block.name, item, mode)).length;
   };
-  const isDayComplete = (day) => day.blocks.every((block) => blockCompleted(day.day, block) >= blockTotal(block));
+  const isDayCompleteForMode = (dayName, mode) => {
+    const day = dayForMode(dayName, mode);
+    return day ? day.blocks.every((block) => blockCompleted(day.day, block, mode) >= blockTotal(block)) : false;
+  };
+  const isDayComplete = (day) => trainingModes.some((mode) => isDayCompleteForMode(day.day, mode.id));
+  const dayProgress = (dayName) => {
+    const modeProgress = trainingModes
+      .map((mode) => {
+        const day = dayForMode(dayName, mode.id);
+        if (!day) return null;
 
-  const total = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + blockTotal(block), 0), 0);
-  const completed = weekPlan.reduce((acc, day) => acc + day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block), 0), 0);
+        const dayTotal = day.blocks.reduce((sum, block) => sum + blockTotal(block), 0);
+        const dayCompleted = day.blocks.reduce((sum, block) => sum + blockCompleted(day.day, block, mode.id), 0);
+
+        return {
+          mode: mode.id,
+          total: dayTotal,
+          completed: dayCompleted,
+          ratio: dayTotal ? dayCompleted / dayTotal : 0
+        };
+      })
+      .filter(Boolean);
+
+    return modeProgress.reduce((best, currentMode) => {
+      if (!best) return currentMode;
+      if (currentMode.ratio > best.ratio) return currentMode;
+      if (currentMode.ratio === best.ratio && currentMode.mode === selectedMode) return currentMode;
+      return best;
+    }, null);
+  };
+
+  const total = weekPlan.reduce((acc, day) => acc + (dayProgress(day.day)?.total ?? 0), 0);
+  const completed = weekPlan.reduce((acc, day) => acc + (dayProgress(day.day)?.completed ?? 0), 0);
   const progress = Math.round((completed / total) * 100);
+  const completedDays = weekPlan.filter((day) => isDayComplete(day)).length;
   const Icon = current.icon;
 
   const toggleItem = (day, block, item) => {
-    const key = `${day}-${block}-${item}`;
+    const key = itemKey(day, block, item);
     updatePeriodProgress({ checked: { ...checked, [key]: !checked[key] } });
   };
 
@@ -373,11 +832,29 @@ function App() {
     updatePeriodProgress({ completedBlocks: { ...completedBlocks, [key]: !completedBlocks[key] } });
   };
 
+  const finishWorkoutTimer = () => {
+    if (!timerSeconds) return;
+
+    setTimerRunning(false);
+    updatePeriodProgress({
+      workoutTimes: {
+        ...workoutTimes,
+        [workoutTimeKey]: {
+          seconds: timerSeconds,
+          finishedAt: new Date().toISOString()
+        }
+      }
+    });
+  };
+
   return (
     <main className="app">
       <section className="hero">
         <div className="heroCopy">
-          <div className="eyebrow"><CalendarDays size={18} /> SEMANA {currentRoutine.week}: {currentRoutine.label}</div>
+          <div className="eyebrow">
+            <span className="eyebrowWeek"><CalendarDays size={16} /> SEMANA {currentRoutine.week}</span>
+            <span className="eyebrowLabel">{currentRoutine.label}</span>
+          </div>
           <h1>Rutina fútbol femenino</h1>
           <p>{currentRoutine.objective}</p>
           <div className="periodPicker">
@@ -431,6 +908,23 @@ function App() {
                 )}
               </div>
             </label>
+            <div className="modePicker" aria-label="Tipo de rutina">
+              {trainingModes.map((mode) => {
+                const ModeIcon = mode.icon;
+                return (
+                  <button
+                    aria-label={`Rutina de ${mode.label}`}
+                    className={selectedMode === mode.id ? "active" : ""}
+                    key={mode.id}
+                    onClick={() => setSelectedMode(mode.id)}
+                    title={mode.label}
+                    type="button"
+                  >
+                    <ModeIcon size={22} />
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div className="weekChecks" aria-label="Progreso por día">
             {weekPlan.map((day, index) => {
@@ -446,15 +940,35 @@ function App() {
                   animate={dayComplete ? { scale: [1, 1.16, 1] } : { scale: 1 }}
                   transition={{ duration: .35 }}
                 >
-                  {dayComplete ? <SoccerBallIcon /> : dayLetters[index]}
+                  <span className="weekDayLabel">{dayShortNames[index] ?? dayLetters[index]}</span>
+                  <span className={dayComplete ? "weekDayStatus completeStatus" : "weekDayStatus"}>
+                    {dayComplete ? (
+                      <>
+                        <SoccerBallIcon />
+                        <span className="weekCheckMark">✓</span>
+                      </>
+                    ) : "-"}
+                  </span>
                 </motion.button>
               );
             })}
           </div>
+          <div className="weekLegend" aria-label="Leyenda de progreso semanal">
+            <span><i className="legendDot completeDot" />Completado</span>
+            <span><i className="legendDot trainingDot" />Entrenamiento</span>
+            <span><i className="legendDot pendingDot" />Pendiente</span>
+            <span><i className="restIcon" />Descanso</span>
+          </div>
         </div>
         <div className="progress">
-          <span>Progreso</span>
-          <strong>{progress}%</strong>
+          <span>Progreso semanal</span>
+          <div className="progressRing" style={{ "--progress": `${progress * 3.6}deg` }}>
+            <div>
+              <strong>{progress}%</strong>
+              <small>Completado</small>
+            </div>
+          </div>
+          <p>{completedDays} / {weekPlan.length} días completados</p>
           <div className="progressTrack">
             <div style={{ width: `${progress}%` }} />
           </div>
@@ -480,6 +994,40 @@ function App() {
         </header>
 
         <div className="intensity">Intensidad: <b>{current.intensity}</b></div>
+        <div className="dayStats" aria-label="Resumen del entrenamiento">
+          <div><Timer size={22} /><span>Duración</span><b>60-75 min</b></div>
+          <div><Flame size={22} /><span>Intensidad</span><b>{current.intensity}</b></div>
+          <div><Footprints size={22} /><span>Enfoque</span><b>{current.focus.split(" y ")[0]}</b></div>
+          <div><Dumbbell size={22} /><span>Modalidad</span><b>{selectedMode === "home" ? "Casa" : "Gym"}</b></div>
+        </div>
+
+        <div className="workoutTimer" aria-label="Cronómetro del entrenamiento">
+          <div>
+            <span>Cronómetro</span>
+            <strong>{formatDuration(timerSeconds)}</strong>
+            <small>
+              {savedWorkoutTime ? `Último registro: ${formatDuration(savedWorkoutTime.seconds)}` : "Sin registro todavía"}
+            </small>
+          </div>
+          <div className="timerActions">
+            <button className="timerPrimary" onClick={() => setTimerRunning((running) => !running)} type="button">
+              {timerRunning ? "Pausar" : timerSeconds ? "Continuar" : "Iniciar"}
+            </button>
+            <button onClick={finishWorkoutTimer} type="button" disabled={!timerSeconds}>
+              Finalizar
+            </button>
+            <button onClick={() => {
+              setTimerRunning(false);
+              setTimerSeconds(0);
+            }} type="button" disabled={!timerSeconds}>
+              Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <div className="blocksHeading">
+          <span>Bloques del entrenamiento</span>
+        </div>
 
         <div className="blocks">
           {current.blocks.map((block, index) => {
@@ -487,7 +1035,7 @@ function App() {
             const preventiveDone = preventive && isPreventiveComplete(current.day, block);
             const blockCompletion = usesBlockCompletion(block);
             const blockDone = blockCompletion && isBlockComplete(current.day, block);
-            const selectedRounds = roundsDone[blockKey(current.day, block)] ?? "";
+            const selectedRounds = roundsValue(current.day, block) || "";
             const instructions = blockInstructions(block);
 
             return (
@@ -499,15 +1047,22 @@ function App() {
                   </div>
                   <div className="blockActions">
                     {preventive && (
-                      <label className="roundSelector">
-                        <span>Rondas hechas</span>
-                        <select value={selectedRounds} onChange={(event) => updateRounds(current.day, block, event.target.value)}>
-                          <option value="">0</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                        </select>
-                      </label>
+                      <div className="roundSelector" aria-label="Rondas">
+                        <span>Rondas</span>
+                        <div className="roundBoxes">
+                          {[1, 2, 3].map((round) => (
+                            <button
+                              className={Number(selectedRounds) >= round ? "active" : ""}
+                              key={round}
+                              onClick={() => updateRounds(current.day, block, Number(selectedRounds) === round ? "" : String(round))}
+                              type="button"
+                              aria-label={`${round} ronda${round > 1 ? "s" : ""}`}
+                            >
+                              {round}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     )}
                     {blockCompletion && (
                       <button
@@ -524,8 +1079,7 @@ function App() {
 
                 <div className="items">
                   {exerciseItems(block).map((item) => {
-                    const key = `${current.day}-${block.name}-${item}`;
-                    const done = preventiveDone || blockDone || checked[key];
+                    const done = preventiveDone || blockDone || itemDone(current.day, block.name, item);
                     return (
                       <div className="exerciseRow" key={item}>
                         <button
@@ -567,7 +1121,7 @@ function App() {
             </button>
             <div className="exerciseImagePlaceholder">
               <Image size={34} />
-              <span>Referencia visual desde Google Imágenes</span>
+              <span>Referencia visual del ejercicio</span>
             </div>
             <div className="modalCopy">
               <span>{expandedExercise.day} | {expandedExercise.block}</span>
