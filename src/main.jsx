@@ -1,8 +1,176 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
-import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X, Star } from "lucide-react";
+import { Dumbbell, Timer, HeartPulse, Footprints, CheckCircle2, Flame, CalendarDays, ExternalLink, House, Image, Maximize2, X, Star, Lock } from "lucide-react";
 import "./style.css";
+
+const weekTwoHomePlan = [
+  {
+    day: "Lunes",
+    title: "Pierna fuerza base + intermitentes suaves",
+    focus: "Tren inferior y capacidad aeróbica inicial",
+    intensity: "Media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Calentamiento", items: ["Movilidad de cadera 2 min", "Activación de glúteos 2 x 15", "Sentadilla sin peso 2 x 12", "Skipping suave 3 x 20 seg"] },
+      { name: "Fuerza pierna", items: ["Sentadilla pausada 4 x 10", "Puente de glúteo a una pierna 3 x 10 por pierna", "Zancadas caminando o alternas 3 x 12 por pierna", "Peso muerto rumano con mochila/mancuernas 3 x 12"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Core", items: ["Plancha frontal 3 x 35 seg", "V-ups 3 x 12 por lado", "Russian twists 3 x 20"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body + conditioning",
+    focus: "Tren superior y acondicionamiento metabólico",
+    intensity: "Media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["V-ups 3 x 15", "Plank shoulder taps 3 x 20", "Hollow hold 3 x 25 seg", "Russian twists 3 x 24"] },
+      { name: "Tren superior", items: ["Push ups 4 x 8-10", "Remo con mochila/banda 4 x 12", "Fondos en silla 3 x 12", "Pike push ups 3 x 8"] },
+      { name: "Conditioning", items: ["3 rondas", "Jumping jacks 30 seg", "Mountain climbers 30 seg", "Sentadilla rápida controlada 30 seg", "descanso 45 seg"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Cardio base + movilidad",
+    focus: "Resistencia aeróbica y recuperación",
+    intensity: "Baja-media",
+    icon: Footprints,
+    blocks: [
+      { name: "Cardio", items: ["Trote suave o caminata rápida 30-35 min"] },
+      { name: "Movilidad", items: ["Cadera 3 min", "Isquios 3 min", "Cuádriceps 3 min", "Tobillos 2 min", "Espalda baja 2 min"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Pierna unilateral + potencia controlada",
+    focus: "Estabilidad, fuerza funcional y control",
+    intensity: "Media",
+    icon: Flame,
+    blocks: [
+      { name: "Activación", items: ["Caminata lateral con banda 3 x 12 por lado", "Puente de glúteo 3 x 15", "Sentadilla pausada 2 x 10"] },
+      { name: "Fuerza unilateral", items: ["Bulgarian split squat 4 x 8 por pierna", "Step ups 3 x 12 por pierna", "Peso muerto a una pierna 3 x 10 por pierna", "Wall sit 3 x 40 seg"] },
+      { name: "Potencia controlada", items: ["Saltos verticales suaves 3 x 6", "Skater jumps controlados 3 x 8 por lado", "Aceleraciones cortas 4 x 10 m"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body fuerza funcional",
+    focus: "Fuerza general, coordinación y resistencia",
+    intensity: "Media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Circuito principal", items: ["4 rondas", "Sentadilla 12 reps", "Push ups 10 reps", "Zancadas alternas 10 por pierna", "Remo con mochila 12 reps", "Plancha 35 seg"] },
+      { name: "Finisher", items: ["4 rondas", "30 seg trabajo", "30 seg descanso", "Mountain climbers 30 seg", "Sentadilla rápida controlada 30 seg", "Skipping suave 30 seg", "Plancha 30 seg"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Fútbol + intermitentes técnicos",
+    focus: "Ritmo, balón y aceleraciones controladas",
+    intensity: "Media",
+    icon: Timer,
+    blocks: [
+      { name: "Técnica de carrera", items: ["Skipping 3 x 20 seg", "Talones al glúteo 3 x 20 seg", "Desplazamientos laterales 3 x 20 seg", "Cambios de dirección 5 x 10 m"] },
+      { name: "Balón", items: ["Conducción con cambios de ritmo 10 min", "Pases contra pared 5 x 1 min", "Control orientado 5 x 1 min", "Finalización técnica 10 min"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Descanso activo",
+    focus: "Recuperación y movilidad",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recuperación", items: ["Caminata suave 20-25 min", "Movilidad general 10 min", "Estiramiento suave 5 min"] }
+    ]
+  }
+];
+
+const weekTwoGymPlan = [
+  {
+    day: "Lunes",
+    title: "Pierna fuerza base + intermitentes suaves",
+    focus: "Tren inferior y capacidad aeróbica inicial",
+    intensity: "Media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Calentamiento", items: ["Movilidad de cadera 2 min", "Activación de glúteos 2 x 15", "Sentadilla sin peso 2 x 12", "Skipping suave 3 x 20 seg"] },
+      { name: "Fuerza pierna", items: ["Sentadilla goblet o barra ligera 4 x 10", "Hip thrust 4 x 10", "Prensa 3 x 12", "Peso muerto rumano 3 x 10"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] },
+      { name: "Core", items: ["Plancha frontal 3 x 35 seg", "V-ups 3 x 12 por lado", "Russian twists 3 x 20"] }
+    ]
+  },
+  {
+    day: "Martes",
+    title: "Upper body + conditioning",
+    focus: "Tren superior y acondicionamiento metabólico",
+    intensity: "Media",
+    icon: HeartPulse,
+    blocks: [
+      { name: "Core", items: ["V-ups 3 x 15", "Plank shoulder taps 3 x 20", "Hollow hold 3 x 25 seg", "Russian twists 3 x 24"] },
+      { name: "Tren superior", items: ["Press pecho con mancuernas 4 x 10", "Jalón al pecho 4 x 10", "Remo sentado 3 x 12", "Press hombro 3 x 10"] },
+      { name: "Conditioning", items: ["3 rondas", "Jumping jacks 30 seg", "Mountain climbers 30 seg", "Sentadilla rápida controlada 30 seg", "descanso 45 seg"] }
+    ]
+  },
+  {
+    day: "Miércoles",
+    title: "Cardio base + movilidad",
+    focus: "Resistencia aeróbica y recuperación",
+    intensity: "Baja-media",
+    icon: Footprints,
+    blocks: [
+      { name: "Cardio", items: ["Caminadora, bicicleta o elíptica 30-35 min"] },
+      { name: "Movilidad", items: ["Cadera 3 min", "Isquios 3 min", "Cuádriceps 3 min", "Tobillos 2 min", "Espalda baja 2 min"] }
+    ]
+  },
+  {
+    day: "Jueves",
+    title: "Pierna unilateral + potencia controlada",
+    focus: "Estabilidad, fuerza funcional y control",
+    intensity: "Media",
+    icon: Flame,
+    blocks: [
+      { name: "Activación", items: ["Caminata lateral con banda 3 x 12 por lado", "Puente de glúteo 3 x 15", "Sentadilla pausada 2 x 10"] },
+      { name: "Fuerza unilateral", items: ["Bulgarian split squat con mancuernas 4 x 8 por pierna", "Step ups con mancuernas 3 x 12 por pierna", "Curl femoral 3 x 12", "Extensión de cuádriceps 3 x 12"] },
+      { name: "Potencia controlada", items: ["Saltos verticales suaves 3 x 6", "Skater jumps controlados 3 x 8 por lado", "Aceleraciones cortas 4 x 10 m"] }
+    ]
+  },
+  {
+    day: "Viernes",
+    title: "Full body fuerza funcional",
+    focus: "Fuerza general, coordinación y resistencia",
+    intensity: "Media",
+    icon: Dumbbell,
+    blocks: [
+      { name: "Circuito principal", items: ["4 rondas", "Goblet squat 12 reps", "Press pecho 10 reps", "Remo con mancuerna 10 por lado", "Peso muerto rumano 10 reps", "Plancha 35 seg"] },
+      { name: "Finisher", items: ["4 rondas", "30 seg trabajo", "30 seg descanso", "Mountain climbers 30 seg", "Sentadilla rápida controlada 30 seg", "Skipping suave 30 seg", "Plancha 30 seg"] }
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Fútbol + intermitentes técnicos",
+    focus: "Ritmo, balón y aceleraciones controladas",
+    intensity: "Media",
+    icon: Timer,
+    blocks: [
+      { name: "Técnica de carrera", items: ["Skipping 3 x 20 seg", "Talones al glúteo 3 x 20 seg", "Desplazamientos laterales 3 x 20 seg", "Cambios de dirección 5 x 10 m"] },
+      { name: "Balón", items: ["Conducción con cambios de ritmo 10 min", "Pases contra pared 5 x 1 min", "Control orientado 5 x 1 min", "Finalización técnica 10 min"] },
+      { name: "Intermitentes de correr", items: ["2 series x 6 min", "10” rápido / 10” suave", "descanso 2 min caminando o trote suave entre series"] }
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Descanso activo",
+    focus: "Recuperación y movilidad",
+    intensity: "Baja",
+    icon: CheckCircle2,
+    blocks: [
+      { name: "Recuperación", items: ["Caminata suave 20-25 min", "Movilidad general 10 min", "Estiramiento suave 5 min"] }
+    ]
+  }
+];
 
 const weekThreeHomePlan = [
   {
@@ -537,6 +705,13 @@ const normalizePlan = (plan) => {
 
 const routineWeeks = [
   {
+    week: 2,
+    label: "Base de fuerza + acondicionamiento",
+    objective: "Objetivo: aumentar ligeramente la carga, mejorar fuerza funcional, trabajar estabilidad y empezar con intermitentes suaves en formato controlado.",
+    homePlan: normalizePlan(weekTwoHomePlan),
+    gymPlan: normalizePlan(weekTwoGymPlan)
+  },
+  {
     week: 3,
     label: "Volumen + fuerza funcional",
     objective: "Objetivo: aumentar fuerza funcional, volumen tolerable, resistencia específica fútbol, potencia, recomposición corporal y estabilidad unilateral.",
@@ -592,7 +767,8 @@ const mergePeriodProgress = (...progressItems) => {
       checked: { ...(merged.checked ?? {}), ...(progress.checked ?? {}) },
       roundsDone: { ...(merged.roundsDone ?? {}), ...(progress.roundsDone ?? {}) },
       completedBlocks: { ...(merged.completedBlocks ?? {}), ...(progress.completedBlocks ?? {}) },
-      workoutTimes: { ...(merged.workoutTimes ?? {}), ...(progress.workoutTimes ?? {}) }
+      workoutTimes: { ...(merged.workoutTimes ?? {}), ...(progress.workoutTimes ?? {}) },
+      missedDays: { ...(merged.missedDays ?? {}), ...(progress.missedDays ?? {}) }
     };
   }, {});
 };
@@ -601,7 +777,8 @@ const hasProgress = (progress) => Boolean(
   Object.keys(progress.checked ?? {}).length ||
   Object.keys(progress.roundsDone ?? {}).length ||
   Object.keys(progress.completedBlocks ?? {}).length ||
-  Object.keys(progress.workoutTimes ?? {}).length
+  Object.keys(progress.workoutTimes ?? {}).length ||
+  Object.keys(progress.missedDays ?? {}).length
 );
 
 const loadAllProgress = () => {
@@ -670,8 +847,10 @@ function App() {
   const roundsDone = currentProgress.roundsDone ?? {};
   const completedBlocks = currentProgress.completedBlocks ?? {};
   const workoutTimes = currentProgress.workoutTimes ?? {};
+  const missedDays = currentProgress.missedDays ?? {};
   const current = useMemo(() => weekPlan.find((d) => d.day === selectedDay) ?? weekPlan[0], [selectedDay, weekPlan]);
   const workoutTimeKey = `${selectedMode}-${current.day}`;
+  const missedDayKey = `${selectedMode}-${current.day}`;
   const savedWorkoutTime = workoutTimes[workoutTimeKey];
 
   useEffect(() => {
@@ -703,6 +882,7 @@ function App() {
           roundsDone: periodProgress.roundsDone ?? {},
           completedBlocks: periodProgress.completedBlocks ?? {},
           workoutTimes: periodProgress.workoutTimes ?? {},
+          missedDays: periodProgress.missedDays ?? {},
           ...updates
         }
       };
@@ -775,6 +955,7 @@ function App() {
     return day ? day.blocks.every((block) => blockCompleted(day.day, block, mode) >= blockTotal(block)) : false;
   };
   const isDayComplete = (day) => trainingModes.some((mode) => isDayCompleteForMode(day.day, mode.id));
+  const isDayMissed = (day) => !isDayComplete(day) && trainingModes.some((mode) => missedDays[`${mode.id}-${day.day}`]);
   const dayProgress = (dayName) => {
     const modeProgress = trainingModes
       .map((mode) => {
@@ -819,6 +1000,15 @@ function App() {
   const toggleBlock = (day, block) => {
     const key = blockKey(day, block);
     updatePeriodProgress({ completedBlocks: { ...completedBlocks, [key]: !completedBlocks[key] } });
+  };
+
+  const toggleMissedDay = () => {
+    updatePeriodProgress({
+      missedDays: {
+        ...missedDays,
+        [missedDayKey]: !missedDays[missedDayKey]
+      }
+    });
   };
 
   const finishWorkoutTimer = () => {
@@ -918,30 +1108,25 @@ function App() {
           <div className="weekChecks" aria-label="Progreso por día">
             {weekPlan.map((day, index) => {
               const dayComplete = isDayComplete(day);
+              const dayMissed = isDayMissed(day);
 
               return (
                 <motion.button
                   key={day.day}
-                  className={`${selectedDay === day.day ? "current" : ""} ${dayComplete ? "complete" : ""}`}
+                  className={`${selectedDay === day.day ? "current" : ""} ${dayComplete ? "complete" : ""} ${dayMissed ? "missed" : ""}`}
                   onClick={() => setSelectedDay(day.day)}
                   type="button"
-                  aria-label={`${day.day}${dayComplete ? " completo" : ""}`}
+                  aria-label={`${day.day}${dayComplete ? " completo" : dayMissed ? " no realizado" : ""}`}
                   animate={dayComplete ? { scale: [1, 1.16, 1] } : { scale: 1 }}
                   transition={{ duration: .35 }}
                 >
                   <span className="weekDayLabel">{dayShortNames[index] ?? dayLetters[index]}</span>
-                  <span className={dayComplete ? "weekDayStatus completeStatus" : "weekDayStatus"}>
-                    {dayComplete ? <Star className="weekStarIcon" size={30} /> : "-"}
+                  <span className={dayComplete || dayMissed ? "weekDayStatus completeStatus" : "weekDayStatus"}>
+                    {dayComplete ? <Star className="weekStarIcon" size={30} /> : dayMissed ? <Lock className="weekLockIcon" size={28} /> : ""}
                   </span>
                 </motion.button>
               );
             })}
-          </div>
-          <div className="weekLegend" aria-label="Leyenda de progreso semanal">
-            <span><i className="legendDot completeDot" />Completado</span>
-            <span><i className="legendDot trainingDot" />Entrenamiento</span>
-            <span><i className="legendDot pendingDot" />Pendiente</span>
-            <span><i className="restIcon" />Descanso</span>
           </div>
         </div>
         <div className="progress">
@@ -993,6 +1178,12 @@ function App() {
               {savedWorkoutTime ? `Último registro: ${formatDuration(savedWorkoutTime.seconds)}` : "Sin registro todavía"}
             </small>
           </div>
+          {savedWorkoutTime && (
+            <div className="savedWorkoutTime">
+              <span>Tiempo final</span>
+              <strong>{formatDuration(savedWorkoutTime.seconds)}</strong>
+            </div>
+          )}
           <div className="timerActions">
             <button className="timerPrimary" onClick={() => setTimerRunning((running) => !running)} type="button">
               {timerRunning ? "Pausar" : timerSeconds ? "Continuar" : "Iniciar"}
@@ -1005,6 +1196,10 @@ function App() {
               setTimerSeconds(0);
             }} type="button" disabled={!timerSeconds}>
               Reiniciar
+            </button>
+            <button className={missedDays[missedDayKey] ? "missedRoutineButton active" : "missedRoutineButton"} onClick={toggleMissedDay} type="button">
+              <Lock size={16} />
+              {missedDays[missedDayKey] ? "Marcada como no hecha" : "No la hice"}
             </button>
           </div>
         </div>
